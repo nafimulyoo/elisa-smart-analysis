@@ -1,0 +1,22 @@
+from pydantic import BaseModel
+from typing import List, Dict, Any
+
+
+class AnalysisResultWeb(BaseModel):
+    data: Dict[str, Any]
+    visualization_type: str
+    explanation: str
+
+class AnalysisResultLINE(BaseModel):
+    data: Dict[str, Any]
+    image_url: str
+    explanation: str
+
+# TODO: Pelajarin response whatsapp gimana
+class AnalysisResultWhatsApp(BaseModel):
+    data: Dict[str, Any]
+    image_url: str
+    explanation: str
+
+class PromptRequest(BaseModel):
+    prompt: str

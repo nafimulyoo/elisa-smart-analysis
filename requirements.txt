@@ -43,6 +43,7 @@ exceptiongroup==1.2.2
 executing==2.2.0
 faiss-cpu==1.7.4
 Farama-Notifications==0.0.4
+fastapi==0.115.11
 fastjsonschema==2.21.1
 filelock==3.17.0
 fire==0.4.0
@@ -189,6 +190,7 @@ soupsieve==2.6
 spark-ai-python==0.3.31
 sqlparse==0.5.3
 stack-data==0.6.3
+starlette==0.46.1
 ta==0.10.2
 tenacity==8.2.3
 termcolor==2.4.0
@@ -205,6 +207,7 @@ typing-inspect==0.8.0
 typing_extensions==4.9.0
 tzdata==2025.1
 urllib3==1.26.20
+uvicorn==0.34.0
 volcengine-python-sdk==1.0.128
 wcwidth==0.2.13
 websocket-client==1.8.0
