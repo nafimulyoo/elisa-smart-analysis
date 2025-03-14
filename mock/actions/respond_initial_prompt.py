@@ -5,6 +5,7 @@ class RespondInitialPrompt():
     name: str = "RespondInitialPrompt"
 
     async def run(self, prompt):
+        # LOGIC HERE
         
         if prompt == "irrelevant":
             return InitialPromptHandlerResult(
@@ -12,29 +13,32 @@ class RespondInitialPrompt():
                 message="Prompt tidak relevan dengan use case ELISA."
             )
         
-        if prompt == "no data":
+        elif prompt == "no data":
             return InitialPromptHandlerResult(
                 type="Final Answer",
                 message="Tidak ada data yang bisa diolah."
             )
 
-        if prompt == "general":
+        elif prompt == "general":
             return InitialPromptHandlerResult(
                 type="Final Answer",
                 message="ELISA adalah singkatan dari Sistem Informasi Energi Listrik dan Air."
             )
 
-        if prompt == "basic":
+        elif prompt == "basic":
             return InitialPromptHandlerResult(
                 type="Basic Analysis",
                 message="Prompt valid dan relevan dengan use case ELISA."
             )
         
-        if prompt == "advanced":
+        elif prompt == "advanced":
             return InitialPromptHandlerResult(
                 type="Advanced Analysis",
                 message="Prompt valid dan relevan dengan use case ELISA."
             )
         
         else:
-            raise HTTPException(status_code=400, detail="Prompt tidak dikenali.")
+            return InitialPromptHandlerResult(
+                type="Fail",
+                message="Prompt tidak valid."
+            )

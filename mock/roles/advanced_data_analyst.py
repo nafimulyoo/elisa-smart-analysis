@@ -1,11 +1,11 @@
 from fastapi import HTTPException
-from actions.write_analysis_code import WriteAnalysisCode
-from actions.review_code import ReviewCode
-from actions.execute_code import ExecuteCode
-from actions.solution_planner import SolutionPlanner
+from mock.actions.write_analysis_code import WriteAnalysisCode
+from mock.actions.review_code import ReviewCode
+from mock.actions.execute_code import ExecuteCode
+from mock.actions.solution_planner import SolutionPlanner
 
 
-class BasicDataAnalyst:
+class AdvancedDataAnalyst:
     def __init__(self, context):
         self.context = context
         self.write_analysis_code = WriteAnalysisCode()

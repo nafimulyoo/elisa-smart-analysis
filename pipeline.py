@@ -1,6 +1,11 @@
 from fastapi import HTTPException
 from api_model import PromptRequest, AnalysisResultWeb, AnalysisResultLINE, AnalysisResultWhatsApp
 
+# from mas_llm.roles.initial_prompt_handler import InitialPromptHandler
+# from mas_llm.roles.basic_data_analyst import BasicDataAnalyst
+# from mas_llm.roles.advanced_data_analyst import AdvancedDataAnalyst
+# from mas_llm.roles.analysis_interpreter import AnalysisInterpreter
+
 from mock.roles.initial_prompt_handler import InitialPromptHandler
 from mock.roles.basic_data_analyst import BasicDataAnalyst
 from mock.roles.advanced_data_analyst import AdvancedDataAnalyst
@@ -25,18 +30,9 @@ class Pipeline:
         
         prompt_validator = InitialPromptHandler(context=context)
         prompt_validator_result = await prompt_validator.run(message)
-        logger.info(f"🟢 Prompt validation result: {prompt_validator_result}")
-        
 
         if prompt_validator_result.type == "Final Answer":
-            result = [
-                AnalysisResultWeb(
-                    data={},
-                    visualization_type="",
-                    explanation=prompt_validator_result.message
-                ),
-            ]
-            return self.early_response
+            return self.early_response(prompt_validator_result.message)
 
         data_analyst_result = None
 
@@ -100,5 +96,13 @@ class Pipeline:
         else :
             logger.error(f"❌ Unknown source type: {type}")
             raise HTTPException(status_code=500, detail="Unknown source type")
+        
+    def early_response(self, message):
+        if self.source == "web":
+            return [AnalysisResultWeb(data={}, visualization_type="", explanation=message)]
+        elif self.source == "line":
+            return [AnalysisResultLINE(image_url="", explanation=message)]
+        elif self.source == "whatsapp":
+            return [AnalysisResultWhatsApp(image_url="", explanation=message)]
 
     
