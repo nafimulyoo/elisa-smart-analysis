@@ -3,62 +3,43 @@ import re
 from metagpt.actions import Action
 import json
 
+from metagpt.rag.engines import SimpleEngine
+from metagpt.rag.schema import FAISSRetrieverConfig, BM25RetrieverConfig, LLMRankerConfig
+
+DOC_PATH = "mas_llm/data/elisa.txt"
+
 class AskDataAvailability(Action):
     PROMPT_TEMPLATE: str = """
-    Anda adalah agen yang bertugas memvalidasi dan mengklasifikasikan prompt pengguna berdasarkan relevansinya dengan use case ELISA. Tugas Anda adalah memastikan bahwa prompt tersebut sesuai dengan kategori berikut:
-
-    1. **Unrelevant**: Prompt tidak memiliki hubungan dengan use case ELISA.
-    2. **No Data**: Prompt tidak dapat dijawab karena kurangnya informasi atau data.
-    3. **Basic Knowledge**: Prompt berkaitan dengan informasi dasar mengenai ELISA, ITB, atau penggunaan energi listrik secara umum.
-    4. **Basic Data Analysis**: Prompt meminta analisis data sederhana, seperti perhitungan dasar atau visualisasi data.
-    5. **Advanced Data Analysis**: Prompt memerlukan analisis yang lebih kompleks, termasuk teknik statistik atau pemodelan data yang lebih mendalam.
-
-    Setelah mengklasifikasikan prompt, berikan respons dalam format JSON dengan struktur berikut:
-
-    - Untuk prompt yang tidak relevan:
+    Anda adalah agen yang berguna untuk mengecek ketersediaan data yang diperlukan untuk analisis. Tugas Anda adalah memvalidasi apakah data yang diperlukan untuk menjawab prompt pengguna sudah tersedia atau tidak.
+    format JSON yang diharapkan:
+    - Jika data sudah tersedia:
         {{
-            "type": "Unrelevant",
-            "message": "[Buat pesan yang sesuai untuk memberi tahu pengguna bahwa prompt tidak relevan]"
+            "type": "Data Available",
+            "message": "[Buat pesan yang sesuai untuk memberi tahu pengguna bahwa data sudah tersedia]"
         }}
-
-    - Untuk prompt yang tidak dapat diproses karena kurangnya data:
+    - Jika data belum tersedia:
         {{
-            "type": "No Data",
-            "message": "[Buat pesan yang sesuai untuk memberi tahu pengguna bahwa data tidak cukup]"
+            "type": "Data Not Available",
+            "message": "[Buat pesan yang sesuai untuk memberi tahu pengguna bahwa data belum tersedia]"
         }}
-
-    - Untuk prompt yang berkaitan dengan pengetahuan umum:
-        {{
-            "type": "Basic Knowledge",
-            "message": "[Buat pesan yang sesuai untuk memberikan informasi dasar]"
-        }}
-
-    - Untuk prompt yang meminta analisis data sederhana:
-        {{
-            "type": "Basic Analysis",
-            "message": "[Buat pesan yang sesuai untuk memberi tahu pengguna bahwa analisis sederhana sedang diproses]"
-        }}
-
-    - Untuk prompt yang memerlukan analisis yang lebih kompleks:
-        {{
-            "type": "Advanced Analysis",
-            "message": "[Buat pesan yang sesuai untuk memberi tahu pengguna bahwa analisis kompleks sedang diproses]"
-        }}
-
-    Kembalikan  ```json json_yang_anda_tulis ```, tanpa tambahan teks atau penjelasan lainnya.
-
+    Kembalikan ```json json_yang_anda_tulis```, tanpa tambahan teks atau penjelasan lainnya.
     Prompt pengguna: {instruction}
-
     json anda:
     """
 
-    name: str = "RespondInitialPrompt"
+    name: str = "AskDataAvailability"
 
     async def run(self, instruction: str):
         prompt = self.PROMPT_TEMPLATE.format(instruction=instruction)
 
-        response = await self._aask(prompt)
+        engine = SimpleEngine.from_docs(
+            input_files=[DOC_PATH],
+            retriever_configs=[FAISSRetrieverConfig(), BM25RetrieverConfig()],
+            ranker_configs=[LLMRankerConfig()]
+        )
 
+        response = await engine.aquery(prompt)
+        
         result = self.parse_json(response)
 
         return result
