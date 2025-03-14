@@ -1,8 +1,8 @@
 from fastapi import HTTPException
 from api_model import PromptRequest, AnalysisResultWeb, AnalysisResultLINE, AnalysisResultWhatsApp
 
-from mock.roles.prompt_validator import PromptValidator
-from mock.roles.simple_data_analyst import SimpleDataAnalyst
+from mock.roles.initial_prompt_handler import InitialPromptHandler
+from mock.roles.basic_data_analyst import BasicDataAnalyst
 from mock.roles.advanced_data_analyst import AdvancedDataAnalyst
 from mock.roles.analysis_interpreter import AnalysisInterpreter
 
@@ -19,13 +19,14 @@ class Pipeline:
         if self.example_mode:
             return self.example_output(self.source)
 
-        message = request.message
+        message = request.prompt
         context = Context()
         logger.info(f"🎯 Prompt: {message}")
         
-        prompt_validator = PromptValidator(context=context)
-        prompt_validator_result = prompt_validator.run(message)
-        logger.info(f"🟢 Prompt validation result: {result}")
+        prompt_validator = InitialPromptHandler(context=context)
+        prompt_validator_result = await prompt_validator.run(message)
+        logger.info(f"🟢 Prompt validation result: {prompt_validator_result}")
+        
 
         if prompt_validator_result.type == "Final Answer":
             result = [
@@ -35,27 +36,20 @@ class Pipeline:
                     explanation=prompt_validator_result.message
                 ),
             ]
-            return result
-        
-        if prompt_validator_result.type != "Basic Analysis" and prompt_validator_result.type != "Advanced Analysis":
-            logger.error(f"❌ Unknown prompt validation result type: {prompt_validator_result.type}")
-            raise HTTPException(status_code=500, detail="Unknown prompt validation result type")
+            return self.early_response
 
         data_analyst_result = None
 
         if prompt_validator_result.type == "Basic Analysis":
-            logger.info(f"↗️ Forwarding to Simple Data Analyst")
-            data_analyst = SimpleDataAnalyst(context=context)
-            data_analyst_result = data_analyst.run(message)
-            logger.info(f"🟢 Simple Data Analyst result: {data_analyst_result}")
+            logger.info(f"↗️ Forwarding to Basic Data Analyst")
+            data_analyst = BasicDataAnalyst(context=context)
 
         if prompt_validator_result.type == "Advanced Analysis":
             logger.info(f"↗️ Forwarding to Advanced Data Analyst")
             data_analyst = AdvancedDataAnalyst(context=context)
-            data_analyst_result = data_analyst.run(message)
-            logger.info(f"🟢 Advanced Data Analyst result: {data_analyst}")
             
-            result = data_analyst_result
+        data_analyst_result = await data_analyst.run(message)
+        logger.info(f"🟢 Data Analyst result: {data_analyst_result}")
 
         analysis_interpreter = AnalysisInterpreter(context=context, type="web")
         analysis_interpreter_result = analysis_interpreter.run(data_analyst_result)

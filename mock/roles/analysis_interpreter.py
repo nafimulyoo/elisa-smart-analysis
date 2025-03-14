@@ -1,6 +1,5 @@
 class AnalysisInterpreter:
-    def __init__(self, context, model):
-        self.model = model
+    def __init__(self, context):
         self.context = context
 
     def run(self, prompt):

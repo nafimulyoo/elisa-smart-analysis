@@ -6,7 +6,7 @@ from pipeline import Pipeline
 
 app = FastAPI()
 
-example_mode = True
+example_mode = False
 
 @app.post("/api/web", response_model=List[AnalysisResultWeb])
 async def web_api(request: PromptRequest):

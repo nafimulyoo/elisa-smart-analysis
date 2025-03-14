@@ -18,3 +18,13 @@ class AnalysisResultWhatsApp(BaseModel):
 
 class PromptRequest(BaseModel):
     prompt: str
+
+
+from pydantic import BaseModel
+from typing import List, Dict, Any
+
+
+class InitialPromptHandlerResult(BaseModel):
+    type: str
+    message: str
+ 
