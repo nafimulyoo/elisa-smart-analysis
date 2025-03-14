@@ -1,12 +1,12 @@
 from fastapi import HTTPException
 from api_model import PromptRequest, AnalysisResultWeb, AnalysisResultLINE, AnalysisResultWhatsApp
 
-# from mas_llm.roles.initial_prompt_handler import InitialPromptHandler
+from mas_llm.roles.initial_prompt_handler import InitialPromptHandler
 # from mas_llm.roles.basic_data_analyst import BasicDataAnalyst
 # from mas_llm.roles.advanced_data_analyst import AdvancedDataAnalyst
 # from mas_llm.roles.analysis_interpreter import AnalysisInterpreter
 
-from mock.roles.initial_prompt_handler import InitialPromptHandler
+# from mock.roles.initial_prompt_handler import InitialPromptHandler
 from mock.roles.basic_data_analyst import BasicDataAnalyst
 from mock.roles.advanced_data_analyst import AdvancedDataAnalyst
 from mock.roles.analysis_interpreter import AnalysisInterpreter
@@ -28,8 +28,11 @@ class Pipeline:
         context = Context()
         logger.info(f"🎯 Prompt: {message}")
         
+        logger.info(f"↗️ Forwarding to Initial Prompt Handler")
         prompt_validator = InitialPromptHandler(context=context)
         prompt_validator_result = await prompt_validator.run(message)
+
+        logger.info(f"↘️ Prompt Validator result: {prompt_validator_result}")
 
         if prompt_validator_result.type == "Final Answer":
             return self.early_response(prompt_validator_result.message)
