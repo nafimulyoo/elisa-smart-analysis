@@ -1,0 +1,134 @@
+# Source: ChatGPT 4o
+
+Sistem ELISA (Energy and Water Information System) mengumpulkan berbagai data terkait penggunaan energi listrik dan air. Berikut adalah rincian mengenai jenis data listrik yang diukur oleh ELISA serta analisis yang dapat dilakukan dari data tersebut:
+
+### Data Listrik yang Diukur oleh ELISA
+
+1. **Penggunaan Energi Listrik**
+   - **Total Konsumsi Energi**: Pengukuran total penggunaan energi listrik dalam kWh untuk setiap unit atau gedung.
+   - **Konsumsi Harian**: Data penggunaan listrik per hari, memungkinkan analisis tren harian.
+   - **Konsumsi Bulanan**: Data penggunaan listrik per bulan untuk analisis jangka panjang.
+
+2. **Data Waktu Nyata**
+   - **Pengukuran Beban**: Data beban listrik yang digunakan dalam waktu nyata, termasuk pengukuran per jam.
+   - **Distribusi Beban**: Informasi mengenai distribusi beban pada sistem 3 fasa untuk memastikan keseimbangan beban.
+
+3. **Data Kualitas Energi**
+   - **Tegangan dan Arus**: Pengukuran tegangan dan arus listrik untuk menganalisis kualitas energi.
+   - **Faktor Daya**: Mengukur efisiensi penggunaan energi listrik.
+
+4. **Data Smart Meter**
+   - **Status Komunikasi**: Informasi mengenai status komunikasi smart meter yang digunakan untuk pengukuran.
+   - **Tarif Listrik**: Data tarif listrik yang berlaku untuk analisis biaya.
+
+5. **Data Lingkungan**
+   - **Suhu dan Kelembapan**: Data lingkungan yang dapat mempengaruhi konsumsi energi, seperti suhu luar dan kelembapan.
+
+### Analisis Data yang Dapat Dilakukan
+
+1. **Analisis Tren Penggunaan Energi**
+   - Mengidentifikasi pola penggunaan energi dari waktu ke waktu (harian, bulanan, tahunan).
+   - Menganalisis fluktuasi penggunaan energi berdasarkan waktu (misalnya, jam sibuk vs. jam sepi).
+
+2. **Analisis Efisiensi Energi**
+   - Menghitung faktor daya untuk menilai efisiensi penggunaan energi.
+   - Menganalisis perbandingan konsumsi energi antara berbagai gedung atau fakultas.
+
+3. **Analisis Kualitas Energi**
+   - Memantau kualitas energi dengan menganalisis data tegangan dan arus untuk mendeteksi masalah potensial.
+   - Mengidentifikasi penyebab gangguan atau fluktuasi dalam sistem kelistrikan.
+
+4. **Peramalan Konsumsi Energi**
+   - Menggunakan data historis untuk memprediksi konsumsi energi di masa depan, membantu dalam perencanaan dan penganggaran.
+
+5. **Analisis Biaya Energi**
+   - Menghitung biaya energi berdasarkan tarif listrik dan konsumsi untuk membantu dalam pengelolaan anggaran.
+   - Menganalisis dampak dari perubahan tarif listrik terhadap biaya operasional.
+
+6. **Analisis Dampak Lingkungan**
+   - Menghubungkan data penggunaan energi dengan data lingkungan untuk menilai dampak lingkungan dari konsumsi energi.
+   - Mengidentifikasi peluang untuk pengurangan emisi karbon melalui efisiensi energi.
+
+7. **Optimasi Penggunaan Energi**
+   - Mengidentifikasi area di mana penghematan energi dapat dilakukan, seperti penggantian peralatan atau penjadwalan penggunaan energi yang lebih efisien.
+
+### Kesimpulan
+
+Dengan mengumpulkan dan menganalisis data listrik yang komprehensif, ELISA dapat memberikan wawasan yang berharga untuk pengelolaan energi yang lebih efisien dan berkelanjutan di institusi. Analisis ini tidak hanya membantu dalam penghematan biaya tetapi juga dalam upaya untuk mengurangi dampak lingkungan dari konsumsi energi.
+
+
+
+
+# Source: DeepSeek V3
+
+Berdasarkan informasi yang tersedia dari dokumen-dokumen yang diberikan, berikut adalah daftar data yang tersedia di Sistem Informasi Energi Listrik dan Air (ELISA) ITB, serta analisis data yang dapat dilakukan dari data tersebut:
+
+### **Data yang Tersedia di ELISA:**
+
+1. **Data Listrik:**
+   - **Tegangan (Voltage):** Data tegangan listrik yang diukur dalam volt (V).
+   - **Arus (Current):** Data arus listrik yang diukur dalam ampere (A).
+   - **Daya Aktif (Active Power):** Data daya listrik yang dikonsumsi dalam watt (W) atau kilowatt (kW).
+   - **Daya Reaktif (Reactive Power):** Data daya reaktif yang diukur dalam volt-ampere reaktif (VAR).
+   - **Faktor Daya (Power Factor):** Data faktor daya yang menunjukkan efisiensi penggunaan daya listrik.
+   - **Konsumsi Energi (Energy Consumption):** Data konsumsi energi listrik dalam kilowatt-hour (kWh).
+   - **Frekuensi (Frequency):** Data frekuensi listrik yang diukur dalam hertz (Hz).
+   - **Harmonik (Harmonics):** Data harmonik yang menunjukkan distorsi pada gelombang listrik.
+   - **Data Historis (Historical Data):** Data historis konsumsi energi listrik harian, bulanan, dan tahunan.
+
+2. **Data Air:**
+   - **Flow Rate (Laju Aliran):** Data laju aliran air yang diukur dalam meter kubik per jam (m³/jam) atau liter per detik (L/s).
+   - **Level Air (Water Level):** Data ketinggian air dalam tangki atau reservoir yang diukur dalam meter (m).
+   - **Konsumsi Air (Water Consumption):** Data konsumsi air dalam meter kubik (m³) atau liter (L).
+   - **Tekanan Air (Water Pressure):** Data tekanan air yang diukur dalam bar atau pascal (Pa).
+
+3. **Data Operasional:**
+   - **Status Pompa (Pump Status):** Data status operasional pompa air (ON/OFF).
+   - **Status Sensor (Sensor Status):** Data status operasional sensor listrik dan air.
+   - **Data Real-Time:** Data real-time dari penggunaan energi listrik dan air.
+
+4. **Data Fakultas/Gedung:**
+   - **Data Konsumsi Energi per Fakultas:** Data konsumsi energi listrik dan air berdasarkan fakultas atau unit kerja.
+   - **Data Konsumsi Energi per Gedung:** Data konsumsi energi listrik dan air berdasarkan gedung.
+   - **Data Konsumsi Energi per Lantai:** Data konsumsi energi listrik dan air berdasarkan lantai gedung.
+
+### **Analisis Data yang Dapat Dilakukan:**
+
+1. **Analisis Konsumsi Energi:**
+   - **Pola Konsumsi Harian/Bulanan/Tahunan:** Menganalisis pola konsumsi energi listrik dan air dalam periode harian, bulanan, atau tahunan.
+   - **Perbandingan Konsumsi Antar Fakultas/Gedung:** Membandingkan konsumsi energi listrik dan air antara fakultas atau gedung yang berbeda.
+   - **Identifikasi Waktu Puncak Konsumsi:** Menentukan waktu-waktu puncak konsumsi energi listrik dan air.
+
+2. **Analisis Efisiensi Energi:**
+   - **Perhitungan Intensitas Konsumsi Energi (IKE):** Menghitung intensitas konsumsi energi (kWh/m²) untuk menilai efisiensi penggunaan energi.
+   - **Perhitungan Energy Performance Indicator (EnPI):** Menghitung indikator kinerja energi (kWh/mahasiswa) untuk menilai efisiensi energi per mahasiswa.
+   - **Analisis Faktor Daya:** Menganalisis faktor daya untuk menilai efisiensi penggunaan daya listrik.
+
+3. **Deteksi Anomali:**
+   - **Deteksi Kebocoran Daya:** Mengidentifikasi kebocoran daya listrik atau air berdasarkan data historis dan real-time.
+   - **Deteksi Gangguan Listrik:** Mengidentifikasi gangguan listrik seperti lonjakan tegangan, arus lebih, atau harmonik yang tidak normal.
+   - **Deteksi Kegagalan Pompa:** Mengidentifikasi kegagalan operasional pompa air berdasarkan status pompa dan data aliran air.
+
+4. **Analisis Prediktif:**
+   - **Prediksi Konsumsi Energi:** Memprediksi konsumsi energi listrik dan air di masa depan berdasarkan data historis.
+   - **Prediksi Biaya Energi:** Memprediksi biaya energi listrik dan air berdasarkan tarif dan pola konsumsi.
+
+5. **Analisis Visualisasi Data:**
+   - **Heatmap Konsumsi Energi:** Menampilkan visualisasi heatmap untuk menunjukkan distribusi konsumsi energi listrik dan air.
+   - **Grafik Konsumsi Harian/Bulanan:** Menampilkan grafik konsumsi energi listrik dan air dalam periode harian atau bulanan.
+   - **Visualisasi 3 Fasa:** Menampilkan distribusi penggunaan energi listrik pada sistem 3 fasa (R, S, T).
+
+6. **Analisis Manajemen Energi:**
+   - **Rekomendasi Penghematan Energi:** Memberikan rekomendasi penghematan energi berdasarkan analisis pola konsumsi dan efisiensi.
+   - **Optimasi Operasional Pompa:** Memberikan rekomendasi optimasi operasional pompa air berdasarkan data aliran dan tekanan.
+
+7. **Analisis Keuangan:**
+   - **Perhitungan Biaya Energi:** Menghitung biaya energi listrik dan air berdasarkan tarif dan konsumsi.
+   - **Analisis Penghematan Biaya:** Menganalisis potensi penghematan biaya energi berdasarkan rekomendasi efisiensi.
+
+### **Contoh Analisis Spesifik:**
+- **Analisis Kesetimbangan Beban:** Menganalisis distribusi beban listrik pada sistem 3 fasa untuk memastikan kesetimbangan beban.
+- **Analisis Kebocoran Air:** Mengidentifikasi kebocoran air berdasarkan perbedaan antara laju aliran masuk dan keluar.
+- **Analisis Efisiensi Pompa:** Menganalisis efisiensi pompa air berdasarkan daya yang dikonsumsi dan laju aliran air yang dihasilkan.
+
+Dengan data-data tersebut, ELISA dapat digunakan untuk melakukan berbagai analisis yang mendukung manajemen energi dan air yang lebih efisien di kampus ITB.

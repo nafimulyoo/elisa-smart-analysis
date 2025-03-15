@@ -6,7 +6,7 @@ import json
 from metagpt.rag.engines import SimpleEngine
 from metagpt.rag.schema import FAISSRetrieverConfig, BM25RetrieverConfig, LLMRankerConfig
 
-DOC_PATH = "mas_llm/data/elisa.txt"
+DOC_PATH = "mas_llm/rag/data/elisa/data_availability.txt"
 
 class AskDataAvailability(Action):
     PROMPT_TEMPLATE: str = """
@@ -34,13 +34,12 @@ class AskDataAvailability(Action):
 
         engine = SimpleEngine.from_docs(
             input_files=[DOC_PATH],
-            retriever_configs=[FAISSRetrieverConfig(), BM25RetrieverConfig()],
-            ranker_configs=[LLMRankerConfig()]
+            retriever_configs=[BM25RetrieverConfig()]
         )
 
         response = await engine.aquery(prompt)
         
-        result = self.parse_json(response)
+        result = self.parse_json(response.response)
 
         return result
 
