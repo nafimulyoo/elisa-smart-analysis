@@ -23,7 +23,7 @@ class RespondInitialPrompt(Action):
     - Untuk prompt yang berkaitan dengan informasi dasar mengenai ELISA, ITB, atau penggunaan energi listrik secara umum:
         {{
             "type": "Basic Knowledge",
-            "message": "[Buat pesan yang sesuai untuk memberikan informasi dasar]"
+            "message": "[kosongkan]"
         }}
 
     - Untuk prompt yang meminta analisis data sederhana:

@@ -51,11 +51,11 @@ class InitialPromptHandler(Role):
         
         if initial_result.type == "Basic Knowledge":
             logger.info(f"🔍 InitialPromptHandler (Ask ELISA)- Asking about ELISA..")
-            ask_elisa_result = await self.ask_about_elisa.run(initial_result.message)
+            ask_elisa_result = await self.ask_about_elisa.run(msg.content)
             agent_response.type = "Final Answer"
-            agent_response.message = ask_elisa_result.message
+            agent_response.message = ask_elisa_result
 
-            logger.info(f"🟢 InitialPromptHandler (Ask ELISA) -  Type: \"Final Answer\", Message: {ask_elisa_result.message}")
+            logger.info(f"🟢 InitialPromptHandler (Ask ELISA) -  Type: \"Final Answer\", Message: {ask_elisa_result}")
 
             return agent_response
         
