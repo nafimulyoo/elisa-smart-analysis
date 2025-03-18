@@ -65,15 +65,18 @@ class Pipeline:
             data_analyst.set_react_mode(react_mode="plan_and_act")
             
         data_analyst_result = await data_analyst.run(message)
-        data_analyst_log = data_analyst.planner.plan.dict()
 
-        logger.info(f"🟢 Data Analyst result: {data_analyst_log}")
-        
         save_history(role=data_analyst, save_dir="mas_llm/data/output")
 
-        analysis_interpreter = AnalysisInterpreter(context=context, source=self.source)
+        data_analyst_log = data_analyst.execute_code.nb
+        
+        logger.info(f"🟢 Data Analyst result: {data_analyst_log}")
+
+        analysis_interpreter = AnalysisInterpreter(context=context)
+        analysis_interpreter.set_source(self.source)
+        
         logger.info(f"↗️ Forwarding to Analysis Interpreter")
-        analysis_interpreter_result = analysis_interpreter.run(data_analyst_result)
+        analysis_interpreter_result = await analysis_interpreter.run(str(data_analyst_log))
         logger.info(f"🟢 Analysis Interpreter result: {analysis_interpreter_result}")
 
         return analysis_interpreter_result

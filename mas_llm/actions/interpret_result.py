@@ -3,12 +3,14 @@ from mas_llm.prompts.interpret_result import INTERPRET_RESULT_WEB_PROMPT, INTERP
 import re
 from metagpt.actions import Action
 import json
+from metagpt.logs import logger
 
 class InterpretResult(Action):
     name: str = "InterpretResult"
 
     async def run(self, instruction: str, source: str):
 
+        logger.info(f"🟢 InterpretResult Instruction: {instruction}")
         prompt = ""
         if source == "web":
             prompt = INTERPRET_RESULT_WEB_PROMPT.format(instruction=instruction)
@@ -32,10 +34,5 @@ class InterpretResult(Action):
 
         json_object = json.loads(json_string)
 
-        result = InitialPromptHandlerResult(
-            type=json_object.get("type"),
-            message=json_object.get("message")
-        )
-
-        return result
+        return json_object
     
