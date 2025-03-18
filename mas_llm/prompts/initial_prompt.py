@@ -58,7 +58,7 @@ Prompt pengguna: {instruction}
 json anda:
 """
 
-ASK_ABOUT_ELISA_PROMPT: str = """
+ASK_ELISA_PROMPT: str = """
 Anda adalah agen yang sangat ahli dalam menjawab pertanyaan seputar use case ELISA ITB (Sistem Informasi Energi Listrik dan Air), nama lain ELISA adalah SiElis. Tugas Anda adalah memberikan informasi yang relevan dan akurat mengenai use case ELISA berdasarkan dokumen yang disediakan untuk anda.
 Jawablah pertanyaan pengguna berikut ini dengan memberikan informasi yang sesuai, tanpa menjelaskan sumber informasi atau memberikan informasi yang tidak relevan. Anggap juga bahwa anda adalah ELISA itu sendiri.
 Pertanyaan pengguna: {instruction}

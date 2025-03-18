@@ -1,5 +1,6 @@
 from fastapi import HTTPException
 from api_model import PromptRequest, AnalysisResultWeb, AnalysisResultLINE, AnalysisResultWhatsApp
+from metagpt.utils.recovery_util import save_history
 
 from mas_llm.roles.initial_prompt_handler import InitialPromptHandler
 from mas_llm.roles.data_analyst import DataAnalyst
@@ -8,7 +9,7 @@ from mas_llm.roles.data_analyst import DataAnalyst
 # from mock.roles.initial_prompt_handler import InitialPromptHandler
 # from mock.roles.basic_data_analyst import BasicDataAnalyst
 # from mock.roles.advanced_data_analyst import AdvancedDataAnalyst
-from mock.roles.analysis_interpreter import AnalysisInterpreter
+# from mock.roles.analysis_interpreter import AnalysisInterpreter
 
 from metagpt.context import Context
 from metagpt.logs import logger
@@ -40,6 +41,18 @@ class Pipeline:
 
 
         data_analyst = DataAnalyst(context=context)
+        
+        tools = ["pandas", "numpy", "matplotlib", "seaborn"]
+
+        if self.source == "web":
+            tools += ["plotly"]
+
+        if self.source == "line":
+            tools += ["altair"]
+
+        if self.source == "whatsapp":
+            tools += ["altair"]        
+
 
         if prompt_validator_result.type == "Basic Analysis":
             logger.info(f"↗️ Forwarding to Basic Data Analyst")
@@ -50,9 +63,13 @@ class Pipeline:
             data_analyst.set_react_mode(react_mode="plan_and_act")
             
         data_analyst_result = await data_analyst.run(message)
-        logger.info(f"🟢 Data Analyst result: {data_analyst_result}")
+        data_analyst_log = data_analyst.planner.plan.dict()
 
-        analysis_interpreter = AnalysisInterpreter(context=context, type="web")
+        logger.info(f"🟢 Data Analyst result: {data_analyst_log}")
+        
+        save_history(role=data_analyst, save_dir="mas_llm/data/output")
+
+        analysis_interpreter = AnalysisInterpreter(context=context, type=self.source)
         analysis_interpreter_result = analysis_interpreter.run(data_analyst_result)
         logger.info(f"🟢 Analysis Interpreter result: {analysis_interpreter_result}")
 

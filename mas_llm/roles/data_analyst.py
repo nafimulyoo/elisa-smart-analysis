@@ -62,7 +62,7 @@ class DataAnalyst(Role):
 
     # CHANGE MODE
     def set_react_mode(self, react_mode: str, max_react_loop: int = 10, auto_run: bool = True):
-        super().set_react_mode(react_mode=react_mode, max_react_loop=max_react_loop, auto_run=auto_run)
+        super()._set_react_mode(react_mode=react_mode, max_react_loop=max_react_loop, auto_run=auto_run)
         return
 
     # REACT MODE

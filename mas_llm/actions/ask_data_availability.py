@@ -3,7 +3,7 @@ import re
 from metagpt.actions import Action
 import json
 
-from mas_llm.prompts.ask_data_availability import ASK_DATA_TEMPLATE
+from mas_llm.prompts.initial_prompt import ASK_DATA_PROMPT
 from metagpt.rag.engines import SimpleEngine
 from metagpt.rag.schema import FAISSRetrieverConfig, BM25RetrieverConfig, LLMRankerConfig
 
@@ -14,7 +14,7 @@ class AskDataAvailability(Action):
     name: str = "AskDataAvailability"
 
     async def run(self, instruction: str):
-        prompt = ASK_DATA_TEMPLATE.format(instruction=instruction)
+        prompt = ASK_DATA_PROMPT.format(instruction=instruction)
 
         engine = SimpleEngine.from_docs(
             input_files=[DOC_PATH],
