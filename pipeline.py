@@ -4,7 +4,7 @@ from metagpt.utils.recovery_util import save_history
 
 from mas_llm.roles.initial_prompt_handler import InitialPromptHandler
 from mas_llm.roles.data_analyst import DataAnalyst
-# from mas_llm.roles.analysis_interpreter import AnalysisInterpreter
+from mas_llm.roles.analysis_interpreter import AnalysisInterpreter
 
 # from mock.roles.initial_prompt_handler import InitialPromptHandler
 # from mock.roles.basic_data_analyst import BasicDataAnalyst
@@ -42,16 +42,18 @@ class Pipeline:
 
         data_analyst = DataAnalyst(context=context)
         
-        tools = ["pandas", "numpy", "matplotlib", "seaborn"]
+        # tools = ["pandas", "numpy", "matplotlib", "seaborn"]
 
-        if self.source == "web":
-            tools += ["plotly"]
+        # if self.source == "web":
+        #     tools += ["plotly"]
 
-        if self.source == "line":
-            tools += ["altair"]
+        # if self.source == "line":
+        #     tools += ["altair"]
 
-        if self.source == "whatsapp":
-            tools += ["altair"]        
+        # if self.source == "whatsapp":
+        #     tools += ["altair"]        
+        
+        # data_analyst.tools = tools
 
 
         if prompt_validator_result.type == "Basic Analysis":
@@ -69,7 +71,8 @@ class Pipeline:
         
         save_history(role=data_analyst, save_dir="mas_llm/data/output")
 
-        analysis_interpreter = AnalysisInterpreter(context=context, type=self.source)
+        analysis_interpreter = AnalysisInterpreter(context=context, source=self.source)
+        logger.info(f"↗️ Forwarding to Analysis Interpreter")
         analysis_interpreter_result = analysis_interpreter.run(data_analyst_result)
         logger.info(f"🟢 Analysis Interpreter result: {analysis_interpreter_result}")
 
