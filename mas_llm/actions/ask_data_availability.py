@@ -3,34 +3,18 @@ import re
 from metagpt.actions import Action
 import json
 
+from mas_llm.prompts.ask_data_availability import ASK_DATA_TEMPLATE
 from metagpt.rag.engines import SimpleEngine
 from metagpt.rag.schema import FAISSRetrieverConfig, BM25RetrieverConfig, LLMRankerConfig
 
 DOC_PATH = "mas_llm/rag/data/elisa/data_availability.txt"
 
 class AskDataAvailability(Action):
-    PROMPT_TEMPLATE: str = """
-    Anda adalah agen yang berguna untuk mengecek ketersediaan data yang diperlukan untuk analisis. Tugas Anda adalah memvalidasi apakah data yang diperlukan untuk menjawab prompt pengguna sudah tersedia atau tidak.
-    format JSON yang diharapkan:
-    - Jika data sudah tersedia:
-        {{
-            "type": "Data Available",
-            "message": "[Buat pesan yang sesuai untuk memberi tahu pengguna bahwa data sudah tersedia]"
-        }}
-    - Jika data belum tersedia:
-        {{
-            "type": "Data Not Available",
-            "message": "[Buat pesan yang sesuai untuk memberi tahu pengguna bahwa data belum tersedia]"
-        }}
-    Kembalikan ```json json_yang_anda_tulis```, tanpa tambahan teks atau penjelasan lainnya.
-    Prompt pengguna: {instruction}
-    json anda:
-    """
 
     name: str = "AskDataAvailability"
 
     async def run(self, instruction: str):
-        prompt = self.PROMPT_TEMPLATE.format(instruction=instruction)
+        prompt = ASK_DATA_TEMPLATE.format(instruction=instruction)
 
         engine = SimpleEngine.from_docs(
             input_files=[DOC_PATH],

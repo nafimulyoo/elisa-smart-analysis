@@ -2,13 +2,12 @@ from fastapi import HTTPException
 from api_model import PromptRequest, AnalysisResultWeb, AnalysisResultLINE, AnalysisResultWhatsApp
 
 from mas_llm.roles.initial_prompt_handler import InitialPromptHandler
-# from mas_llm.roles.basic_data_analyst import BasicDataAnalyst
-# from mas_llm.roles.advanced_data_analyst import AdvancedDataAnalyst
+from mas_llm.roles.data_analyst import DataAnalyst
 # from mas_llm.roles.analysis_interpreter import AnalysisInterpreter
 
 # from mock.roles.initial_prompt_handler import InitialPromptHandler
-from mock.roles.basic_data_analyst import BasicDataAnalyst
-from mock.roles.advanced_data_analyst import AdvancedDataAnalyst
+# from mock.roles.basic_data_analyst import BasicDataAnalyst
+# from mock.roles.advanced_data_analyst import AdvancedDataAnalyst
 from mock.roles.analysis_interpreter import AnalysisInterpreter
 
 from metagpt.context import Context
@@ -39,13 +38,16 @@ class Pipeline:
 
         data_analyst_result = None
 
+
+        data_analyst = DataAnalyst(context=context)
+
         if prompt_validator_result.type == "Basic Analysis":
             logger.info(f"↗️ Forwarding to Basic Data Analyst")
-            data_analyst = BasicDataAnalyst(context=context)
+            data_analyst.set_react_mode(react_mode="react")
 
         if prompt_validator_result.type == "Advanced Analysis":
             logger.info(f"↗️ Forwarding to Advanced Data Analyst")
-            data_analyst = AdvancedDataAnalyst(context=context)
+            data_analyst.set_react_mode(react_mode="plan_and_act")
             
         data_analyst_result = await data_analyst.run(message)
         logger.info(f"🟢 Data Analyst result: {data_analyst_result}")

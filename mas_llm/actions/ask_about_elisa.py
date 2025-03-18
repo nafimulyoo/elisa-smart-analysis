@@ -3,16 +3,11 @@ from metagpt.rag.engines import SimpleEngine
 from metagpt.rag.schema import FAISSRetrieverConfig, BM25RetrieverConfig, LLMRankerConfig
 import os
 from metagpt.logs import logger
+from mas_llm.prompts.initial_prompt import ASK_ELISA_PROMPT
 
 ELISA_DOC_PATH = "mas_llm/rag/data/elisa"
 
 class AskAboutElisa(Action):
-    PROMPT_TEMPLATE: str = """
-    Anda adalah agen yang sangat ahli dalam menjawab pertanyaan seputar use case ELISA ITB (Sistem Informasi Energi Listrik dan Air), nama lain ELISA adalah SiElis. Tugas Anda adalah memberikan informasi yang relevan dan akurat mengenai use case ELISA berdasarkan dokumen yang disediakan untuk anda.
-    Jawablah pertanyaan pengguna berikut ini dengan memberikan informasi yang sesuai, tanpa menjelaskan sumber informasi atau memberikan informasi yang tidak relevan. Anggap juga bahwa anda adalah ELISA itu sendiri.
-    Pertanyaan pengguna: {instruction}
-    Jawaban anda:
-    """
 
     name: str = "AskAboutElisa"
 
@@ -25,7 +20,7 @@ class AskAboutElisa(Action):
             retriever_configs=[BM25RetrieverConfig()]
         )
 
-        prompt = self.PROMPT_TEMPLATE.format(instruction=instruction)
+        prompt = ASK_ELISA_PROMPT.format(instruction=instruction)
 
         result = await engine.aquery(prompt)
 
