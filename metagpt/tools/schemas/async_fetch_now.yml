@@ -1,0 +1,14 @@
+type: async_function
+description: 'Fetch real-time energy data for the current timestamp. '
+signature: '(date: str, faculty: str = '''', building: str = '''', floor: str = '''')'
+parameters: 'Args: date (str): The date in ''YYYY-MM-DD'' format. faculty (str, optional):
+  Filter by faculty code (e.g., ''FTI''). building (str, optional): Filter by building
+  code (e.g., ''LABTEK IV''). floor (str, optional): Filter by floor code (e.g., ''LANTAI
+  1''). Example: fetch_now("2023-03-01", faculty="FTI", building="LABTEK IV", floor="LANT
+  Returns: dict: A dictionary containing the following keys: - "chart_data": A list
+  of dictionaries, each containing: - "timestamp": The timestamp for the data point.
+  - "power": The power consumption at the given timestamp. - "today_data": A dictionary
+  containing: - "total_daya": Total energy consumption for the day. - "avg_daya":
+  Average energy consumption. - "total_cost": Total cost for the day. - "avg_cost":
+  Average cost. - "prev_month_data": A dictionary containing the same keys as "today_data"
+  for the previous month.'

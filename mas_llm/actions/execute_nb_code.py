@@ -54,9 +54,10 @@ class ExecuteNbCode(Action):
             self.nb_client.create_kernel_manager()
             self.nb_client.start_new_kernel()
             self.nb_client.start_new_kernel_client()
-
+    
     async def terminate(self):
         """kill NotebookClient"""
+
         if self.nb_client.km is not None and await self.nb_client.km.is_alive():
             await self.nb_client.km.shutdown_kernel(now=True)
             await self.nb_client.km.cleanup_resources()
@@ -120,14 +121,19 @@ class ExecuteNbCode(Action):
             elif output["output_type"] == "display_data":
                 if "image/png" in output["data"]:
                     self.show_bytes_figure(output["data"]["image/png"], self.interaction)
+                    continue
+                    
                 else:
                     logger.info(
                         f"{i}th output['data'] from nbclient outputs dont have image/png, continue next output ..."
                     )
+                
+
             elif output["output_type"] == "execute_result":
                 output_text = output["data"]["text/plain"]
             elif output["output_type"] == "error":
                 output_text, is_success = "\n".join(output["traceback"]), False
+                continue
 
             # handle coroutines that are not executed asynchronously
             if output_text.strip().startswith("<coroutine object"):
@@ -179,6 +185,7 @@ class ExecuteNbCode(Action):
             assert self.nb_client.km is not None
             await self.nb_client.km.interrupt_kernel()
             await asyncio.sleep(1)
+
             error_msg = "Cell execution timed out: Execution exceeded the time limit and was stopped; consider optimizing your code for better performance."
             return False, error_msg
         except DeadKernelError:

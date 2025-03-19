@@ -1,0 +1,10 @@
+type: function
+description: 'Perform KMeans clustering on the input DataFrame with automatic determination
+  of the optimal number of clusters. '
+signature: '(dataframe: pandas.core.frame.DataFrame, max_clusters: int = 10, random_state:
+  int = 42) -> pandas.core.frame.DataFrame'
+parameters: 'Args: dataframe (pd.DataFrame): The input DataFrame containing numerical
+  data for clustering. max_clusters (int): The maximum number of clusters to consider.
+  Default is 10. random_state (int): Random seed for reproducibility. Default is 42.
+  Returns: pd.DataFrame: The input DataFrame with an additional column ''cluster''
+  for cluster labels.'

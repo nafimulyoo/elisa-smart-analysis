@@ -33,7 +33,7 @@ INTERPRET_RESULT_WEB_PROMPT: str = """
     3. Extract the relevant details (data path, visualization type, and explanation).
     4. Structure the results into an array of JSON objects as shown in the example. One fact corresponds to one JSON object. If there is many facts, you can provide many JSON objects. . And make sure each explanation is clear and concise and mutually exclusive. If there is conflicting information in the notebook, prioritize the most recent analysis (e.g., the last cell that produces the result). Two explanation CAN'T be the same or conflicting.
 
-    Return in ```json json_yang_anda_tulis```, use Indonesian language for the explanation.
+    Return in ```json json_yang_anda_tulis```, use Indonesian language for the explanation. Only provide one snippet. bb  b bg 
     Your answer:
 """
 

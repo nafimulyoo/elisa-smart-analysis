@@ -45,7 +45,7 @@ class DataAnalyst(Role):
     max_react_loop: int = 10  # used for react mode
 
     @model_validator(mode="after")
-    def set_plan_and_tool(self) -> "Interpreter":
+    def set_plan_and_tool(self):
         self._set_react_mode(react_mode=self.react_mode, max_react_loop=self.max_react_loop, auto_run=self.auto_run)
         self.use_plan = (
             self.react_mode == "plan_and_act"

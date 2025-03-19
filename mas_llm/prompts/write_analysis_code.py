@@ -17,14 +17,17 @@ DATA_ANALYST_PROMPT ="""
    # Current Time  
    {current_time}  
 
-   # Step By Step  
-   1. Access ELISA API: Use the ELISA API to retrieve electrical energy usage data for the specified faculty, building, or floor.
-   2. Analyze: Analyze the data based on the user's requirements.  
-   3. {save_data}  
-   4. Provide Insight: Provide insights and conclusions based on the analysis using print() statements.
+   # Step By Step
+   1. Import Libraries: Import the necessary libraries for data analysis and visualization, including numpy, pandas, matplotlib, and tools library.  
+   2. Access ELISA API: Use the ELISA API to retrieve electrical energy usage data for the specified faculty, building, or floor. Make sure you know the data structure. Don't forget import the necessary libraries.
+   3. Analyze: Analyze the data based on the user's requirements. 
+   4. Visualize: Plot the data using the appropriate visualization method, options include bar chart, line chart, and scatter plot and not others. 
+   5. Save Visualization: {save_data}  
+   6. Straightforward Analysis: Provide a straightforward analysis of the data using print() statements, don't analyze too deeply, the most important thing is to provide insights based on requirements.
+   7. Provide Insight: Provide insights and conclusions based on the analysis using print() statements.
 """
 
-WEB_CONDITION = "After each analysis point, you must save the CSV using the `save_csv` function."
+WEB_CONDITION = "After each visualization, you must save the CSV using the `save_csv` function and make sure its only the data important for the visualization."
 LINE_AND_WHATSAPP_CONDITION = "After each plotting, you must save the plot image using the `save_plot_image` function."
 
 INTERPRETER_SYSTEM_MSG = """As a data scientist, you need to help user to achieve their goal step by step in a continuous Jupyter notebook. Since it is a notebook environment, don't use asyncio.run. Instead, use await if you need to call an async function."""
@@ -37,6 +40,7 @@ STRUCTUAL_PROMPT = """
 {plan_status}
 
 # Tool Info
+Import tools with "from tools import ..." if needed.
 {tool_info}
 
 # Constraints
@@ -118,7 +122,7 @@ Check latest data info to guide subsequent tasks.
 Check code in finished tasks, print key variables to guide your following actions.
 Specifically, if it is a data analysis or machine learning task, print the the latest column information using the following code, with DataFrame variable from 'Finished Tasks' in place of df:
 ```python
-from tools.libs.data_preprocess import get_column_info
+from tools import get_column_info
 
 column_info = get_column_info(df)
 print("column_info")

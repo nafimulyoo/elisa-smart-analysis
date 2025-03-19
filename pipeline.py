@@ -10,7 +10,10 @@ from datetime import datetime
 
 from mas_llm.prompts.write_analysis_code import get_data_analyst_prompt
 
-from tools.fetch_elisa_api_data import fetch_elisa_api_data
+from tools import fetch_elisa_api_data
+from tools import save_csv, save_plot_image
+from tools import kmeans_clustering_auto
+from tools import prophet_forecast
 
 # from mock.roles.initial_prompt_handler import InitialPromptHandler
 # from mock.roles.basic_data_analyst import BasicDataAnalyst
@@ -46,13 +49,15 @@ class Pipeline:
         tools = fetch_elisa_api_data
 
         if self.source == "web":
-            tools += ["save_csv"]
+            tools.append("save_csv")
+            print(tools)
 
         if self.source == "line" or self.source == "whatsapp":
-            tools += ["save_plot_image"]   
+            tools.append("save_plot_image")
 
         if prompt_validator_result.type == "Basic Analysis":
             logger.info(f"↗️ Forwarding to Basic Data Analyst")
+            # react_mode = "plan_and_act"
             react_mode = "react"
 
         if prompt_validator_result.type == "Advanced Analysis":
@@ -70,6 +75,12 @@ class Pipeline:
         save_history(role=data_analyst, save_dir="mas_llm/data/output")
 
         data_analyst_log = data_analyst.execute_code.nb
+
+        for cell in data_analyst_log.cells:
+            if "outputs" in cell:
+                for output in cell["outputs"]:
+                    if "data" in output and "image/png" in output["data"]:
+                        del output["data"]["image/png"]
         
         logger.info(f"🟢 Data Analyst result: {data_analyst_log}")
 

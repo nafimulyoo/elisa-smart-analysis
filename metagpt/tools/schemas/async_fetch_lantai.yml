@@ -1,0 +1,7 @@
+type: async_function
+description: 'Fetch a list of floors for a specific building. '
+signature: '(fakultas: str, gedung: str)'
+parameters: 'Args: fakultas (str): The faculty code (e.g., ''FTI''). gedung (str):
+  The building code (e.g., ''LABTEK IV''). Returns: dict: A dictionary containing
+  the following key: - "lantai": A list of dictionaries, each containing: - "label":
+  The display name of the floor. - "value": The code for the floor.'

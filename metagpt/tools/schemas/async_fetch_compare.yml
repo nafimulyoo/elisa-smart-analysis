@@ -1,0 +1,17 @@
+type: async_function
+description: 'Fetch energy and cost comparison data for all faculties for a specific
+  month. '
+signature: '(date: str)'
+parameters: 'Args: date (str): The month and year in ''YYYY-MM'' format. Returns:
+  dict: A dictionary containing the following keys: - "value": A list of dictionaries,
+  each containing: - "fakultas": The faculty name. - "energy": The energy consumption
+  for the faculty. - "cost": The cost associated with the energy consumption. - "data":
+  A dictionary containing: - "max": The faculty with the maximum energy consumption
+  and cost. - "min": The faculty with the minimum energy consumption and cost. - "total":
+  The total energy consumption and cost across all faculties. - "average": The average
+  energy consumption and cost across all faculties. - "info": A list of dictionaries,
+  each containing detailed information about a faculty: - "faculty": The faculty name.
+  - "energy": The energy consumption. - "cost": The cost associated with the energy
+  consumption. - "area": The area of the faculty. - "ike": The energy efficiency index.
+  - "students": The number of students. - "specific energy": The specific energy consumption
+  per student.'

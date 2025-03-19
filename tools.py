@@ -1,11 +1,29 @@
 import requests
 from metagpt.tools.tool_registry import register_tool
 
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
-fetch_elisa_api_data = ["fetch_compare", "fetch_heatmap", "fetch_monthly", "fetch_daily", "fetch_now", "fetch_fakultas", "fetch_gedung", "fetch_lantai"]
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
+
+import requests
+from metagpt.tools.tool_registry import register_tool
+import pandas as pd
+import numpy as np
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
+from metagpt.tools.tool_registry import register_tool
+import matplotlib.pyplot as plt
+import pandas as pd
+from prophet import Prophet
+from metagpt.tools.tool_registry import register_tool
+
+
+
+fetch_elisa_api_data = ["async_fetch_compare", "async_fetch_heatmap", "async_fetch_monthly", "async_fetch_daily", "async_fetch_now", "async_fetch_fakultas", "async_fetch_gedung", "async_fetch_lantai"]
 
 @register_tool()
-def fetch_compare(date: str):
+async def async_fetch_compare(date: str):
     """
     Fetch energy and cost comparison data for all faculties for a specific month.
 
@@ -40,7 +58,7 @@ def fetch_compare(date: str):
         raise Exception(f"Failed to fetch data: {response.status_code}")
 
 @register_tool()
-def fetch_heatmap(start: str, end: str, faculty: str = "", building: str = "", floor: str = ""):
+async def async_fetch_heatmap(start: str, end: str, faculty: str = "", building: str = "", floor: str = ""):
     """
     Fetch heatmap data for energy usage over a specified date range.
 
@@ -67,7 +85,7 @@ def fetch_heatmap(start: str, end: str, faculty: str = "", building: str = "", f
         raise Exception(f"Failed to fetch data: {response.status_code}")
 
 @register_tool()
-def fetch_monthly(date: str, faculty: str = "", building: str = "", floor: str = ""):
+async def async_fetch_monthly(date: str, faculty: str = "", building: str = "", floor: str = ""):
     """
     Fetch monthly energy and cost data for a specific month.
 
@@ -106,7 +124,7 @@ def fetch_monthly(date: str, faculty: str = "", building: str = "", floor: str =
         raise Exception(f"Failed to fetch data: {response.status_code}")
 
 @register_tool()
-def fetch_daily(date: str, faculty: str = "", building: str = "", floor: str = ""):
+async def async_fetch_daily(date: str, faculty: str = "", building: str = "", floor: str = ""):
     """
     Fetch daily energy and cost data for a specific date.
 
@@ -144,7 +162,7 @@ def fetch_daily(date: str, faculty: str = "", building: str = "", floor: str = "
         raise Exception(f"Failed to fetch data: {response.status_code}")
 
 @register_tool()
-def fetch_now(date: str):
+async def async_fetch_now(date: str, faculty: str = "", building: str = "", floor: str = ""):
     """
     Fetch real-time energy data for the current timestamp.
 
@@ -175,7 +193,7 @@ def fetch_now(date: str):
         raise Exception(f"Failed to fetch data: {response.status_code}")
 
 @register_tool()
-def fetch_fakultas():
+async def async_fetch_fakultas():
     """
     Fetch a list of faculties.
     
@@ -194,7 +212,7 @@ def fetch_fakultas():
         raise Exception(f"Failed to fetch data: {response.status_code}")
 
 @register_tool()
-def fetch_gedung(fakultas: str):
+async def async_fetch_gedung(fakultas: str):
     """
     Fetch a list of buildings for a specific faculty.
 
@@ -215,7 +233,7 @@ def fetch_gedung(fakultas: str):
         raise Exception(f"Failed to fetch data: {response.status_code}")
 
 @register_tool()
-def fetch_lantai(fakultas: str, gedung: str):
+async def async_fetch_lantai(fakultas: str, gedung: str):
     """
     Fetch a list of floors for a specific building.
 
@@ -235,3 +253,147 @@ def fetch_lantai(fakultas: str, gedung: str):
         return response.json()
     else:
         raise Exception(f"Failed to fetch data: {response.status_code}")
+    
+
+
+import requests
+from metagpt.tools.tool_registry import register_tool
+import pandas as pd
+from datetime import datetime
+
+@register_tool()
+def save_csv(dataframe: pd.DataFrame, title: str):
+    """
+    Save the given DataFrame to a CSV file. This is important to ensure that the data is saved and can be accessed later.
+
+    Args:
+        data (pd.DataFrame): The DataFrame to save.
+        title (str): The title to use for the saved CSV file.
+
+    Returns:
+        str: The path to the saved CSV file.
+    """
+    record_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    data_dir = f"data/output/csv/analysis_data_{record_time}_{title}.csv"
+    dataframe.to_csv(data_dir, index=False)
+    print(f"Data saved to {data_dir}")
+    return data_dir
+
+@register_tool()
+def save_plot_image(plt, title: str) :
+    """
+    Save the given plot to an image file. This is important to ensure that the plot is saved and can be accessed later.
+
+    Args:
+        plt: The plot to save.
+        title (str): The title to use for the saved image file.
+
+    Returns:
+        str: The path to the saved image file.
+    """
+    record_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    image_dir = f"data/output/images/plot_{record_time}_{title}.png"
+    plt.savefig(image_dir)
+    print(f"Image saved to {image_dir}")
+    return image_dir
+
+@register_tool()
+def kmeans_clustering_auto(dataframe: pd.DataFrame, max_clusters: int = 10, random_state: int = 42) -> pd.DataFrame:
+    """
+    Perform KMeans clustering on the input DataFrame with automatic determination of the optimal number of clusters.
+
+    Args:
+        dataframe (pd.DataFrame): The input DataFrame containing numerical data for clustering.
+        max_clusters (int): The maximum number of clusters to consider. Default is 10.
+        random_state (int): Random seed for reproducibility. Default is 42.
+
+    Returns:
+        pd.DataFrame: The input DataFrame with an additional column 'cluster' for cluster labels.
+    """
+    # Select only numerical columns for clustering
+    X = dataframe.select_dtypes(include=['number'])
+
+    # Calculate Within-Cluster-Sum of Squared Errors (WCSS) for different numbers of clusters
+    wcss = []
+    silhouette_scores = []
+    cluster_range = range(2, max_clusters + 1)
+
+    for n in cluster_range:
+        kmeans = KMeans(n_clusters=n, random_state=random_state)
+        kmeans.fit(X)
+        wcss.append(kmeans.inertia_)
+        silhouette_scores.append(silhouette_score(X, kmeans.labels_))
+
+    # Determine the optimal number of clusters using the Elbow Method
+    optimal_clusters = _find_optimal_clusters(wcss, cluster_range)
+
+    # Perform KMeans clustering with the optimal number of clusters
+    kmeans = KMeans(n_clusters=optimal_clusters, random_state=random_state)
+    clusters = kmeans.fit_predict(X)
+
+    # Add cluster labels to the DataFrame
+    dataframe['cluster'] = clusters
+
+    return dataframe
+
+def _find_optimal_clusters(wcss: list, cluster_range: range) -> int:
+    """
+    Determine the optimal number of clusters using the Elbow Method.
+
+    Args:
+        wcss (list): List of Within-Cluster-Sum of Squared Errors (WCSS) for each number of clusters.
+        cluster_range (range): Range of cluster numbers considered.
+
+    Returns:
+        int: The optimal number of clusters.
+    """
+    # Calculate the differences in WCSS
+    wcss_diff = np.diff(wcss)
+    wcss_diff_ratio = wcss_diff[:-1] / wcss_diff[1:]
+
+    # Find the "elbow" point (where the change in WCSS starts to level off)
+    optimal_clusters = cluster_range[np.argmax(wcss_diff_ratio) + 1]
+    return optimal_clusters
+
+
+@register_tool()
+def prophet_forecast(dataframe: pd.DataFrame, timestamp_col: str, y_cols: list, periods: int = 30) -> pd.DataFrame:
+    """
+    Perform time series forecasting using Prophet for multiple y columns independently.
+
+    Args:
+        dataframe (pd.DataFrame): The input DataFrame containing the timestamp and y columns.
+        timestamp_col (str): The name of the timestamp column.
+        y_cols (list): A list of column names to predict.
+        periods (int): The number of future periods to forecast. Default is 30.
+
+    Returns:
+        pd.DataFrame: A DataFrame containing the forecasted values for all y columns.
+    """
+    results = []
+
+    for y_col in y_cols:
+        # Prepare data for Prophet
+        df = dataframe[[timestamp_col, y_col]].rename(columns={timestamp_col: 'ds', y_col: 'y'})
+
+        # Initialize and fit Prophet model
+        model = Prophet()
+        model.fit(df)
+
+        # Make future dataframe and predict
+        future = model.make_future_dataframe(periods=periods)
+        forecast = model.predict(future)
+
+        # Add y_col name to the forecast columns
+        forecast = forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']]
+        forecast.columns = ['ds', f'{y_col}_yhat', f'{y_col}_yhat_lower', f'{y_col}_yhat_upper']
+
+        # Append to results
+        results.append(forecast)
+
+    # Merge all forecasts on the 'ds' column
+    final_forecast = results[0]
+    for result in results[1:]:
+        final_forecast = final_forecast.merge(result, on='ds', how='outer')
+
+    return final_forecast
