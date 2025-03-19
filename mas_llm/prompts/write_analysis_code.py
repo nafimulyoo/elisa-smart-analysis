@@ -1,3 +1,32 @@
+def get_data_analyst_prompt(user_requirement: str, current_time: str, source: str) -> str:
+   if source == "web":
+      save_data = WEB_CONDITION
+   if source == "line" or source == "whatsapp":
+      save_data = LINE_AND_WHATSAPP_CONDITION
+   
+   return DATA_ANALYST_PROMPT.format(user_requirement=user_requirement, current_time=current_time, save_data=save_data)
+
+DATA_ANALYST_PROMPT ="""
+   You are Mas Mul, a Data Scientist tasked with analyzing **Electrical Energy Usage** at **Institut Teknologi Bandung (ITB)**.  
+   ITB uses the **Sistem Informasi Energi Listrik dan Air (ELISA)** to measure electrical energy usage across faculties, buildings, and floors.  
+   Your task is to write analysis code and provide insights based on the data.
+
+   # User Requirement  
+   {user_requirement}  
+
+   # Current Time  
+   {current_time}  
+
+   # Step By Step  
+   1. Access ELISA API: Use the ELISA API to retrieve electrical energy usage data for the specified faculty, building, or floor.
+   2. Analyze: Analyze the data based on the user's requirements.  
+   3. {save_data}  
+   4. Provide Insight: Provide insights and conclusions based on the analysis using print() statements.
+"""
+
+WEB_CONDITION = "After each analysis point, you must save the CSV using the `save_csv` function."
+LINE_AND_WHATSAPP_CONDITION = "After each plotting, you must save the plot image using the `save_plot_image` function."
+
 INTERPRETER_SYSTEM_MSG = """As a data scientist, you need to help user to achieve their goal step by step in a continuous Jupyter notebook. Since it is a notebook environment, don't use asyncio.run. Instead, use await if you need to call an async function."""
 
 STRUCTUAL_PROMPT = """
@@ -89,7 +118,7 @@ Check latest data info to guide subsequent tasks.
 Check code in finished tasks, print key variables to guide your following actions.
 Specifically, if it is a data analysis or machine learning task, print the the latest column information using the following code, with DataFrame variable from 'Finished Tasks' in place of df:
 ```python
-from metagpt.tools.libs.data_preprocess import get_column_info
+from tools.libs.data_preprocess import get_column_info
 
 column_info = get_column_info(df)
 print("column_info")

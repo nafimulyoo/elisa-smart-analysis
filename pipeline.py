@@ -6,6 +6,12 @@ from mas_llm.roles.initial_prompt_handler import InitialPromptHandler
 from mas_llm.roles.data_analyst import DataAnalyst
 from mas_llm.roles.analysis_interpreter import AnalysisInterpreter
 
+from datetime import datetime
+
+from mas_llm.prompts.write_analysis_code import get_data_analyst_prompt
+
+from tools.fetch_elisa_api_data import fetch_elisa_api_data
+
 # from mock.roles.initial_prompt_handler import InitialPromptHandler
 # from mock.roles.basic_data_analyst import BasicDataAnalyst
 # from mock.roles.advanced_data_analyst import AdvancedDataAnalyst
@@ -37,34 +43,29 @@ class Pipeline:
         if prompt_validator_result.type == "Final Answer":
             return self.early_response(prompt_validator_result.message)
 
-        data_analyst_result = None
+        tools = fetch_elisa_api_data
 
+        if self.source == "web":
+            tools += ["save_csv"]
 
-        data_analyst = DataAnalyst(context=context)
-        
-        # tools = ["pandas", "numpy", "matplotlib", "seaborn"]
-
-        # if self.source == "web":
-        #     tools += ["plotly"]
-
-        # if self.source == "line":
-        #     tools += ["altair"]
-
-        # if self.source == "whatsapp":
-        #     tools += ["altair"]        
-        
-        # data_analyst.tools = tools
-
+        if self.source == "line" or self.source == "whatsapp":
+            tools += ["save_plot_image"]   
 
         if prompt_validator_result.type == "Basic Analysis":
             logger.info(f"↗️ Forwarding to Basic Data Analyst")
-            data_analyst.set_react_mode(react_mode="react")
+            react_mode = "react"
 
         if prompt_validator_result.type == "Advanced Analysis":
             logger.info(f"↗️ Forwarding to Advanced Data Analyst")
-            data_analyst.set_react_mode(react_mode="plan_and_act")
+            react_mode = "plan_and_act"
+            tools += ["k_means_clustering_auto", "prophet_forecast"]
             
-        data_analyst_result = await data_analyst.run(message)
+        data_analyst = DataAnalyst(tools=tools)
+        data_analyst.set_react_mode(react_mode=react_mode)
+        
+        data_analyst_requirement = get_data_analyst_prompt(prompt_validator_result.message, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), self.source)
+
+        data_analyst_result = await data_analyst.run(data_analyst_requirement)
 
         save_history(role=data_analyst, save_dir="mas_llm/data/output")
 
@@ -76,7 +77,8 @@ class Pipeline:
         analysis_interpreter.set_source(self.source)
         
         logger.info(f"↗️ Forwarding to Analysis Interpreter")
-        analysis_interpreter_result = await analysis_interpreter.run(str(data_analyst_log))
+
+        analysis_interpreter_result = await analysis_interpreter.run(f"{data_analyst_log}")
         logger.info(f"🟢 Analysis Interpreter result: {analysis_interpreter_result}")
 
         return analysis_interpreter_result

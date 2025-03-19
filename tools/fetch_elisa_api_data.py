@@ -1,6 +1,9 @@
 import requests
 from metagpt.tools.tool_registry import register_tool
 
+
+fetch_elisa_api_data = ["fetch_compare", "fetch_heatmap", "fetch_monthly", "fetch_daily", "fetch_now", "fetch_fakultas", "fetch_gedung", "fetch_lantai"]
+
 @register_tool()
 def fetch_compare(date: str):
     """

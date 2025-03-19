@@ -107,6 +107,8 @@ class DataAnalyst(Role):
         task_result = TaskResult(code=code, result=result, is_success=is_success)
         return task_result
 
+
+    # HELPER FUNCTIONS
     async def _write_and_exec_code(self, max_retry: int = 3):
         counter = 0
         success = False

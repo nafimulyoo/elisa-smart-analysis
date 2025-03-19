@@ -1,0 +1,17 @@
+type: function
+description: 'Fetch daily energy and cost data for a specific date. '
+signature: '(date: str, faculty: str = '''', building: str = '''', floor: str = '''')'
+parameters: 'Args: date (str): The date in ''YYYY-MM-DD'' format. faculty (str, optional):
+  Filter by faculty code (e.g., ''FTI''). building (str, optional): Filter by building
+  code (e.g., ''LABTEK IV''). floor (str, optional): Filter by floor code (e.g., ''LANTAI
+  1''). Example: fetch_daily("2023-03-01", faculty="FTI", building="LABTEK IV", floor="LANTAI
+  1") Returns: dict: A dictionary containing the following keys: - "chart_data": A
+  list of dictionaries, each containing: - "timestamp": The timestamp for the data
+  point. - "R": Energy consumption for phase R. - "S": Energy consumption for phase
+  S. - "T": Energy consumption for phase T. - "hourly_data": A list of dictionaries,
+  each containing: - "hour": The hour of the day (e.g., "01:00"). - "cost": The cost
+  for the hour. - "energy": The energy consumption for the hour. - "today_data": A
+  dictionary containing: - "total_daya": Total energy consumption for the day. - "avg_daya":
+  Average energy consumption per hour. - "total_cost": Total cost for the day. - "avg_cost":
+  Average cost per hour. - "prev_month_data": A dictionary containing the same keys
+  as "today_data" for the previous month.'
