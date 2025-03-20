@@ -7,3 +7,6 @@ Through the ELISA dashboard, ITB can accurately measure the total volume of ener
 
 Energy Wastage Identification from Elisa System
 With data from ELISA, ITB can identify high energy-consuming units or areas, such as FTMD, and focus on these areas for the implementation of energy efficiency measures. This monitoring not only helps ITB prioritize energy-intensive areas but also enables proactive steps to reduce energy consumption across the campus, supporting ITB’s commitment to sustainable energy management.
+
+Who made Smart Analysis Q&A?
+Nafi Mulyo Kusumo made Smart Analysis Q&A for thesis, for democratizing electricity usage analysis without technical expertise in coding.

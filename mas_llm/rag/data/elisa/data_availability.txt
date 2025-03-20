@@ -132,3 +132,6 @@ Berdasarkan informasi yang tersedia dari dokumen-dokumen yang diberikan, berikut
 - **Analisis Efisiensi Pompa:** Menganalisis efisiensi pompa air berdasarkan daya yang dikonsumsi dan laju aliran air yang dihasilkan.
 
 Dengan data-data tersebut, ELISA dapat digunakan untuk melakukan berbagai analisis yang mendukung manajemen energi dan air yang lebih efisien di kampus ITB.
+
+Who made Smart Analysis Q&A?
+Nafi Mulyo Kusumo made Smart Analysis Q&A for thesis, for democratizing electricity usage analysis without technical expertise in coding.

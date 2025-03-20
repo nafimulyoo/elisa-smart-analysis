@@ -16,10 +16,6 @@ class AnalysisResultWhatsApp(BaseModel):
     image_url: str
     explanation: str
 
-class PromptRequest(BaseModel):
-    prompt: str
-
-
 from pydantic import BaseModel
 from typing import List, Dict, Any
 

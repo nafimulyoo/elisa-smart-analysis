@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from api_model import PromptRequest, AnalysisResultWeb, AnalysisResultLINE, AnalysisResultWhatsApp
+from api_model import AnalysisResultWeb, AnalysisResultLINE, AnalysisResultWhatsApp
 from metagpt.utils.recovery_util import save_history
 
 from mas_llm.roles.initial_prompt_handler import InitialPromptHandler
@@ -15,37 +15,48 @@ from tools import save_csv, save_plot_image
 from tools import kmeans_clustering_auto
 from tools import prophet_forecast
 
-# from mock.roles.initial_prompt_handler import InitialPromptHandler
-# from mock.roles.basic_data_analyst import BasicDataAnalyst
-# from mock.roles.advanced_data_analyst import AdvancedDataAnalyst
-# from mock.roles.analysis_interpreter import AnalysisInterpreter
-
 from metagpt.context import Context
 from metagpt.logs import logger
+
 
 class Pipeline:
     def __init__(self, source, example_mode=False):
         self.source = source
         self.example_mode = example_mode
         self.result = []
+        self.progress_callback = None
 
-    async def run(self, request):
+    async def set_progress_callback(self, callback):
+        """Set a callback to report progress"""
+        self.progress_callback = callback
+
+    async def update_progress(self, progress, message):
+        """Update the progress if a callback is set"""
+        if self.progress_callback:
+            # await self.progress_callback(progress, message)
+            self.progress_callback(progress, message)
+
+    async def run(self, message):
         if self.example_mode:
             return self.example_output(self.source)
 
-        message = request.prompt
         context = Context()
         logger.info(f"🎯 Prompt: {message}")
         
+        # Initial prompt handling - 20% progress
+        await self.update_progress(20, "Analyzing request...")
         logger.info(f"↗️ Forwarding to Initial Prompt Handler")
         prompt_validator = InitialPromptHandler(context=context)
         prompt_validator_result = await prompt_validator.run(message)
-
+        
         logger.info(f"↘️ Prompt Validator result: {prompt_validator_result}")
 
-        if prompt_validator_result.type == "Final Answer":
+        if prompt_validator_result.type == "Final Answer" or prompt_validator_result.type == "Unrelevant":
+            await self.update_progress(50, "Answering question...")
             return self.early_response(prompt_validator_result.message)
 
+        # 40% progress - Setting up tools
+        await self.update_progress(40, "Fetching data...")
         tools = fetch_elisa_api_data
 
         if self.source == "web":
@@ -64,7 +75,9 @@ class Pipeline:
             logger.info(f"↗️ Forwarding to Advanced Data Analyst")
             react_mode = "plan_and_act"
             tools += ["k_means_clustering_auto", "prophet_forecast"]
-            
+        
+        # 60% progress - Data analysis    
+        await self.update_progress(60, "Analyzing data...")
         data_analyst = DataAnalyst(tools=tools)
         data_analyst.set_react_mode(react_mode=react_mode)
         
@@ -84,6 +97,8 @@ class Pipeline:
         
         logger.info(f"🟢 Data Analyst result: {data_analyst_log}")
 
+        # 80% progress - Interpreting results
+        await self.update_progress(80, "Interpreting results...")
         analysis_interpreter = AnalysisInterpreter(context=context)
         analysis_interpreter.set_source(self.source)
         
@@ -92,6 +107,9 @@ class Pipeline:
         analysis_interpreter_result = await analysis_interpreter.run(f"{data_analyst_log}")
         logger.info(f"🟢 Analysis Interpreter result: {analysis_interpreter_result}")
 
+        # 100% progress - Completed
+        await self.update_progress(100, "Finalization...")
+        
         return analysis_interpreter_result
 
     def example_output(self, type):
@@ -140,10 +158,20 @@ class Pipeline:
         
     def early_response(self, message):
         if self.source == "web":
-            return [AnalysisResultWeb(data={}, visualization_type="", explanation=message)]
+            return [{
+                "data_dir": "",
+                "visualization_type": "",
+                "explanation": message
+            }]
         elif self.source == "line":
-            return [AnalysisResultLINE(image_url="", explanation=message)]
+            return [{
+                "image_dir": "",
+                "explanation": message
+            }]
         elif self.source == "whatsapp":
-            return [AnalysisResultWhatsApp(image_url="", explanation=message)]
+            return [{
+                "image_dir": "",
+                "explanation": message
+            }]
 
     
