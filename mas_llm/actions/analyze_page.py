@@ -1,27 +1,8 @@
 from metagpt.actions import Action
-
-
+from mas_llm.prompts.page_analysis_prompt import  NOW_PROMPT_TEMPLATE, DAILY_PROMPT_TEMPLATE, MONTHLY_PROMPT_TEMPLATE, HEATMAP_PROMPT_TEMPLATE, COMPARE_FACULTY_PROMPT_TEMPLATE
 
 class AnalyzePage(Action):
     name: str = "AnalyzePage"
-
-    async def run(self, mode, data, history):
-
-        if mode == "now":
-            response = await now_analysis(data, history)
-            return response
-        elif mode == "daily":
-            response = await daily_analysis(data, history)
-            return response
-        elif mode == "monthly":
-            response = await monthly_analysis(data, history)
-            return response
-        elif mode == "heatmap":
-            response = await heatmap_analysis(data, history)
-            return response
-        elif mode == "compare_faculty":
-            response = await compare_faculty_analysis(data, history)
-            return response
         
 analyze_page = AnalyzePage()
 
@@ -30,23 +11,7 @@ async def now_analysis(data, history) -> str:
     """Analyzes real-time energy data, comparing against a heatmap for the past week.
         history is the result of async_fetch_heatmap
     """
-    PROMPT_TEMPLATE = """
-    You are an energy data analyst. Analyze the current power consumption data in the context of the past week's energy usage heatmap.
-    Provide a concise summary (2-3 sentences) highlighting any significant deviations from the typical pattern and potential causes.
-    Emphasize actionable insights and compare current data to the trends visible in the heatmap. 
-
-    Current Data:
-    Current Timestamp: {current_timestamp}
-    Current Power Consumption (kW): {current_power}
-
-    Heatmap Summary (Past Week):
-    {heatmap_summary}
-
-    Analysis (use Bahasa Indonesia) summary (2-3 sentences):
-    """
-
-
-
+   
     try:
         # Extract Current Data
         chart_data = data.get("chart_data", [])
@@ -127,7 +92,7 @@ async def now_analysis(data, history) -> str:
                                         Overall average was {average_overall}"""
                 )
 
-        prompt = PROMPT_TEMPLATE.format(
+        prompt = NOW_PROMPT_TEMPLATE.format(
             current_timestamp=current_timestamp,
             current_power=current_power,
             heatmap_summary=heatmap_summary,
@@ -139,31 +104,10 @@ async def now_analysis(data, history) -> str:
     except Exception as e:
         return f"Error generating analysis: {str(e)}"
 
-
 async def daily_analysis(data, history) -> str:
     """Analyzes daily energy data, comparing it to a heatmap of the past week.
         history is the result of async_fetch_heatmap.
     """
-    PROMPT_TEMPLATE = """
-    You are an energy data analyst. Analyze the daily energy consumption data in the context of the past week's energy usage heatmap.
-    Provide a concise summary (3-4 sentences) including peak usage hours, phase imbalances, and how today's consumption compares to the patterns in the heatmap.
-    Indicate if today's energy use is anomalous, based on what is typical in the heatmap.
-
-    Daily Data:
-    Date: {date}
-    Total Energy Consumption (kWh): {total_energy}
-    Peak Usage Hours: {peak_hours}
-    Phase R Consumption: {phase_r}
-    Phase S Consumption: {phase_s}
-    Phase T Consumption: {phase_t}
-
-    Heatmap Summary (Past Week):
-    {heatmap_summary}
-
-    Analysis (use Bahasa Indonesia) summary (2-3 sentences):
-    """
-
-
 
     try:
         # Extract Daily Data
@@ -261,7 +205,7 @@ async def daily_analysis(data, history) -> str:
                                         Overall average was {average_overall}"""
                 )
 
-        prompt = PROMPT_TEMPLATE.format(
+        prompt = DAILY_PROMPT_TEMPLATE.format(
             date=date_obj,
             total_energy=total_energy,
             peak_hours=peak_hours,
@@ -283,26 +227,6 @@ async def monthly_analysis(data, history) -> str:
         data (Dict[str, Any]):  Current month's data (result of async_fetch_monthly).
         history (List[Dict[str, Any]]): List of up to 3 previous months' data, each a result of async_fetch_monthly.
     """
-    PROMPT_TEMPLATE = """
-    You are an energy data analyst. Analyze the monthly energy consumption data, comparing to recent months.
-    Provide a summary (3-4 sentences) highlighting total consumption, peak days, phase contribution, and anomaly detection based on historical data.
-    Quantify trends vs historical averages, show insights what are different now, vs history and what you can improve.
-
-    Data:
-    Month: {month}
-    Total Energy Consumption (kWh): {total_energy}
-    Peak Consumption Days: {peak_days}
-    Phase 1 Contribution (%): {phase1_contribution}
-    Phase 2 Contribution (%): {phase2_contribution}
-    Phase 3 Contribution (%): {phase3_contribution}
-
-    Historical Context:
-    {historical_summary}
-
-    Analysis (use Bahasa Indonesia) summary (2-3 sentences):
-    """
-
-
 
     try:
         month = data.get("date", "N/A")
@@ -349,7 +273,7 @@ async def monthly_analysis(data, history) -> str:
                 average_consumptions = 0
             historical_summary = f"Average historical consumption (past months): {average_consumptions:.2f} kWh"
 
-        prompt = PROMPT_TEMPLATE.format(
+        prompt = MONTHLY_PROMPT_TEMPLATE.format(
             month=month,
             total_energy=total_energy,
             peak_days=peak_days,
@@ -368,24 +292,6 @@ async def heatmap_analysis(data, history) -> str:
     """Analyzes heatmap data. No historical comparison needed for this example.
         history should be an empty dictionary - will not be used.
     """
-    PROMPT_TEMPLATE = """
-    You are an energy data analyst. Analyze the energy usage heatmap data and identify key patterns.
-    Provide a summary (3-4 sentences) highlighting the days of the week and hours of the day with the highest and lowest consumption, and any significant anomalies.
-
-    Current Heatmap Data:
-    Start Date: {start_date}
-    End Date: {end_date}
-    Data: {data}
-
-    Week Before Heatmap Data:
-    Start Date: {start_date_before}
-    End Date: {end_date_before}
-    Data: {data_before}
-
-    Analysis (use Bahasa Indonesia) summary (2-3 sentences):
-    """
-
-
 
     try:
         start_date = data.get("dates", {}).get("start", "N/A")
@@ -394,7 +300,7 @@ async def heatmap_analysis(data, history) -> str:
         start_date_before = history.get("dates", {}).get("start", "N/A")
         end_date_before = history.get("dates", {}).get("end", "N/A")
 
-        prompt = PROMPT_TEMPLATE.format(
+        prompt = HEATMAP_PROMPT_TEMPLATE.format(
             start_date=start_date,
             end_date=end_date,
             data=data,
@@ -414,23 +320,7 @@ async def compare_faculty_analysis(data, history) -> str:
 
         The History parameter should be async_fetch_compare with the historical month
     """
-    PROMPT_TEMPLATE = """
-    You are an energy data analyst. Analyze the energy consumption data for different faculties and identify key differences.
-    Provide a summary (3-4 sentences) ranking the faculties by energy consumption, highlighting those with significantly higher or lower consumption than the average.
-    Compare current faculty consumptions to historical faculty consumptions and point out changes and potential insights.
-
-    Data:
-    Date: {date}
-    Faculty with lowest usage: {max_energy}
-    Faculty with lowest usage: {min_energy}
-    Total energy usage: {total_usage}
-    Average Energy Consumption across all faculties (kWh): {average_energy}
-    Change vs historical : {change_vs_history}
-
-    Analysis (use Bahasa Indonesia) summary (2-3 sentences):
-    """
-
-
+    
 
     try:
         total_energy = data.get("data", {}).get("total", 0.0)
@@ -448,7 +338,7 @@ async def compare_faculty_analysis(data, history) -> str:
         else:
             change_vs_history = 0.0
 
-        prompt = PROMPT_TEMPLATE.format(
+        prompt = COMPARE_FACULTY_PROMPT_TEMPLATE.format(
             date=date,
             average_energy=average_energy,
             change_vs_history=change_vs_history,
