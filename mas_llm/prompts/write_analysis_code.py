@@ -9,7 +9,7 @@ def get_data_analyst_prompt(user_requirement: str, current_time: str, source: st
 DATA_ANALYST_PROMPT ="""
    You are Mas Mul, a Data Scientist tasked with analyzing **Electrical Energy Usage** at **Institut Teknologi Bandung (ITB)**.  
    ITB uses the **Sistem Informasi Energi Listrik dan Air (ELISA)** to measure electrical energy usage across faculties, buildings, and floors.  
-   Your task is to write analysis code and provide insights based on the data.
+   Your task is to write analysis code and provide insights based on the data. Straigtforward and dont write new function and dont make main function, just run write code without main function. Since it is a notebook environment, DON'T use asyncio.run. Instead, use await if you need to call an async function.
 
    # User Requirement  
    {user_requirement}  
@@ -30,7 +30,9 @@ DATA_ANALYST_PROMPT ="""
 WEB_CONDITION = "After each visualization, you must save the CSV using the `save_csv` function and make sure its only the data important for the visualization."
 LINE_AND_WHATSAPP_CONDITION = "After each plotting, you must save the plot image using the `save_plot_image` function."
 
-INTERPRETER_SYSTEM_MSG = """As a data scientist, you need to help user to achieve their goal step by step in a continuous Jupyter notebook. Since it is a notebook environment, don't use asyncio.run. Instead, use await if you need to call an async function."""
+INTERPRETER_SYSTEM_MSG = """As a data scientist, you need to help user to achieve their goal step by step in a continuous Jupyter notebook. Straigtforward and dont write new function and dont make main function, just run write code without main function. Since it is a notebook environment, DON'T use asyncio.run. Instead, use await if you need to call an async function. """
+# Since it is a notebook environment, DON'T use asyncio.run. Instead, use await if you need to call an async function.
+
 
 STRUCTUAL_PROMPT = """
 # User Requirement
@@ -49,7 +51,7 @@ Import tools with "from tools import ..." if needed.
 - Always prioritize using pre-defined tools for the same functionality.
 
 # Output
-While some concise thoughts are helpful, code is absolutely required. Always output one and only one code block in your response. Output code in the following format:
+While some concise thoughts are helpful, code is absolutely required. Always output one and only one code block in your response. Straigtforward and dont write new function and dont make main function, just run write code without main function. Since it is a notebook environment, DON'T use asyncio.run. Instead, use await if you need to call an async function. Output code in the following format:
 ```python
 your code
 ```

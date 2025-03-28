@@ -19,7 +19,7 @@ from metagpt.context import Context
 from metagpt.logs import logger
 
 
-class Pipeline:
+class AskAnalysisPipeline:
     def __init__(self, source, example_mode=False):
         self.source = source
         self.example_mode = example_mode

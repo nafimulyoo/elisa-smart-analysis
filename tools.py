@@ -154,7 +154,6 @@ async def async_fetch_daily(date: str, faculty: str = "", building: str = "", fl
             - "prev_month_data": A dictionary containing the same keys as "today_data" for the previous month.
     """
     url = f"https://elisa.itb.ac.id/api/daily?date={date}&faculty={faculty}&building={building}&floor={floor}"
-    print(url)
     response = requests.get(url, verify=False)
     if response.status_code == 200:
         return response.json()
@@ -186,7 +185,7 @@ async def async_fetch_now(date: str, faculty: str = "", building: str = "", floo
             - "prev_month_data": A dictionary containing the same keys as "today_data" for the previous month.
     """
     url = f"https://elisa.itb.ac.id/api/now?date={date}&faculty={faculty}&building={building}&floor={floor}"
-    response = requests.get(url)
+    response = requests.get(url, verify=False)
     if response.status_code == 200:
         return response.json()
     else:
