@@ -14,6 +14,10 @@ router = APIRouter(tags=["ask"]) #Added tags
 
 example_mode = False  # Consider putting this in the config
 
+web_pipeline = AskAnalysisPipeline(source="web", example_mode=example_mode)
+line_pipeline = AskAnalysisPipeline(source="line", example_mode=example_mode)
+whatsapp_pipeline = AskAnalysisPipeline(source="whatsapp", example_mode=example_mode)
+
 def progress_generator(progress, message):
     yield f"data: {{\"status\": \"{message}\", \"progress\": {progress}}}\n\n"
 
@@ -43,16 +47,14 @@ async def progress_stream(ask_analysis_pipeline, prompt) -> AsyncGenerator[str, 
 
 @router.get("/api/web/stream")
 async def web_api_stream(prompt):
-    ask_analysis_pipeline = AskAnalysisPipeline(source="web", example_mode=example_mode)
     return StreamingResponse(
-        progress_stream(ask_analysis_pipeline, prompt),
+        progress_stream(web_pipeline, prompt),
         media_type="text/event-stream"
     )
 
 @router.post("/api/web")
 async def web_api(prompt):
-    ask_analysis_pipeline = AskAnalysisPipeline(source="web", example_mode=example_mode)
-    result = await ask_analysis_pipeline.run(prompt)
+    result = await web_pipeline.run(prompt)
 
     for res in result:
         data = []
@@ -71,8 +73,8 @@ async def web_api(prompt):
 
 @router.post("/api/line")
 async def line_api(prompt):
-    ask_analysis_pipeline = AskAnalysisPipeline(source="line", example_mode=example_mode)
-    result = await ask_analysis_pipeline.run(prompt)
+
+    result = await line_pipeline.run(prompt)
 
     for res in result:
         res["image_url"] = res["image_dir"].replace("data/output/images/", f"{settings.host_url}/image/")
@@ -82,8 +84,7 @@ async def line_api(prompt):
 
 @router.post("/api/whatsapp")
 async def whatsapp_api(prompt):
-    ask_analysis_pipeline = AskAnalysisPipeline(source="whatsapp", example_mode=example_mode)
-    result = await ask_analysis_pipeline.run(prompt)
+    result = await whatsapp_pipeline.run(prompt)
 
     for res in result:
         res["image_url"] = res["image_dir"].replace("data/output/images/", f"{settings.host_url}/image/")
