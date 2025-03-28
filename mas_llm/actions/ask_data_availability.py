@@ -1,4 +1,4 @@
-from api_model import InitialPromptHandlerResult
+from model.model import InitialPromptHandlerResult
 import re
 from metagpt.actions import Action
 import json

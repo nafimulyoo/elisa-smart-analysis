@@ -1,4 +1,4 @@
-from api_model import InitialPromptHandlerResult
+from model.model import InitialPromptHandlerResult
 from mas_llm.prompts.initial_prompt import INITIAL_PROMPT
 import re
 from metagpt.actions import Action

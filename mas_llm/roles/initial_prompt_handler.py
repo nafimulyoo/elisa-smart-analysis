@@ -1,4 +1,4 @@
-from api_model import InitialPromptHandlerResult
+from model.model import InitialPromptHandlerResult
 
 from fastapi import HTTPException
 from mas_llm.actions.respond_initial_prompt import RespondInitialPrompt

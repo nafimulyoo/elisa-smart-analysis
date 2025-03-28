@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from api_model import AnalysisResultWeb, AnalysisResultLINE, AnalysisResultWhatsApp
+from model.model import AnalysisResultWeb, AnalysisResultLINE, AnalysisResultWhatsApp
 from metagpt.utils.recovery_util import save_history
 
 from mas_llm.roles.initial_prompt_handler import InitialPromptHandler

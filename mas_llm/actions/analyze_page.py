@@ -1,14 +1,3 @@
-from tools import async_fetch_compare, async_fetch_heatmap, async_fetch_monthly, async_fetch_daily, async_fetch_now, async_fetch_fakultas, async_fetch_gedung, async_fetch_lantai
-from fastapi import HTTPException
-
-import json
-
-from functools import lru_cache
-
-from datetime import datetime
-
-from metagpt.context import Context
-from metagpt.logs import logger
 from metagpt.actions import Action
 
 
@@ -36,7 +25,7 @@ class AnalyzePage(Action):
         
 analyze_page = AnalyzePage()
 
-@lru_cache(maxsize=128)
+
 async def now_analysis(data, history) -> str:
     """Analyzes real-time energy data, comparing against a heatmap for the past week.
         history is the result of async_fetch_heatmap
@@ -56,8 +45,7 @@ async def now_analysis(data, history) -> str:
     Analysis (use Bahasa Indonesia) summary (2-3 sentences):
     """
 
-    data = json.loads(data)
-    history = json.loads(history)
+
 
     try:
         # Extract Current Data
@@ -151,7 +139,7 @@ async def now_analysis(data, history) -> str:
     except Exception as e:
         return f"Error generating analysis: {str(e)}"
 
-@lru_cache(maxsize=128)
+
 async def daily_analysis(data, history) -> str:
     """Analyzes daily energy data, comparing it to a heatmap of the past week.
         history is the result of async_fetch_heatmap.
@@ -175,8 +163,7 @@ async def daily_analysis(data, history) -> str:
     Analysis (use Bahasa Indonesia) summary (2-3 sentences):
     """
 
-    data = json.loads(data)
-    history = json.loads(history)
+
 
     try:
         # Extract Daily Data
@@ -288,7 +275,7 @@ async def daily_analysis(data, history) -> str:
     except Exception as e:
         return f"Error generating analysis: {str(e)}"
 
-@lru_cache(maxsize=128)
+
 async def monthly_analysis(data, history) -> str:
     """Analyzes monthly energy data, comparing to a list of previous months.
 
@@ -315,8 +302,7 @@ async def monthly_analysis(data, history) -> str:
     Analysis (use Bahasa Indonesia) summary (2-3 sentences):
     """
 
-    data = json.loads(data)
-    history = json.loads(history)
+
 
     try:
         month = data.get("date", "N/A")
@@ -377,7 +363,7 @@ async def monthly_analysis(data, history) -> str:
     except Exception as e:
         return f"Error generating analysis: {str(e)}"
 
-@lru_cache(maxsize=128)
+
 async def heatmap_analysis(data, history) -> str:
     """Analyzes heatmap data. No historical comparison needed for this example.
         history should be an empty dictionary - will not be used.
@@ -399,8 +385,7 @@ async def heatmap_analysis(data, history) -> str:
     Analysis (use Bahasa Indonesia) summary (2-3 sentences):
     """
 
-    data = json.loads(data)
-    history = json.loads(history)
+
 
     try:
         start_date = data.get("dates", {}).get("start", "N/A")
@@ -423,7 +408,7 @@ async def heatmap_analysis(data, history) -> str:
     except Exception as e:
         return f"Error generating analysis: {str(e)}"
 
-@lru_cache(maxsize=128)
+
 async def compare_faculty_analysis(data, history) -> str:
     """Analyzes energy consumption across faculties, comparing to historical averages.
 
@@ -445,8 +430,7 @@ async def compare_faculty_analysis(data, history) -> str:
     Analysis (use Bahasa Indonesia) summary (2-3 sentences):
     """
 
-    data = json.loads(data)
-    history = json.loads(history)
+
 
     try:
         total_energy = data.get("data", {}).get("total", 0.0)
