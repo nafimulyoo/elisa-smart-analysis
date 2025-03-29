@@ -1,6 +1,5 @@
 TEST_URL = "http://localhost:8000"
 
-
 # TEST ANALYSIS CONFIG
 TEST_FACULTY = "FTI"  
 TEST_BUILDING = "LABTEK VI"  
