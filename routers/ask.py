@@ -10,7 +10,7 @@ from config import settings
 from typing import AsyncGenerator
 from fastapi.responses import FileResponse
 
-router = APIRouter(tags=["ask"]) #Added tags
+ask_router = APIRouter(tags=["ask"]) #Added tags
 
 example_mode = False  # Consider putting this in the config
 
@@ -45,14 +45,14 @@ async def progress_stream(ask_analysis_pipeline, prompt) -> AsyncGenerator[str, 
     # Send the final result
     yield f"data: {{\"status\": \"Finalization complete\", \"progress\": 100, \"result\": {json.dumps(result)}}}\n\n"
 
-@router.get("/api/web/stream")
+@ask_router.get("/api/web/stream")
 async def web_api_stream(prompt):
     return StreamingResponse(
         progress_stream(web_pipeline, prompt),
         media_type="text/event-stream"
     )
 
-@router.post("/api/web")
+@ask_router.post("/api/web")
 async def web_api(prompt):
     result = await web_pipeline.run(prompt)
 
@@ -71,7 +71,7 @@ async def web_api(prompt):
 
     return result
 
-@router.post("/api/line")
+@ask_router.post("/api/line")
 async def line_api(prompt):
 
     result = await line_pipeline.run(prompt)
@@ -82,7 +82,7 @@ async def line_api(prompt):
 
     return result
 
-@router.post("/api/whatsapp")
+@ask_router.post("/api/whatsapp")
 async def whatsapp_api(prompt):
     result = await whatsapp_pipeline.run(prompt)
 
@@ -90,6 +90,6 @@ async def whatsapp_api(prompt):
         res["image_url"] = res["image_dir"].replace("data/output/images/", f"{settings.host_url}/image/")
         del res["image_dir"]
 
-@router.get("/image/{image_id}")
+@ask_router.get("/image/{image_id}")
 async def get_image(image_id: str):
     return FileResponse(f"data/output/{image_id}.png", media_type="image/png")

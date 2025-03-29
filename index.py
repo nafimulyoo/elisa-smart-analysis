@@ -1,7 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import sys
+print(sys.path)
 
-from routers import analysis, ask, health
+from routers.ask import ask_router
+from routers.analysis import analysis_router
+from routers.health import health_router
+
 from config import settings
 
 app = FastAPI()
@@ -14,9 +19,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(analysis.router)
-app.include_router(ask.router)
-app.include_router(health.router)
+app.include_router(analysis_router)
+app.include_router(ask_router)
+app.include_router(health_router)
 
 
 # from fastapi import FastAPI, Request

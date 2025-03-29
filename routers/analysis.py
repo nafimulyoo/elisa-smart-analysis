@@ -6,11 +6,38 @@ from datetime import datetime, timedelta
 import json
 from tools import async_fetch_compare, async_fetch_heatmap, async_fetch_monthly, async_fetch_daily, async_fetch_now
 from mas_llm.actions.analyze_page import now_analysis, heatmap_analysis, compare_faculty_analysis, daily_analysis, monthly_analysis
+from pyinstrument import Profiler
+from functools import wraps
+import time
 
+def profile_endpoint(async_mode=True):
+    def decorator(func):
+        @wraps(func)
+        async def wrapper(*args, **kwargs):
+            # Initialize profiler (enable async mode)
+            profiler = Profiler(async_mode=async_mode)
+            profiler.start()
 
-router = APIRouter(prefix="/api/analysis", tags=["analysis"])
+            # Execute the endpoint
+            start_time = time.time()
+            result = await func(*args, **kwargs)
+            end_time = time.time()
 
-@router.get("/now")
+            # Stop profiling and print results
+            profiler.stop()
+            print(f"\n=== Profiling results for {func.__name__} ===")
+            print(f"Total time: {end_time - start_time:.2f}s")
+            print(profiler.output_text(unicode=True, color=True))
+            profiler.write_html("profile_report.html")
+
+            return result
+        return wrapper
+    return decorator
+
+analysis_router = APIRouter(prefix="/api/analysis", tags=["analysis"])
+
+@analysis_router.get("/now")
+@profile_endpoint()
 async def get_now_analysis(date: str, faculty: str = "", building: str = "", floor: str = ""):
     date_in_datetime = datetime.strptime(date, "%Y-%m-%d")
     past_week_in_datetime = date_in_datetime - timedelta(days=7)
@@ -21,11 +48,12 @@ async def get_now_analysis(date: str, faculty: str = "", building: str = "", flo
 
     data = await data_task
     history = await history_task
-
     analysis = await now_analysis(data, history)
+    
     return {"analysis": analysis}
 
-@router.get("/daily")
+@analysis_router.get("/daily")
+@profile_endpoint()
 async def get_daily_analysis(date: str, faculty: str = "", building: str = "", floor: str = ""):
     date_in_datetime = datetime.strptime(date, "%Y-%m-%d")
     past_week_in_datetime = date_in_datetime - timedelta(days=7)
@@ -37,11 +65,12 @@ async def get_daily_analysis(date: str, faculty: str = "", building: str = "", f
     data = await data_task
     history = await history_task
 
-    analysis = await daily_analysis(data, history)
-    return {"analysis": analysis}
+    # analysis = await daily_analysis(data, history)
+    return {"analysis": data}
 
 
-@router.get("/monthly")
+@analysis_router.get("/monthly")
+@profile_endpoint()
 async def get_monthly_analysis(date: str, faculty: str = "", building: str = "", floor: str = ""):
     # Fetch main data
     data = await async_fetch_monthly(date, faculty, building, floor)
@@ -75,7 +104,8 @@ async def get_monthly_analysis(date: str, faculty: str = "", building: str = "",
     return {"analysis": analysis} 
 
 
-@router.get("/heatmap")
+@analysis_router.get("/heatmap")
+@profile_endpoint()
 async def get_heatmap_analysis(start: str, end: str, faculty: str = None, building: str = None):
 
     start_date_in_datetime = datetime.strptime(start, "%Y-%m-%d")
@@ -98,7 +128,8 @@ async def get_heatmap_analysis(start: str, end: str, faculty: str = None, buildi
     return {"analysis": analysis}
 
 
-@router.get("/faculty")
+@analysis_router.get("/faculty")
+@profile_endpoint()
 async def get_faculty_analysis(date: str):
     
     date_in_datetime = datetime.strptime(date, "%Y-%m")
