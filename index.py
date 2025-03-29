@@ -1,8 +1,7 @@
-# app/index.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routers import analysis, ask
+from routers import analysis, ask, health
 from config import settings
 
 app = FastAPI()
@@ -17,6 +16,7 @@ app.add_middleware(
 
 app.include_router(analysis.router)
 app.include_router(ask.router)
+app.include_router(health.router)
 
 
 # from fastapi import FastAPI, Request

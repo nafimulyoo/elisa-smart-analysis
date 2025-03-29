@@ -22,8 +22,8 @@ async def get_now_analysis(date: str, faculty: str = "", building: str = "", flo
     data = await data_task
     history = await history_task
 
-    result = await now_analysis(data, history)
-    return result
+    analysis = await now_analysis(data, history)
+    return {"analysis": analysis}
 
 @router.get("/daily")
 async def get_daily_analysis(date: str, faculty: str = "", building: str = "", floor: str = ""):
@@ -37,8 +37,8 @@ async def get_daily_analysis(date: str, faculty: str = "", building: str = "", f
     data = await data_task
     history = await history_task
 
-    result = await daily_analysis(data, history)
-    return result
+    analysis = await daily_analysis(data, history)
+    return {"analysis": analysis}
 
 
 @router.get("/monthly")
@@ -70,9 +70,9 @@ async def get_monthly_analysis(date: str, faculty: str = "", building: str = "",
     for i in range(3):
         history[i] = await history_task[i]
         
-    result = await monthly_analysis(data, history)
+    analysis = await monthly_analysis(data, history)
 
-    return result
+    return {"analysis": analysis} 
 
 
 @router.get("/heatmap")
@@ -94,8 +94,8 @@ async def get_heatmap_analysis(start: str, end: str, faculty: str = None, buildi
     data = await data_task
     history = await history_task
 
-    result = await heatmap_analysis(data, history)
-    return result
+    analysis = await heatmap_analysis(data, history)
+    return {"analysis": analysis}
 
 
 @router.get("/faculty")
@@ -112,8 +112,8 @@ async def get_faculty_analysis(date: str):
     data = await data_task
     history = await history_task
 
-    result = await compare_faculty_analysis(data, history)
-    return result
+    analysis = await compare_faculty_analysis(data, history)
+    return {"analysis": analysis}
 
 
 
