@@ -104,6 +104,7 @@ idna==3.10
 imap-tools==1.5.0
 importlib-metadata==6.11.0
 importlib_resources==6.5.2
+iniconfig==2.1.0
 ipykernel==6.27.1
 ipython==8.17.2
 ipywidgets==8.1.1
@@ -212,6 +213,7 @@ pexpect==4.9.0
 pillow==11.1.0
 platformdirs==4.3.6
 playwright==1.50.0
+pluggy==1.5.0
 portalocker==2.10.1
 posthog==3.20.0
 prance==23.6.21.0
@@ -243,6 +245,7 @@ pyparsing==3.2.1
 pypdf==4.3.1
 PyPika==0.48.9
 pyproject_hooks==1.2.0
+pytest==8.3.5
 python-dateutil==2.9.0.post0
 python-docx==0.8.11
 python-dotenv==1.0.0
@@ -285,6 +288,7 @@ sqlparse==0.5.3
 stack-data==0.6.3
 stanio==0.5.1
 starlette==0.46.1
+structlog==25.2.0
 sympy==1.13.1
 ta==0.10.2
 tenacity==8.2.3
@@ -305,7 +309,7 @@ typer==0.9.0
 types-requests==2.31.0.6
 types-urllib3==1.26.25.14
 typing-inspect==0.8.0
-typing_extensions==4.9.0
+typing_extensions==4.13.0
 tzdata==2025.1
 ujson==5.10.0
 urllib3==1.26.20
