@@ -38,35 +38,25 @@ analysis_router = APIRouter(prefix="/api/analysis", tags=["analysis"])
 
 @analysis_router.get("/now")
 @profile_endpoint()
-async def get_now_analysis(date: str, faculty: str = "", building: str = "", floor: str = ""):
-    date_in_datetime = datetime.strptime(date, "%Y-%m-%d")
-    past_week_in_datetime = date_in_datetime - timedelta(days=7)
-
-    # Fetch data concurrently
-    data_task = asyncio.create_task(async_fetch_now(date, faculty, building, floor))
-    history_task = asyncio.create_task(async_fetch_heatmap(past_week_in_datetime.strftime("%Y-%m-%d"), date, faculty, building))
+async def get_now_analysis(faculty: str = "", building: str = "", floor: str = ""):
+    data_task = asyncio.create_task(async_fetch_now(faculty, building, floor))
 
     data = await data_task
-    history = await history_task
-    analysis = await now_analysis(data, history)
+    # history = await history_task
+    analysis = await now_analysis(data, faculty=faculty, building=building, floor=floor)
     
     return {"analysis": analysis}
 
 @analysis_router.get("/daily")
 @profile_endpoint()
 async def get_daily_analysis(date: str, faculty: str = "", building: str = "", floor: str = ""):
-    date_in_datetime = datetime.strptime(date, "%Y-%m-%d")
-    past_week_in_datetime = date_in_datetime - timedelta(days=7)
 
-    # Fetch data concurrently
     data_task = asyncio.create_task(async_fetch_daily(date, faculty, building, floor))
-    history_task = asyncio.create_task(async_fetch_heatmap(past_week_in_datetime.strftime("%Y-%m-%d"), date, faculty, building))
 
     data = await data_task
-    history = await history_task
 
-    # analysis = await daily_analysis(data, history)
-    return {"analysis": data}
+    analysis = await daily_analysis(data, date, faculty=faculty, building=building, floor=floor)
+    return {"analysis": analysis}
 
 
 @analysis_router.get("/monthly")
@@ -74,39 +64,15 @@ async def get_daily_analysis(date: str, faculty: str = "", building: str = "", f
 async def get_monthly_analysis(date: str, faculty: str = "", building: str = "", floor: str = ""):
     # Fetch main data
     data = await async_fetch_monthly(date, faculty, building, floor)
-    
-    # Prepare for historical data fetching
-    year_string, month_string = date.split("-")
-
-    data_task = asyncio.create_task(async_fetch_monthly(date, faculty, building, floor))
-    history_task = [None] * 3  
-    
-    for i in range(3):
-        month = int(month_string) - i
-        year = int(year_string)
         
-        if month <= 0:
-            month += 12
-            year -= 1
-            
-        month_string = f"0{month}" if month < 10 else str(month)
-        
-        history_task[i] = asyncio.create_task(async_fetch_monthly(f"{year}-{month_string}", faculty, building, floor))
-    
-    data = await data_task
-    history = [None] * 3  
-
-    for i in range(3):
-        history[i] = await history_task[i]
-        
-    analysis = await monthly_analysis(data, history)
+    analysis = await monthly_analysis(data, date, faculty=faculty, building=building, floor=floor)
 
     return {"analysis": analysis} 
 
 
 @analysis_router.get("/heatmap")
 @profile_endpoint()
-async def get_heatmap_analysis(start: str, end: str, faculty: str = None, building: str = None):
+async def get_heatmap_analysis(start: str, end: str, faculty: str = None, building: str = None, floor: str = None):
 
     start_date_in_datetime = datetime.strptime(start, "%Y-%m-%d")
     end_date_in_datetime = datetime.strptime(end, "%Y-%m-%d")
@@ -118,13 +84,13 @@ async def get_heatmap_analysis(start: str, end: str, faculty: str = None, buildi
     past_week_end = past_week_end_in_datetime.strftime("%Y-%m-%d")
     
     # Fetch data concurrently
-    data_task = asyncio.create_task(async_fetch_heatmap(start, end, faculty, building))
-    history_task = asyncio.create_task(async_fetch_heatmap(past_week_start, past_week_end, faculty, building))
+    data_task = asyncio.create_task(async_fetch_heatmap(start, end, faculty, building, floor))
+    history_task = asyncio.create_task(async_fetch_heatmap(past_week_start, past_week_end, faculty, building, floor))
     
     data = await data_task
     history = await history_task
 
-    analysis = await heatmap_analysis(data, history)
+    analysis = await heatmap_analysis(data, history, faculty=faculty, building=building, floor=floor)
     return {"analysis": analysis}
 
 
@@ -143,7 +109,7 @@ async def get_faculty_analysis(date: str):
     data = await data_task
     history = await history_task
 
-    analysis = await compare_faculty_analysis(data, history)
+    analysis = await compare_faculty_analysis(data, history, date)
     return {"analysis": analysis}
 
 

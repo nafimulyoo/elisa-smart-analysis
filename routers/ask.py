@@ -10,6 +10,10 @@ from config import settings
 from typing import AsyncGenerator
 from fastapi.responses import FileResponse
 
+from pyinstrument import Profiler
+from functools import wraps
+import time
+
 ask_router = APIRouter(tags=["ask"]) #Added tags
 
 example_mode = False  # Consider putting this in the config
@@ -17,6 +21,30 @@ example_mode = False  # Consider putting this in the config
 web_pipeline = AskAnalysisPipeline(source="web", example_mode=example_mode)
 line_pipeline = AskAnalysisPipeline(source="line", example_mode=example_mode)
 whatsapp_pipeline = AskAnalysisPipeline(source="whatsapp", example_mode=example_mode)
+
+def profile_endpoint(async_mode=True):
+    def decorator(func):
+        @wraps(func)
+        async def wrapper(*args, **kwargs):
+            # Initialize profiler (enable async mode)
+            profiler = Profiler(async_mode=async_mode)
+            profiler.start()
+
+            # Execute the endpoint
+            start_time = time.time()
+            result = await func(*args, **kwargs)
+            end_time = time.time()
+
+            # Stop profiling and print results
+            profiler.stop()
+            print(f"\n=== Profiling results for {func.__name__} ===")
+            print(f"Total time: {end_time - start_time:.2f}s")
+            print(profiler.output_text(unicode=True, color=True))
+            profiler.write_html("profile_report.html")
+
+            return result
+        return wrapper
+    return decorator
 
 def progress_generator(progress, message):
     yield f"data: {{\"status\": \"{message}\", \"progress\": {progress}}}\n\n"
@@ -46,6 +74,7 @@ async def progress_stream(ask_analysis_pipeline, prompt) -> AsyncGenerator[str, 
     yield f"data: {{\"status\": \"Finalization complete\", \"progress\": 100, \"result\": {json.dumps(result)}}}\n\n"
 
 @ask_router.get("/api/web/stream")
+@profile_endpoint()
 async def web_api_stream(prompt):
     return StreamingResponse(
         progress_stream(web_pipeline, prompt),
@@ -53,6 +82,7 @@ async def web_api_stream(prompt):
     )
 
 @ask_router.post("/api/web")
+@profile_endpoint()
 async def web_api(prompt):
     result = await web_pipeline.run(prompt)
 
@@ -72,6 +102,7 @@ async def web_api(prompt):
     return result
 
 @ask_router.post("/api/line")
+@profile_endpoint()
 async def line_api(prompt):
 
     result = await line_pipeline.run(prompt)
@@ -91,5 +122,6 @@ async def whatsapp_api(prompt):
         del res["image_dir"]
 
 @ask_router.get("/image/{image_id}")
+@profile_endpoint()
 async def get_image(image_id: str):
     return FileResponse(f"data/output/{image_id}.png", media_type="image/png")

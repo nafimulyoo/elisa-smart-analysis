@@ -1,14 +1,19 @@
 type: async_function
-description: 'Fetch real-time energy data for the current timestamp. '
-signature: '(date: str, faculty: str = '''', building: str = '''', floor: str = '''')'
-parameters: 'Args: date (str): The date in ''YYYY-MM-DD'' format. faculty (str, optional):
-  Filter by faculty code (e.g., ''FTI''). building (str, optional): Filter by building
-  code (e.g., ''LABTEK IV''). floor (str, optional): Filter by floor code (e.g., ''LANTAI
-  1''). Example: fetch_now("2023-03-01", faculty="FTI", building="LABTEK IV", floor="LANT
-  Returns: dict: A dictionary containing the following keys: - "chart_data": A list
-  of dictionaries, each containing: - "timestamp": The timestamp for the data point.
-  - "power": The power consumption at the given timestamp. - "today_data": A dictionary
-  containing: - "total_daya": Total energy consumption for the day. - "avg_daya":
-  Average energy consumption. - "total_cost": Total cost for the day. - "avg_cost":
-  Average cost. - "prev_month_data": A dictionary containing the same keys as "today_data"
-  for the previous month.'
+description: 'Fetch real-time energy data for the last hour and today summary. '
+signature: '(faculty: str = '''', building: str = '''', floor: str = '''')'
+parameters: 'Args: faculty (str, optional): Filter by faculty code (e.g., ''FTI'').
+  building (str, optional): Filter by building code (e.g., ''LABTEK IV''). floor (str,
+  optional): Filter by floor code (e.g., ''LANTAI 1''). Example: fetch_now(faculty="FTI",
+  building="LABTEK IV", floor="LANTAI 1") Returns: dict: A dictionary containing the
+  following keys: - "chart_data": A list of dictionaries, each containing: - "timestamp":
+  The timestamp for the data point in ''YYYY-MM-DD HH:MM:SS'' format. - "power": The
+  power consumption at the given timestamp. (kW) - "today_data": A dictionary containing:
+  - "total_daya": Total energy consumption for the day. (kWh) - "avg_daya": Average
+  energy consumption per hour. (kWh/hour) - "total_cost": Total cost for the day.
+  (Rupiah) - "avg_cost": Average cost per hour. (Rupiah/hour) - "prev_month_data":
+  A dictionary containing: - "total_daya": Total energy consumption for the previous
+  month. (kWh) - "total_cost": Total cost for the previous month. (Rupiah) - "day_daya":
+  Daily energy consumption for the previous month. (kWh/day) - "day_cost": Daily cost
+  for the previous month. (Rupiah/day) - "hour_daya": Hourly energy consumption for
+  the previous month. (kWh/hour) - "hour_cost": Hourly cost for the previous month.
+  (Rupiah/hour)'

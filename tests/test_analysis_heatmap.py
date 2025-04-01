@@ -15,7 +15,7 @@ def test_client():
 # Test the /heatmap endpoint
 def test_get_heatmap_analysis_current_range(test_client):
     today = datetime.now().strftime("%Y-%m-%d")
-    start_date = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
+    start_date = (datetime.now() - timedelta(days=6)).strftime("%Y-%m-%d")
     url = f"/api/analysis/heatmap?start={start_date}&end={today}&faculty=&building=&floor="
     time_and_print_analysis(test_client, url, "test_get_heatmap_analysis_valid_range")
 

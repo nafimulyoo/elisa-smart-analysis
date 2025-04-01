@@ -1,126 +1,250 @@
 from metagpt.actions import Action
-from mas_llm.prompts.page_analysis_prompt import  NOW_PROMPT_TEMPLATE, DAILY_PROMPT_TEMPLATE, MONTHLY_PROMPT_TEMPLATE, HEATMAP_PROMPT_TEMPLATE, COMPARE_FACULTY_PROMPT_TEMPLATE
+from metagpt.logs import logger
+from mas_llm.prompts.page_analysis_prompt import (
+    NOW_PROMPT_TEMPLATE,
+    DAILY_PROMPT_TEMPLATE,
+    MONTHLY_PROMPT_TEMPLATE,
+    HEATMAP_PROMPT_TEMPLATE,
+    COMPARE_FACULTY_PROMPT_TEMPLATE,
+)
+
+from datetime import datetime, timedelta
+
+
 
 class AnalyzePage(Action):
     name: str = "AnalyzePage"
-        
+
+
 analyze_page = AnalyzePage()
 
 
-async def now_analysis(data, history) -> str:
-    """Analyzes real-time energy data, comparing against a heatmap for the past week.
-        history is the result of async_fetch_heatmap
+"""
+Analysis objectives:
+for now_analysis:
+- Analyze the current power consumption data in the context of the past week's energy usage heatmap.
+- Highlight any significant deviations from the typical pattern.
+- Suggest potential causes for deviations.
+- Emphasize actionable insights.
+- Compare current data to the trends visible in the heatmap.
+
+for daily_analysis:
+- Analyze the daily energy consumption data in the context of the past week's energy usage heatmap.
+- Summarize peak usage hours and phase imbalances.
+- Compare today's consumption to the patterns in the heatmap.
+- Indicate if today's energy use is anomalous, based on what is typical in the heatmap.
+
+for monthly_analysis:
+- Analyze the monthly energy consumption data, comparing to recent months.
+- Highlight total consumption, peak days, and phase contribution.
+- Detect anomalies based on historical data.
+- Quantify trends vs historical averages.
+
+for heatmap_analysis:
+- Analyze the energy usage heatmap data and identify key patterns.
+- Highlight the days of the week and hours of the day with the highest and lowest consumption.
+- Detect any significant anomalies.
+
+for compare_faculty_analysis:
+- Analyze the energy consumption data for different faculties.
+- Identify key differences and rank the faculties by energy consumption.
+- Highlight those with significantly higher or lower consumption than the average.
+- Compare current faculty consumptions to historical faculty consumptions.
+- Point out changes and potential insights.
+"""
+
+
+async def now_analysis(data, faculty="", building="", floor="") -> str:
     """
-   
+    Analyzes last one hour and today energy data, comparing against data last month
+
+    Args:
+        data:  A dictionary containing the following keys:
+            - "chart_data": A list of dictionaries, each containing:
+                - "timestamp": The timestamp for the data point in 'YYYY-MM-DD HH:MM:SS' format.
+                - "power": The power consumption at the given timestamp. (kW)
+            - "today_data": A dictionary containing:
+                - "total_daya": Total energy consumption for the day. (kWh)
+                - "avg_daya": Average energy consumption per hour. (kWh/hour)
+                - "total_cost": Total cost for the day. (Rupiah)
+                - "avg_cost": Average cost per hour. (Rupiah/hour)
+            - "prev_month_data": A dictionary containing:
+                - "total_daya": Total energy consumption for the previous month. (kWh)
+                - "total_cost": Total cost for the previous month. (Rupiah)
+                - "day_daya": Daily energy consumption for the previous month. (kWh/day)
+                - "day_cost": Daily cost for the previous month. (Rupiah/day)
+                - "hour_daya": Hourly energy consumption for the previous month. (kWh/hour)
+                - "hour_cost": Hourly cost for the previous month. (Rupiah/hour)
+    """
+
     try:
         # Extract Current Data
         chart_data = data.get("chart_data", [])
-        current_timestamp = (
-            chart_data[-1].get("timestamp", "N/A") if chart_data else "N/A"
+        measurement_start_time = chart_data[0].get("timestamp", "N/A") if chart_data else "N/A"
+        measurement_end_time = chart_data[-1].get("timestamp", "N/A") if chart_data else "N/A"
+
+        if not chart_data:
+            return "No data available for analysis."
+
+
+        # peak power value and timestamp
+        max_power = max(
+            (item.get("power", 0.0) for item in chart_data), default=0.0
         )
+
+        max_timestamp = next(
+            (
+                item.get("timestamp", "N/A")
+                for item in chart_data
+                if item.get("power", 0.0) == max_power
+            ),
+            "N/A",
+        )
+
+        min_power = min(
+            (item.get("power", 0.0) for item in chart_data), default=0.0
+        )
+
+        min_timestamp = next(
+            (
+                item.get("timestamp", "N/A")
+                for item in chart_data
+                if item.get("power", 0.0) == min_power
+            ),
+            "N/A",
+        )
+
         current_power = chart_data[-1].get("power", 0.0) if chart_data else 0.0
+        
+        total_power_today = data.get("today_data", {}).get("total_daya", 0.0)
+        avg_power_per_hour_today = data.get("today_data", {}).get("avg_daya", 0.0)
+        total_cost_today = data.get("today_data", {}).get("total_cost", 0.0)
+        avg_cost_per_hour_today = data.get("today_data", {}).get("avg_cost", 0.0)
 
-        # Summarize Heatmap Data
-        heatmap_summary = "No heatmap data available."
-        if history and history.get("heatmap"):
-            heatmap_data = history["heatmap"]
-            # Calculate averages for each hour, summarize key patterns
-            hourly_averages = {}
-            for item in heatmap_data:
-                day = item.get("day", "N/A")
-                hour = item.get("hour", "N/A")
-                value = item.get("value", 0.0)
-                if hour != "N/A":
-                    key = f"{day}-{hour}"  # Unique key
-                    if key in hourly_averages:
-                        hourly_averages[key]["total"] += value
-                        hourly_averages[key]["count"] += 1
-                    else:
-                        hourly_averages[key] = {"total": value, "count": 1}
+        total_power_prev_month = data.get("prev_month_data", {}).get("total_daya", 0.0)
+        total_cost_prev_month = data.get("prev_month_data", {}).get("total_cost", 0.0)
+        avg_power_per_day_prev_month = data.get("prev_month_data", {}).get("day_daya", 0.0)
+        avg_cost_per_day_prev_month = data.get("prev_month_data", {}).get("day_cost", 0.0)
+        avg_power_per_hour_prev_month = data.get("prev_month_data", {}).get("hour_daya", 0.0)
+        avg_cost_per_hour_prev_month = data.get("prev_month_data", {}).get("hour_cost", 0.0)
 
-            # Calculate average for every timeframe.
-            for key in hourly_averages:
-                hourly_averages[key]["average"] = (
-                    hourly_averages[key]["total"] / hourly_averages[key]["count"]
-                )
+        if faculty == "":
+            faculty = "All faculty"
+        if building == "":
+            building = "All building"
+        if floor == "":
+            floor = "All floor"
 
-            if hourly_averages:
-                # find peak average using loop
-                peak_value = 0
-                low_value = float("inf")
-
-                peak_keys = []
-                low_keys = []
-
-                for key in hourly_averages:
-                    if hourly_averages[key]["average"] > peak_value:
-                        peak_keys = [key]
-                        peak_value = hourly_averages[key]["average"]
-                    elif hourly_averages[key]["average"] == peak_value:
-                        peak_keys.append(key)
-
-                    if hourly_averages[key]["average"] < low_value:
-                        low_keys = [key]
-                        low_value = hourly_averages[key]["average"]
-                    elif hourly_averages[key]["average"] == low_value:
-                        low_keys.append(key)
-
-                average_overall = (
-                    sum(item["average"] for item in hourly_averages.values())
-                    / len(hourly_averages)
-                )
-
-                peak_days = [key.split("-")[0] for key in peak_keys]
-                peak_hours = [key.split("-")[1] for key in peak_keys]
-
-                low_days = [key.split("-")[0] for key in low_keys]
-                low_hours = [key.split("-")[1] for key in low_keys]
-
-                peak_string = (
-                    f"Peak Value was Day: {', '.join(peak_days)} Hour:"
-                    f" {', '.join(peak_hours)} Value: {peak_value} "
-                )
-
-                low_string = (
-                    f"Low value was Day: {', '.join(low_days)} Hour:"
-                    f" {', '.join(low_hours)} Value: {low_value}"
-                )
-
-                heatmap_summary = (
-                    f"""The heatmap shows the peak was {peak_string}.
-                                        The low was {low_string}.
-                                        Overall average was {average_overall}"""
-                )
-
+        # get from date
+        current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
         prompt = NOW_PROMPT_TEMPLATE.format(
             current_timestamp=current_timestamp,
+            faculty=faculty,
+            building=building,
+            floor=floor,
+
+            measurement_start_time=measurement_start_time,
+            measurement_end_time=measurement_end_time,
             current_power=current_power,
-            heatmap_summary=heatmap_summary,
+
+            max_power=max_power,
+            max_timestamp=max_timestamp,
+            min_power=min_power,
+            min_timestamp=min_timestamp,
+
+            total_power_today=total_power_today,
+            avg_power_per_hour_today=avg_power_per_hour_today,
+            total_cost_today=total_cost_today,
+            avg_cost_per_hour_today=avg_cost_per_hour_today,
+
+            total_power_prev_month=total_power_prev_month,
+            total_cost_prev_month=total_cost_prev_month,
+            avg_power_per_day_prev_month=avg_power_per_day_prev_month,
+            avg_cost_per_day_prev_month=avg_cost_per_day_prev_month,
+            avg_power_per_hour_prev_month=avg_power_per_hour_prev_month,
+            avg_cost_per_hour_prev_month=avg_cost_per_hour_prev_month,
         )
 
+        logger.info(f"↘️ Prompt: {prompt}")
         analysis = await analyze_page._aask(prompt)
         return analysis
 
     except Exception as e:
         return f"Error generating analysis: {str(e)}"
 
-async def daily_analysis(data, history) -> str:
-    """Analyzes daily energy data, comparing it to a heatmap of the past week.
-        history is the result of async_fetch_heatmap.
+
+async def daily_analysis(data, date, faculty="", building="", floor="") -> str:
+    """
+    Analyzes daily energy data, comparing it to a heatmap of the past week.
+    history is the result of async_fetch_heatmap.
+
+    Args:
+        data: dict: A dictionary containing the following keys:
+            - "chart_data": A list of dictionaries, each containing:
+                - "timestamp": The timestamp for the data point in 'YYYY-MM-DD HH:MM:SS' format.
+                - "R": Energy consumption for phase R. (kWh) 
+                - "S": Energy consumption for phase S. (kWh)
+                - "T": Energy consumption for phase T. (kWh)
+            - "hourly_data": A list of dictionaries, each containing:
+                - "hour": The hour of the day in 'HH:00' format, measured per one hour.
+                - "cost": The cost for the hour. (Rupiah)
+                - "energy": The energy consumption for the hour. (kWh)
+            - "today_data": A dictionary containing:
+                - "total_daya": Total energy consumption for the day. (kWh)
+                - "avg_daya": Average energy consumption per hour. (kWh/hour)
+                - "total_cost": Total cost for the day. (Rupiah)
+                - "avg_cost": Average cost per hour. (Rupiah/hour)
+            - "prev_month_data": A dictionary containing:
+                - "total_daya": Total energy consumption for the month. (kWh)
+                - "day_daya": Average energy consumption per day. (kWh/day)
+                - "total_cost": Total cost for the month. (Rupiah)
+                - "day_cost": Average cost per day. (Rupiah/day)
     """
 
     try:
-        # Extract Daily Data
-        today_data = data.get("today_data", {})
-        date_obj = data.get("date", "N/A")
-        total_energy = today_data.get("total_daya", 0.0)
+        # add Total Power in chart_data R + S + T
+        for item in data.get("chart_data", []):
+            item["Energy"] = item.get("R", 0) + item.get("S", 0) + item.get("T", 0)
 
-        # Peak Hours has been reformatted here,
-        peak_hours = []
-        for data_hourly in data.get("hourly_data", []):
-            peak_hours.append(
-                f"{data_hourly.get('hour')} - {data_hourly.get('energy')}"
-            )
+        # Max and Min kWh
+        max_energy = max(
+            (item.get("Energy", 0.0) for item in data.get("chart_data", [])), default=0.0
+        )
+
+        max_timestamp = next(
+            (
+                item.get("timestamp", "N/A")
+                for item in data.get("chart_data", [])
+                if item.get("Energy", 0.0) == max_energy
+            ),
+            "N/A",
+        )
+
+        min_energy = min(
+            (item.get("Energy", 0.0) for item in data.get("chart_data", [])), default=0.0
+        )
+
+        min_timestamp = next(
+            (
+                item.get("timestamp", "N/A")
+                for item in data.get("chart_data", [])
+                if item.get("Energy", 0.0) == min_energy
+            ),
+            "N/A",
+        )
+
+        total_energy = data.get("today_data", {}).get("total_daya", 0.0)
+        total_cost = data.get("today_data", {}).get("total_cost", 0.0)
+        avg_power = data.get("today_data", {}).get("avg_daya", 0.0)
+        avg_cost_per_hour = data.get("today_data", {}).get("avg_cost", 0.0)
+
+        total_month_energy_prev_month = data.get("prev_month_data", {}).get("total_daya", 0.0)
+        total_month_cost_prev_month = data.get("prev_month_data", {}).get("total_cost", 0.0)
+        total_day_energy_prev_month = data.get("prev_month_data", {}).get("day_daya", 0.0)
+        total_day_cost_prev_month = data.get("prev_month_data", {}).get("day_cost", 0.0)
+        avg_power_prev_month = data.get("prev_month_data", {}).get("day_daya", 0.0)/24.0
+        avg_cost_per_hour_prev_month = data.get("prev_month_data", {}).get("day_cost", 0.0)/24.0
+
 
         chart_data = data.get("chart_data", [])
         phase_r = (
@@ -133,220 +257,470 @@ async def daily_analysis(data, history) -> str:
             sum(item.get("T", 0) for item in chart_data) if chart_data else 0
         )
 
-        # Summarize Heatmap Data
-        heatmap_summary = "No heatmap data available."
-        if history and history.get("heatmap"):
-            heatmap_data = history["heatmap"]
-            # Calculate averages for each hour, summarize key patterns
-            hourly_averages = {}
-            for item in heatmap_data:
-                day = item.get("day", "N/A")
-                hour = item.get("hour", "N/A")
-                value = item.get("value", 0.0)
-                if hour != "N/A":
-                    key = f"{day}-{hour}"  # Unique key
-                    if key in hourly_averages:
-                        hourly_averages[key]["total"] += value
-                        hourly_averages[key]["count"] += 1
-                    else:
-                        hourly_averages[key] = {"total": value, "count": 1}
 
-            # Calculate average for every timeframe.
-            for key in hourly_averages:
-                hourly_averages[key]["average"] = (
-                    hourly_averages[key]["total"] / hourly_averages[key]["count"]
-                )
+        if faculty == "":
+            faculty = "All faculty"
+        if building == "":
+            building = "All building"
+        if floor == "":
+            floor = "All floor"
 
-            if hourly_averages:
-                # find peak average using loop
-                peak_value = 0
-                low_value = float("inf")
-
-                peak_keys = []
-                low_keys = []
-
-                for key in hourly_averages:
-                    if hourly_averages[key]["average"] > peak_value:
-                        peak_keys = [key]
-                        peak_value = hourly_averages[key]["average"]
-                    elif hourly_averages[key]["average"] == peak_value:
-                        peak_keys.append(key)
-
-                    if hourly_averages[key]["average"] < low_value:
-                        low_keys = [key]
-                        low_value = hourly_averages[key]["average"]
-                    elif hourly_averages[key]["average"] == low_value:
-                        low_keys.append(key)
-
-                average_overall = (
-                    sum(item["average"] for item in hourly_averages.values())
-                    / len(hourly_averages)
-                )
-
-                peak_days = [key.split("-")[0] for key in peak_keys]
-                peak_hours = [key.split("-")[1] for key in peak_keys]
-
-                low_days = [key.split("-")[0] for key in low_keys]
-                low_hours = [key.split("-")[1] for key in low_keys]
-
-                peak_string = (
-                    f"Peak Value was Day: {', '.join(peak_days)} Hour:"
-                    f" {', '.join(peak_hours)} Value: {peak_value} "
-                )
-
-                low_string = (
-                    f"Low value was Day: {', '.join(low_days)} Hour:"
-                    f" {', '.join(low_hours)} Value: {low_value}"
-                )
-
-                heatmap_summary = (
-                    f"""The heatmap shows the peak was {peak_string}.
-                                        The low was {low_string}.
-                                        Overall average was {average_overall}"""
-                )
-
+        # get from date
+        current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
         prompt = DAILY_PROMPT_TEMPLATE.format(
-            date=date_obj,
+            current_timestamp=current_timestamp,
+            faculty=faculty,
+            building=building,
+            floor=floor,
+
+            date=date,
+
+            max_energy=max_energy,
+            max_timestamp=max_timestamp,
+            min_energy=min_energy,
+            min_timestamp=min_timestamp,
+
             total_energy=total_energy,
-            peak_hours=peak_hours,
+            total_cost=total_cost,
+            avg_power=avg_power,
+            avg_cost_per_hour=avg_cost_per_hour,
+
             phase_r=phase_r,
             phase_s=phase_s,
             phase_t=phase_t,
-            heatmap_summary=heatmap_summary,
+
+            total_month_energy_prev_month=total_month_energy_prev_month,
+            total_month_cost_prev_month=total_month_cost_prev_month,
+            total_day_energy_prev_month=total_day_energy_prev_month,
+            total_day_cost_prev_month=total_day_cost_prev_month,
+            avg_power_prev_month=avg_power_prev_month,
+            avg_cost_per_hour_prev_month=avg_cost_per_hour_prev_month
         )
+        logger.info(f"↘️ Prompt: {prompt}")
         analysis = await analyze_page._aask(prompt)
         return analysis
     except Exception as e:
         return f"Error generating analysis: {str(e)}"
 
 
-async def monthly_analysis(data, history) -> str:
-    """Analyzes monthly energy data, comparing to a list of previous months.
+async def monthly_analysis(data, date, faculty="", building="", floor="") -> str:
+    """
+    Analyzes monthly energy data, comparing to a list of previous months.
 
     Args:
-        data (Dict[str, Any]):  Current month's data (result of async_fetch_monthly).
-        history (List[Dict[str, Any]]): List of up to 3 previous months' data, each a result of async_fetch_monthly.
+        data: dict: A dictionary containing the following keys:
+            - "chart_data": A list of dictionaries, each containing:
+                - "timestamp": The timestamp for the data point in 'YYYY-MM-DD HH:MM:SS' format.
+                - "R": Energy consumption for phase R. (kWh) 
+                - "S": Energy consumption for phase S. (kWh)
+                - "T": Energy consumption for phase T. (kWh)
+            - "daily_data": A list of dictionaries, each containing:
+                - "timestamp": The timestamp for the data point in 'YYYY-MM-DD HH:MM:SS' format.
+                - "cost": The cost for the day. (Rupiah)
+                - "energy": The energy consumption for the day. (kWh)
+                - "phase 1": Energy consumption for phase 1 (R). (kWh)
+                - "phase 2": Energy consumption for phase 2 (S). (kWh)
+                - "phase 3": Energy consumption for phase 3 (T). (kWh)
+            - "month_data": A dictionary containing:
+                - "total_daya": Total energy consumption for the month. (kWh)
+                - "avg_daya": Average energy consumption per day. (kWh/day)
+                - "total_cost": Total cost for the month. (Rupiah)
+                - "avg_cost": Average cost per day. (Rupiah/day)
+            - "prev_month_data": A dictionary containing:
+                - "total_daya": Total energy consumption for the month. (kWh)
+                - "day_daya": Average energy consumption per day. (kWh/day)
+                - "total_cost": Total cost for the month. (Rupiah)
+                - "day_cost": Average cost per day. (Rupiah/day)
     """
 
     try:
-        month = data.get("date", "N/A")
-        month_data = data.get("month_data", {})
-        total_energy = month_data.get("total_daya", 0.0)
-        daily_data = data.get("daily_data", [])
-
-        #Peakdays is on timestamp format on the JSON so change it
-        peak_days_string = []
-        for day in daily_data:
-            peak_days_string.append(f"{day.get('timestamp')} - {day.get('energy')}")
-        peak_days = ", ".join(peak_days_string)
-
-        # Phase Contribution
-        phase1_total = sum(day.get("phase 1", 0.0) for day in daily_data)
-        phase2_total = sum(day.get("phase 2", 0.0) for day in daily_data)
-        phase3_total = sum(day.get("phase 3", 0.0) for day in daily_data)
-        total_phase = phase1_total + phase2_total + phase3_total
-
-        phase1_contribution = (phase1_total / total_phase) * 100 if total_phase else 0
-        phase2_contribution = (phase2_total / total_phase) * 100 if total_phase else 0
-        phase3_contribution = (phase3_total / total_phase) * 100 if total_phase else 0
-
-        phase1_contribution = round(phase1_contribution, 2)
-        phase2_contribution = round(phase2_contribution, 2)
-        phase3_contribution = round(phase3_contribution, 2)
-
-        # Summarize Historical Data
-        historical_summary = "No historical data available."
-        if history:
-            historical_consumptions = []
-            for i, h in enumerate(history):
-                if h and h.get("month_data"):
-                    historical_consumptions.append(h["month_data"].get("total_daya", 0.0))
-                else:
-                    historical_consumptions.append(0.0)  # Missing value
-
-            #Now with the new function, find the average consumptions
-            if len(historical_consumptions) == 3:
-                average_consumptions = sum(historical_consumptions) / len(
-                    historical_consumptions
-                )
-            else:
-                average_consumptions = 0
-            historical_summary = f"Average historical consumption (past months): {average_consumptions:.2f} kWh"
-
-        prompt = MONTHLY_PROMPT_TEMPLATE.format(
-            month=month,
-            total_energy=total_energy,
-            peak_days=peak_days,
-            phase1_contribution=phase1_contribution,
-            phase2_contribution=phase2_contribution,
-            phase3_contribution=phase3_contribution,
-            historical_summary=historical_summary,
+        max_energy = max(
+            (item.get("energy", 0.0) for item in data.get("daily_data", [])), default=0.0
         )
+
+        max_timestamp = next(
+            (
+                item.get("timestamp", "N/A")
+                for item in data.get("daily_data", [])
+                if item.get("energy", 0.0) == max_energy
+            ),
+            "N/A",
+        )
+
+        min_energy = min(
+            (item.get("energy", 0.0) for item in data.get("daily_data", [])), default=0.0
+        )
+
+        min_timestamp = next(
+            (
+                item.get("timestamp", "N/A")
+                for item in data.get("daily_data", [])
+                if item.get("energy", 0.0) == min_energy
+            ),
+            "N/A",
+        )
+
+        total_energy = data.get("month_data", {}).get("total_daya", 0.0)
+        total_cost = data.get("month_data", {}).get("total_cost", 0.0)
+        avg_power = data.get("month_data", {}).get("avg_daya", 0.0)
+        avg_cost_per_day = data.get("month_data", {}).get("avg_cost", 0.0)
+
+        total_month_energy_prev_month = data.get("prev_month_data", {}).get("total_daya", 0.0)
+        total_month_cost_prev_month = data.get("prev_month_data", {}).get("total_cost", 0.0)
+        total_day_energy_prev_month = data.get("prev_month_data", {}).get("day_daya", 0.0)
+        total_day_cost_prev_month = data.get("prev_month_data", {}).get("day_cost", 0.0)
+
+
+        chart_data = data.get("chart_data", [])
+        phase_r = (
+            sum(item.get("R", 0) for item in chart_data) if chart_data else 0
+        )
+        phase_s = (
+            sum(item.get("S", 0) for item in chart_data) if chart_data else 0
+        )
+        phase_t = (
+            sum(item.get("T", 0) for item in chart_data) if chart_data else 0
+        )
+
+
+        if faculty == "":
+            faculty = "All faculty"
+        if building == "":
+            building = "All building"
+        if floor == "":
+            floor = "All floor"
+
+
+        # get from date
+        current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
+        prompt = MONTHLY_PROMPT_TEMPLATE.format(
+            current_timestamp=current_timestamp,
+            faculty=faculty,
+            building=building,
+            floor=floor,
+
+            date=date,
+
+            max_energy=max_energy,
+            max_timestamp=max_timestamp,
+            min_energy=min_energy,
+            min_timestamp=min_timestamp,
+
+            total_energy=total_energy,
+            total_cost=total_cost,
+            avg_power=avg_power,
+            avg_cost_per_day=avg_cost_per_day,
+
+            phase_r=phase_r,
+            phase_s=phase_s,
+            phase_t=phase_t,
+
+            total_month_energy_prev_month=total_month_energy_prev_month,
+            total_month_cost_prev_month=total_month_cost_prev_month,
+            total_day_energy_prev_month=total_day_energy_prev_month,
+            total_day_cost_prev_month=total_day_cost_prev_month,
+        )
+
+        logger.info(f"↘️ Prompt: {prompt}")
         analysis = await analyze_page._aask(prompt)
         return analysis
     except Exception as e:
         return f"Error generating analysis: {str(e)}"
 
 
-async def heatmap_analysis(data, history) -> str:
-    """Analyzes heatmap data. No historical comparison needed for this example.
-        history should be an empty dictionary - will not be used.
+async def heatmap_analysis(data, history, faculty="", building="", floor="") -> str:
+    """
+    Analyzes energy usage heatmap data, no history
+
+    Args:
+        data: dict: A dictionary containing the following keys:
+            - "dates": A dictionary with "start" and "end" dates.
+                - "start": Date when the data collection started in 'YYYY-MM-DD' format.
+                - "end": Date when the data collection ended in 'YYYY-MM-DD' format.
+            - "heatmap": A list of dictionaries, each containing:
+                - "day": The day of the week (1 = Sunday, 2 = Monday, ..., 7 = Saturday).
+                - "hour": The hour of the day (0 = midnight, 23 = 11 PM).
+                - "value": The energy consumption value for the given day and hour. (kWh)
+        history: dict: A dictionary containing the same structure as data, but for the previous week.
     """
 
     try:
+        days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+
         start_date = data.get("dates", {}).get("start", "N/A")
+        start_date_day = datetime.strptime(start_date, "%Y-%m-%d").strftime("%A")
+        start_date_day_number = days.index(start_date_day) + 1
+        start_date_complete = f"{start_date_day}, {start_date}"
+
         end_date = data.get("dates", {}).get("end", "N/A")
+        end_date_day = datetime.strptime(end_date, "%Y-%m-%d").strftime("%A")
+        end_date_complete = f"{end_date_day}, {end_date}"
         
         start_date_before = history.get("dates", {}).get("start", "N/A")
         end_date_before = history.get("dates", {}).get("end", "N/A")
+        start_date_before_complete = f"{start_date_day}, {start_date_before}"
+        end_date_before_complete = f"{end_date_day}, {end_date_before}"
 
+        # loop through the heatmap data
+        for item in data.get("heatmap", []):
+            day_number = item.get("day", "N/A")
+            day_name = days[day_number - 1]
+            if day_number == start_date_day_number:
+                item["date"] = f"{day_name}, {start_date}"
+            if day_number > start_date_day_number:
+                date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days=day_number - start_date_day_number)
+                date = date.strftime("%Y-%m-%d")
+                item["date"] = f"{day_name}, {date}"
+            if day_number < start_date_day_number:
+                date = datetime.strptime(start_date, "%Y-%m-%d") + timedelta(days= 7 - start_date_day_number + day_number)
+                date = date.strftime("%Y-%m-%d")
+                item["date"] = f"{day_name}, {date}"
+
+        # logger.info(f"↘️ HEATMAP data: {data}")
+        # loop through the history data
+        for item in history.get("heatmap", []):
+            day_number = item.get("day", "N/A")
+            day_name = days[day_number - 1]
+            if day_number == start_date_day_number:
+                item["date"] = f"{day_name}, {start_date_before}"
+            if day_number > start_date_day_number:
+                date = datetime.strptime(start_date_before, "%Y-%m-%d") + timedelta(days=day_number - start_date_day_number)
+                date = date.strftime("%Y-%m-%d")
+                item["date"] = f"{day_name}, {date}"
+            if day_number < start_date_day_number:
+                date = datetime.strptime(start_date_before, "%Y-%m-%d") + timedelta(days= 7 - start_date_day_number + day_number)
+                date = date.strftime("%Y-%m-%d")
+                item["date"] = f"{day_name}, {date}"
+
+        # logger.info(f"↘️ HEATMAP history: {history}")
+        
+        #Summarize heatmap, so it can improve more detailed of summary
+        hourly_averages = {}
+        for item in data.get("heatmap", []):
+            date = item.get("date", "N/A")
+            hour = item.get("hour", "N/A")
+            value = item.get("value", 0.0)
+            if hour != "N/A":
+                key = f"{date} at {hour}:00"
+                if key in hourly_averages:
+                    hourly_averages[key]["total"] += value
+                    hourly_averages[key]["count"] += 1
+                else:
+                    hourly_averages[key] = {"total": value, "count": 1}
+
+        # Calculate average for every timeframe.
+        for key in hourly_averages:
+            hourly_averages[key]["average"] = (
+                hourly_averages[key]["total"] / hourly_averages[key]["count"]
+            )
+
+        if hourly_averages:
+            # find peak average using loop
+            peak_value = 0
+            low_value = float("inf")
+
+            peak_keys = []
+            low_keys = []
+
+            for key in hourly_averages:
+                if hourly_averages[key]["average"] > peak_value:
+                    peak_keys = [key]
+                    peak_value = hourly_averages[key]["average"]
+                elif hourly_averages[key]["average"] == peak_value:
+                    peak_keys.append(key)
+
+                if hourly_averages[key]["average"] < low_value:
+                    low_keys = [key]
+                    low_value = hourly_averages[key]["average"]
+                elif hourly_averages[key]["average"] == low_value:
+                    low_keys.append(key)
+
+            average_overall = (
+                sum(item["average"] for item in hourly_averages.values())
+                / len(hourly_averages)
+            )
+
+        
+
+        #Before calculation on data before
+        hourly_averages_before = {}
+        for item in history.get("heatmap", []):
+            date = item.get("date", "N/A")
+            hour = item.get("hour", "N/A")
+            value = item.get("value", 0.0)
+            if hour != "N/A":
+                key = f"{date} at {hour}:00"  # Unique key
+                if key in hourly_averages_before:
+                    hourly_averages_before[key]["total"] += value
+                    hourly_averages_before[key]["count"] += 1
+                else:
+                    hourly_averages_before[key] = {"total": value, "count": 1}
+        
+        # Calculate average for every timeframe.
+        for key in hourly_averages_before:
+            hourly_averages_before[key]["average"] = (
+                hourly_averages_before[key]["total"] / hourly_averages_before[key]["count"]
+            )
+
+        if hourly_averages_before:
+            # find peak average using loop
+            peak_value_before = 0
+            low_value_before = float("inf")
+
+            peak_keys_before = []
+            low_keys_before = []
+
+            for key in hourly_averages_before:
+                if hourly_averages_before[key]["average"] > peak_value_before:
+                    peak_keys_before = [key]
+                    peak_value_before = hourly_averages_before[key]["average"]
+                elif hourly_averages_before[key]["average"] == peak_value_before:
+                    peak_keys_before.append(key)
+
+                if hourly_averages_before[key]["average"] < low_value_before:
+                    low_keys_before = [key]
+                    low_value_before = hourly_averages_before[key]["average"]
+                elif hourly_averages_before[key]["average"] == low_value_before:
+                    low_keys_before.append(key)
+            
+            average_overall_before = (
+                sum(item["average"] for item in hourly_averages_before.values())
+                / len(hourly_averages_before)
+            )
+
+
+        if faculty == "":
+            faculty = "All faculty"
+        if building == "":
+            building = "All building"
+        if floor == "":
+            floor = "All floor"
+
+            
+
+        # get from date
+        current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
         prompt = HEATMAP_PROMPT_TEMPLATE.format(
-            start_date=start_date,
-            end_date=end_date,
-            data=data,
-            start_date_before=start_date_before,
-            end_date_before=end_date_before,
-            data_before=history
+            current_timestamp=current_timestamp,
+            faculty=faculty,
+            building=building,
+            floor=floor,
+
+            start_date=start_date_complete,
+            end_date=end_date_complete,
+    
+            peak_value=peak_value,
+            low_value=low_value,
+            peak_keys=peak_keys,
+            low_keys=low_keys,
+            average_overall=average_overall,
+
+            start_date_before=start_date_before_complete,
+            end_date_before=end_date_before_complete,
+
+            peak_value_before=peak_value_before,
+            low_value_before=low_value_before,
+            peak_keys_before=peak_keys_before,
+            low_keys_before=low_keys_before,
+            average_overall_before=average_overall_before,
         )
 
+        logger.info(f"↘️ Prompt: {prompt}")
         analysis = await analyze_page._aask(prompt)
         return analysis
     except Exception as e:
         return f"Error generating analysis: {str(e)}"
 
 
-async def compare_faculty_analysis(data, history) -> str:
-    """Analyzes energy consumption across faculties, comparing to historical averages.
+async def compare_faculty_analysis(data, history, date) -> str:
+    """
+    Analyzes energy consumption across faculties, comparing to previous month.
+    The history is the result of async_fetch_compare for the previous month.
 
-        The History parameter should be async_fetch_compare with the historical month
+    Args:
+        data: A dictionary containing the following keys:
+            - "value": A list of dictionaries, each containing:
+                - "fakultas": The faculty name. (FTI, FSRD, etc.)
+                - "energy": The energy consumption for the faculty in the month. (kWh)
+                - "cost": The cost associated with the energy consumption in the month. (Rupiah)
+            - "data": A dictionary containing:
+                - "max": A dictionary with the faculty with the maximum energy consumption and cost in the month.
+                    - "fakultas": The faculty name. (FTI, FSRD, etc.)
+                    - "energy": The maximum energy consumption in the month. (kWh)
+                    - "cost": The maximum cost associated with the energy consumption in the month. (Rupiah)
+                - "min": A dictionary with the faculty with the minimum energy consumption and cost in the month.
+                    - "fakultas": The faculty name. (FTI, FSRD, etc.)
+                    - "energy": The minimum energy consumption in the month. (kWh)
+                    - "cost": The minimum cost associated with the energy consumption in the month. (Rupiah)
+                - "total": A dictionary with the total energy consumption and cost across all faculties in the month.
+                    - "energy": The total energy consumption in the month. (kWh)
+                    - "cost": The total cost associated with the energy consumption in the month. (Rupiah)
+                - "average": A dictionary he average energy consumption and cost across all faculties in the month.
+                    - "energy": The average energy consumption in the month. (kWh)
+                    - "cost": The average cost associated with the energy consumption in the month. (Rupiah)
+            - "info": A list of dictionaries, each containing detailed information about a faculty:
+                - "faculty": The faculty name. (FTI, FSRD, etc.)
+                - "energy": The energy consumption in the month. (kWh)
+                - "cost": The cost associated with the energy consumption in the month. (Rupiah)
+                - "area": The area of the faculty. (m2)
+                - "ike": The energy efficiency index. (kWh/m2)
+                - "students": The number of students. 
+                - "specific energy": The specific energy consumption per student. (kWh/student)
+        history: dict: A dictionary containing the same structure as data.
     """
     
 
     try:
         total_energy = data.get("data", {}).get("total", 0.0)
-        min_energy = data.get("data", {}).get("min", 0.0)
-        max_energy = data.get("data", {}).get("max", 0.0)
-        average_energy = data.get("data", {}).get("average", {}).get("energy", 0.0)
-        date = data.get("date", "N/A")
-        change_vs_history = 0.0
+        min_energy = data.get("data", {}).get("min", {}).get("energy", 0.0)
+        max_energy = data.get("data", {}).get("max", {}).get("energy", 0.0)
+        
+        max_faculty = data.get("data", {}).get("max", {}).get("fakultas", "N/A")
+        min_faculty = data.get("data", {}).get("min", {}).get("fakultas", "N/A")
+        total_energy_past = history.get("data", {}).get("total", 0.0)
 
-        #Compare History so we can provide more insights to the prompt
-        if history and history.get("data", {}).get("average", {}).get("energy", 0.0):
-            historical_energy = history["data"]["average"]["energy"]
+        day_count = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        if int(date.split("-")[0]) % 4 == 0 and (int(date.split("-")[0]) % 100 != 0 or int(date.split("-")[0]) % 400 == 0):
+            day_count[1] = 29
 
-            change_vs_history = average_energy - historical_energy
-        else:
-            change_vs_history = 0.0
+        month = int(date.split("-")[1])
+        prev_month = month - 1
+        if prev_month == 0:
+            prev_month = 12
 
+        # if current month is the same as current date, then the day count is the current day
+        if month == int(datetime.now().strftime("%m")):
+            day_count[month-1] = int(datetime.now().strftime("%d"))
+        
+        avg_energy_per_day_max=max_energy/day_count[month-1]
+        avg_energy_per_day_min=min_energy/day_count[month-1]
+        avg_energy_per_day=total_energy["total"]/day_count[month-1]
+        avg_cost_per_day=total_energy["cost"]/day_count[month-1]
+        avg_energy_per_day_past=total_energy_past["total"]/day_count[prev_month-1]
+        avg_cost_per_day_past=total_energy_past["cost"]/day_count[prev_month-1]
+
+        # get from date
+        current_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
         prompt = COMPARE_FACULTY_PROMPT_TEMPLATE.format(
+            current_timestamp=current_timestamp,
             date=date,
-            average_energy=average_energy,
-            change_vs_history=change_vs_history,
             min_energy=min_energy,
+            min_faculty=min_faculty,
             max_energy=max_energy,
-            total_usage=total_energy
+            max_faculty=max_faculty,
+            total_usage=total_energy["total"],
+            total_cost=total_energy["cost"],
+            total_usage_past=total_energy_past["total"],
+            total_cost_past=total_energy_past["cost"],
+            avg_energy_per_day_max=avg_energy_per_day_max,
+            avg_energy_per_day_min=avg_energy_per_day_min,
+            avg_energy_per_day=avg_energy_per_day,
+            avg_cost_per_day=avg_cost_per_day,
+            avg_energy_per_day_past=avg_energy_per_day_past,
+            avg_cost_per_day_past=avg_cost_per_day_past,
         )
 
+        logger.info(f"↘️ Prompt: {prompt}")
         analysis = await analyze_page._aask(prompt)
         return analysis
     except Exception as e:

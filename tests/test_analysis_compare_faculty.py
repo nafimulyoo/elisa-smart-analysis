@@ -21,11 +21,11 @@ def test_get_faculty_analysis_current_month(test_client):
 
 
 def test_get_faculty_analysis_future_month(test_client):
-    url = f"/api/analysis/faculty?date=2025-03"
-    time_and_print_analysis(test_client, url, "test_get_faculty_analysis_future_month")
+    url = f"/api/analysis/faculty?date=2025-02"
+    time_and_print_analysis(test_client, url, "test_get_faculty_analysis_past_month")
 
 
 def test_get_faculty_analysis_future_month_faculty(test_client):
-    url = f"/api/analysis/faculty?date=2025-03" 
-    time_and_print_analysis(test_client, url, "test_get_faculty_analysis_future_month")
+    url = f"/api/analysis/faculty?date=2025-01" 
+    time_and_print_analysis(test_client, url, "test_get_faculty_analysis_first_month_of_year")
 

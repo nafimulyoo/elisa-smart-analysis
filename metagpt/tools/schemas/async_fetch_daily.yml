@@ -7,11 +7,15 @@ parameters: 'Args: date (str): The date in ''YYYY-MM-DD'' format. faculty (str, 
   1''). Example: fetch_daily("2023-03-01", faculty="FTI", building="LABTEK IV", floor="LANTAI
   1") Returns: dict: A dictionary containing the following keys: - "chart_data": A
   list of dictionaries, each containing: - "timestamp": The timestamp for the data
-  point. - "R": Energy consumption for phase R. - "S": Energy consumption for phase
-  S. - "T": Energy consumption for phase T. - "hourly_data": A list of dictionaries,
-  each containing: - "hour": The hour of the day (e.g., "01:00"). - "cost": The cost
-  for the hour. - "energy": The energy consumption for the hour. - "today_data": A
-  dictionary containing: - "total_daya": Total energy consumption for the day. - "avg_daya":
-  Average energy consumption per hour. - "total_cost": Total cost for the day. - "avg_cost":
-  Average cost per hour. - "prev_month_data": A dictionary containing the same keys
-  as "today_data" for the previous month.'
+  point in ''YYYY-MM-DD HH:MM:SS'' format. - "R": Energy consumption for phase R.
+  (kWh) - "S": Energy consumption for phase S. (kWh) - "T": Energy consumption for
+  phase T. (kWh) - "hourly_data": A list of dictionaries, each containing: - "hour":
+  The hour of the day in ''HH:00'' format, measured per one hour. - "cost": The cost
+  for the hour. (Rupiah) - "energy": The energy consumption for the hour. (kWh) -
+  "today_data": A dictionary containing: - "total_daya": Total energy consumption
+  for the day. (kWh) - "avg_daya": Average energy consumption per hour. (kWh/hour)
+  - "total_cost": Total cost for the day. (Rupiah) - "avg_cost": Average cost per
+  hour. (Rupiah/hour) - "prev_month_data": A dictionary containing: - "total_daya":
+  Total energy consumption for the month. (kWh) - "day_daya": Average energy consumption
+  per day. (kWh/day) - "total_cost": Total cost for the month. (Rupiah) - "day_cost":
+  Average cost per day. (Rupiah/day)'
