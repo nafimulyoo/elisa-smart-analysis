@@ -6,6 +6,7 @@ print(sys.path)
 from routers.ask import ask_router
 from routers.analysis import analysis_router
 from routers.health import health_router
+from routers.data import data_router
 
 from config import settings
 
@@ -22,6 +23,7 @@ app.add_middleware(
 app.include_router(analysis_router)
 app.include_router(ask_router)
 app.include_router(health_router)
+app.include_router(data_router)
 
 
 # from fastapi import FastAPI, Request

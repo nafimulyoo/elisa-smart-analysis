@@ -10,6 +10,12 @@ from mas_llm.prompts.page_analysis_prompt import (
 
 from datetime import datetime, timedelta
 
+from functools import wraps
+import hashlib
+import json
+import time
+from datetime import datetime
+
 
 
 class AnalyzePage(Action):
@@ -53,7 +59,65 @@ for compare_faculty_analysis:
 - Point out changes and potential insights.
 """
 
+# Cache storage
+analysis_caches = {
+    "now": {"data": {}, "timestamps": {}, "order": [], "ttl": 7200},  # 2 hours
+    "daily": {"data": {}, "timestamps": {}, "order": [], "ttl": 7200},  # 2 hours
+    "monthly": {"data": {}, "timestamps": {}, "order": [], "ttl": 7200},  # 2 hours
+    "heatmap": {"data": {}, "timestamps": {}, "order": [], "ttl": 7200},  # 2 hours
+    "compare_faculty": {"data": {}, "timestamps": {}, "order": [], "ttl": 7200},  # 2 hours
+}
 
+def generate_cache_key(func_name: str, *args, **kwargs) -> str:
+    """Generate a consistent cache key for function arguments"""
+    # Convert args and kwargs to a consistent string representation
+    args_str = json.dumps(args, sort_keys=True)
+    kwargs_str = json.dumps(kwargs, sort_keys=True)
+    input_str = f"{func_name}-{args_str}-{kwargs_str}"
+    
+    # Use SHA256 to create a fixed-length key
+    return hashlib.sha256(input_str.encode()).hexdigest()
+
+def cached_analysis(func_name: str):
+    """Decorator factory for analysis functions with caching"""
+    cache_info = analysis_caches[func_name]
+    
+    def decorator(func):
+        @wraps(func)
+        async def wrapper(*args, **kwargs):
+            # Generate cache key
+            cache_key = generate_cache_key(func_name, *args, **kwargs)
+            
+            # Check cache
+            current_time = time.time()
+            if cache_key in cache_info["data"]:
+                cached_time = cache_info["timestamps"][cache_key]
+                if current_time - cached_time < cache_info["ttl"]:
+                    # Update access order
+                    if cache_key in cache_info["order"]:
+                        cache_info["order"].remove(cache_key)
+                    cache_info["order"].append(cache_key)
+                    return cache_info["data"][cache_key]
+            
+            # Not in cache or expired - execute function
+            result = await func(*args, **kwargs)
+            
+            # Store in cache
+            cache_info["data"][cache_key] = result
+            cache_info["timestamps"][cache_key] = current_time
+            cache_info["order"].append(cache_key)
+            
+            # Enforce cache size (100 items)
+            if len(cache_info["order"]) > 100:
+                oldest_key = cache_info["order"].pop(0)
+                del cache_info["data"][oldest_key]
+                del cache_info["timestamps"][oldest_key]
+            
+            return result
+        return wrapper
+    return decorator
+
+@cached_analysis("now")
 async def now_analysis(data, faculty="", building="", floor="") -> str:
     """
     Analyzes last one hour and today energy data, comparing against data last month
@@ -172,7 +236,7 @@ async def now_analysis(data, faculty="", building="", floor="") -> str:
     except Exception as e:
         return f"Error generating analysis: {str(e)}"
 
-
+@cached_analysis("daily")
 async def daily_analysis(data, date, faculty="", building="", floor="") -> str:
     """
     Analyzes daily energy data, comparing it to a heatmap of the past week.
@@ -302,7 +366,7 @@ async def daily_analysis(data, date, faculty="", building="", floor="") -> str:
     except Exception as e:
         return f"Error generating analysis: {str(e)}"
 
-
+@cached_analysis("monthly")
 async def monthly_analysis(data, date, faculty="", building="", floor="") -> str:
     """
     Analyzes monthly energy data, comparing to a list of previous months.
@@ -427,7 +491,7 @@ async def monthly_analysis(data, date, faculty="", building="", floor="") -> str
     except Exception as e:
         return f"Error generating analysis: {str(e)}"
 
-
+@cached_analysis("heatmap")
 async def heatmap_analysis(data, history, faculty="", building="", floor="") -> str:
     """
     Analyzes energy usage heatmap data, no history
@@ -631,7 +695,7 @@ async def heatmap_analysis(data, history, faculty="", building="", floor="") -> 
     except Exception as e:
         return f"Error generating analysis: {str(e)}"
 
-
+@cached_analysis("compare_faculty")
 async def compare_faculty_analysis(data, history, date) -> str:
     """
     Analyzes energy consumption across faculties, comparing to previous month.
