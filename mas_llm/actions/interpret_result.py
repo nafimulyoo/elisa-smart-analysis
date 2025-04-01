@@ -2,7 +2,7 @@ from model.model import InitialPromptHandlerResult
 from mas_llm.prompts.interpret_result import INTERPRET_RESULT_WEB_PROMPT, INTERPRET_RESULT_LINE_PROMPT, INTERPRET_RESULT_WHATSAPP_PROMPT
 import re
 from metagpt.actions import Action
-import json
+import orjson
 from metagpt.logs import logger
 
 class InterpretResult(Action):
@@ -33,7 +33,7 @@ class InterpretResult(Action):
         
         json_string = match.group(1) if match else response
 
-        json_object = json.loads(json_string)
+        json_object = orjson.loads(json_string)
 
         return json_object
     

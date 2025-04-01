@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import json
+import orjson
 from typing import Literal
 
 from pydantic import Field, model_validator
@@ -79,7 +79,7 @@ class DataAnalyst(Role):
 
         prompt = REACT_THINK_PROMPT.format(user_requirement=user_requirement, context=context)
         rsp = await self.llm.aask(prompt)
-        rsp_dict = json.loads(CodeParser.parse_code(block=None, text=rsp))
+        rsp_dict = orjson.loads(CodeParser.parse_code(block=None, text=rsp))
         self.working_memory.add(Message(content=rsp_dict["thoughts"], role="assistant"))
         need_action = rsp_dict["state"]
         self._set_state(0) if need_action else self._set_state(-1)

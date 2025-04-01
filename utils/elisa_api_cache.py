@@ -1,100 +1,151 @@
-
 import asyncio
-from datetime import datetime, date, timedelta
+from datetime import datetime, date
 from functools import wraps
 import time
-from typing import Optional, Tuple, Any
+from typing import Optional, Tuple, Any, Dict, List
 import re
-import requests
+import aiohttp
+from async_lru import alru_cache
+import orjson
 
-# Cache setup
+# Constants
+DATE_FORMATS = (
+    (r"^\d{4}-\d{2}-\d{2}$", "%Y-%m-%d"),  # YYYY-MM-DD
+    (r"^\d{4}-\d{2}$", "%Y-%m")            # YYYY-MM
+)
+
+# Cache configuration
 CACHE_CONFIG = {
     "now": {"size": 100, "ttl": 30},          # 30 seconds
     "daily": {"size": 100, "ttl": 900},       # 15 minutes
     "monthly": {"size": 100, "ttl": 7200},    # 2 hours
     "heatmap": {"size": 100, "ttl": 900},     # 15 minutes
     "compare": {"size": 100, "ttl": 7200},    # 2 hours
-    "fakultas": {"size": 100, "ttl": float('inf')},  # Unlimited
-    "gedung": {"size": 100, "ttl": float('inf')},    # Unlimited
+    "fakultas": {"size": 100, "ttl": None},   # Unlimited (None means no TTL)
+    "gedung": {"size": 100, "ttl": None},     # Unlimited
 }
 
-# Cache storage
-caches = {name: {} for name in CACHE_CONFIG}
-cache_timestamps = {name: {} for name in CACHE_CONFIG}
-cache_orders = {name: [] for name in CACHE_CONFIG}
+# Pre-compiled regex patterns
+DATE_PATTERNS = [re.compile(pattern) for pattern, _ in DATE_FORMATS]
 
-def get_cache_key(func_name: str, *args, **kwargs) -> Tuple:
-    """Generate a cache key based on function name and arguments"""
-    if func_name == "fakultas":
-        return ("fakultas",)  # Always same key since no arguments
-    elif func_name == "gedung":
-        return ("gedung", kwargs.get("fakultas", ""))
-    return tuple(args) + (frozenset(kwargs.items()),)
+# Global session for connection pooling
+SESSION = None
+
+async def get_session():
+    """Get or create aiohttp session with connection pooling"""
+    global SESSION
+    if SESSION is None or SESSION.closed:
+        connector = aiohttp.TCPConnector(
+            limit=100,
+            force_close=False,
+            enable_cleanup_closed=True,
+            ssl=False
+        )
+        timeout = aiohttp.ClientTimeout(total=30)
+        SESSION = aiohttp.ClientSession(connector=connector, timeout=timeout)
+    return SESSION
 
 def parse_date(date_str: str) -> Optional[date]:
-    """Parse different date formats used in the API"""
+    """Optimized date parsing with pre-compiled patterns"""
     if not date_str:
         return None
     
-    try:
-        if re.match(r"^\d{4}-\d{2}-\d{2}$", date_str):  # YYYY-MM-DD
-            return datetime.strptime(date_str, "%Y-%m-%d").date()
-        elif re.match(r"^\d{4}-\d{2}$", date_str):  # YYYY-MM
-            return datetime.strptime(date_str, "%Y-%m").date()
-    except ValueError:
-        pass
+    for pattern, date_format in zip(DATE_PATTERNS, DATE_FORMATS):
+        if pattern.match(date_str):
+            try:
+                return datetime.strptime(date_str, date_format[1]).date()
+            except ValueError:
+                continue
     return None
 
+def get_cache_key(func_name: str, *args, **kwargs) -> Tuple:
+    """Optimized cache key generation"""
+    if func_name == "fakultas":
+        return ("fakultas",)
+    if func_name == "gedung":
+        return ("gedung", kwargs.get("fakultas", ""))
+    return args + (frozenset(kwargs.items()),)
+
 def cached(func_name: str):
-    """Decorator factory for caching with specific TTL"""
+    """Optimized caching decorator with LRU and TTL"""
     config = CACHE_CONFIG[func_name]
     
+    # Special case for unlimited TTL - use async_lru
+    if config["ttl"] is None:
+        def decorator(func):
+            cached_func = alru_cache(maxsize=config["size"])(func)
+            @wraps(func)
+            async def wrapper(*args, **kwargs):
+                return await cached_func(*args, **kwargs)
+            return wrapper
+        return decorator
+    
+    # For TTL-based caching
     def decorator(func):
+        cache = {}
+        timestamps = {}
+        keys_order = []
+        
         @wraps(func)
         async def wrapper(*args, **kwargs):
+            nonlocal cache, timestamps, keys_order
             cache_key = get_cache_key(func_name, *args, **kwargs)
+            now = time.monotonic()
             
-            # Check cache
-            if cache_key in caches[func_name]:
-                cached_time = cache_timestamps[func_name][cache_key]
-                if time.time() - cached_time < config["ttl"]:
-                    # Move to end of order (most recently used)
-                    if cache_key in cache_orders[func_name]:
-                        cache_orders[func_name].remove(cache_key)
-                    cache_orders[func_name].append(cache_key)
-                    return caches[func_name][cache_key]
+            # Cache hit
+            if cache_key in cache:
+                if now - timestamps[cache_key] < config["ttl"]:
+                    # Update access time and move to end
+                    timestamps[cache_key] = now
+                    keys_order.remove(cache_key)
+                    keys_order.append(cache_key)
+                    return cache[cache_key]
+                # Expired - remove
+                del cache[cache_key]
+                del timestamps[cache_key]
+                keys_order.remove(cache_key)
             
-            # Not in cache or expired - fetch fresh
+            # Cache miss - fetch fresh data
             result = await func(*args, **kwargs)
             
             # Add to cache
-            caches[func_name][cache_key] = result
-            cache_timestamps[func_name][cache_key] = time.time()
-            cache_orders[func_name].append(cache_key)
+            cache[cache_key] = result
+            timestamps[cache_key] = now
+            keys_order.append(cache_key)
             
-            # Enforce cache size
-            if len(caches[func_name]) > config["size"]:
-                oldest_key = cache_orders[func_name].pop(0)
-                del caches[func_name][oldest_key]
-                del cache_timestamps[func_name][oldest_key]
+            # Enforce size limit
+            if len(cache) > config["size"]:
+                oldest_key = keys_order.pop(0)
+                del cache[oldest_key]
+                del timestamps[oldest_key]
             
             return result
+        
         return wrapper
     return decorator
 
-async def fetch_with_retry(url: str, max_retries: int = 3):
-    """Helper function to fetch with retries"""
+async def fetch_with_retry(url: str, max_retries: int = 3, timeout: float = 5.0):
+    """Optimized fetch with retries using aiohttp"""
+    session = await get_session()
+    
     for attempt in range(max_retries):
         try:
-            response = requests.get(url, verify=False)
-            if response.status_code == 200:
-                return response.json()
-        except Exception as e:
+            async with session.get(url, ssl=False) as response:
+                if response.status == 200:
+                    text_response = await response.text()
+                    return orjson.loads(text_response)
+                elif response.status >= 500:
+                    await asyncio.sleep(1 * (attempt + 1))
+                    continue
+                response.raise_for_status()
+        except (aiohttp.ClientError, asyncio.TimeoutError) as e:
             if attempt == max_retries - 1:
                 raise e
             await asyncio.sleep(1 * (attempt + 1))
+    
+    raise aiohttp.ClientError(f"Failed after {max_retries} retries")
 
-# API functions with appropriate caching
+# API functions with optimized caching
 
 @cached("now")
 async def async_fetch_now(faculty: str = "", building: str = "", floor: str = ""):
@@ -142,3 +193,9 @@ async def async_fetch_lantai(fakultas: str, gedung: str):
     """Fetch floors list with no caching"""
     url = f"https://elisa.itb.ac.id/api/get-lantai?fakultas={fakultas}&gedung={gedung}"
     return await fetch_with_retry(url)
+
+async def close_session():
+    """Cleanup session when done"""
+    global SESSION
+    if SESSION and not SESSION.closed:
+        await SESSION.close()

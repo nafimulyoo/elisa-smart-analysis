@@ -2,7 +2,7 @@ from model.model import InitialPromptHandlerResult
 from mas_llm.prompts.initial_prompt import INITIAL_PROMPT
 import re
 from metagpt.actions import Action
-import json
+import orjson
 
 class RespondInitialPrompt(Action):
     name: str = "RespondInitialPrompt"
@@ -23,7 +23,7 @@ class RespondInitialPrompt(Action):
         
         json_string = match.group(1) if match else response
 
-        json_object = json.loads(json_string)
+        json_object = orjson.loads(json_string)
 
         result = InitialPromptHandlerResult(
             type=json_object.get("type"),
