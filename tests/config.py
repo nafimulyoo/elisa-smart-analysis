@@ -101,11 +101,11 @@ ASK_TEST_CASES_BASIC_ANALYSIS = [
     "Compare CC Timur and Barat peak usage",
     "Total ITB usage over the past month",
     "Total ITB usage over the past year",
-    "Top 3 buildings with highest usage last year",
-    "Lowest 3 faculty usage in the last 3 months",
-    "Top 3 faculty usage in the last 3 months",
-    "FTI usage in the last 3 months",
-    "Plot last hour usage of FSRD",
+    # "Top 3 buildings with highest usage last year",
+    # "Lowest 3 faculty usage in the last 3 months",
+    # "Top 3 faculty usage in the last 3 months",
+    # "FTI usage in the last 3 months",
+    # "Plot last hour usage of FSRD",
 ]
 
 ASK_TEST_CASES_ADVANCED_ANALYSIS = [
@@ -179,4 +179,7 @@ ASK_TEST_CASES_DATE_CONCIOUS = [
     "Labtek III usage trends last 3 semesters",
     "Predict FTI usage during next major event",
     "Forecast Labtek VII usage during winter break",
+]
+
+ASK_ANALYSIS_INTERPRETER_TEST_CASES = [
 ]

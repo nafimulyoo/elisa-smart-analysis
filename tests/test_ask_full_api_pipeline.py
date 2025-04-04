@@ -11,18 +11,23 @@ def test_client():
     session = requests.Session()
     yield session
     session.close()
-    
+
+
+@pytest.mark.asyncio    
 @pytest.mark.parametrize("question", ASK_TEST_CASES_WEB)
 def test_ask_web(test_client, question):
     url = f"/api/web/stream?prompt={question}"
     time_and_print_ask(test_client, url, "test_ask_web")
 
 
+@pytest.mark.asyncio
 @pytest.mark.parametrize("question", ASK_TEST_CASES_LINE)
 def test_ask_web(test_client, question):
     url = f"/api/web/stream?prompt={question}"
     time_and_print_ask(test_client, url, "test_ask_web")
 
+
+@pytest.mark.asyncio
 @pytest.mark.parametrize("question", ASK_TEST_CASES_WHATSAPP)
 def test_ask_web(test_client, question):
     url = f"/api/web/stream?prompt={question}"
