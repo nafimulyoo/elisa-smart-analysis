@@ -34,12 +34,17 @@ class ExecuteNbCode(Action):
     nb_client: NotebookClient
     console: Console
     interaction: str
-    timeout: int = 600
+    timeout: int
+
+    async def reset_nb(self):
+        """reset notebook"""
+        self.nb = nbformat.v4.new_notebook()
+        await self.reset()
 
     def __init__(
         self,
         nb=nbformat.v4.new_notebook(),
-        timeout=600,
+        timeout= 30,
     ):
         super().__init__(
             nb=nb,
@@ -117,13 +122,6 @@ class ExecuteNbCode(Action):
                 for tag in ["| INFO     | metagpt", "| ERROR    | metagpt", "| WARNING  | metagpt", "DEBUG"]
             ):
                 output_text = output["text"]
-            elif output["output_type"] == "display_data":
-                if "image/png" in output["data"]:
-                    self.show_bytes_figure(output["data"]["image/png"], self.interaction)
-                else:
-                    logger.info(
-                        f"{i}th output['data'] from nbclient outputs dont have image/png, continue next output ..."
-                    )
             elif output["output_type"] == "execute_result":
                 output_text = output["data"]["text/plain"]
             elif output["output_type"] == "error":
@@ -141,20 +139,6 @@ class ExecuteNbCode(Action):
 
             parsed_output.append(output_text)
         return is_success, ",".join(parsed_output)
-
-    def show_bytes_figure(self, image_base64: str, interaction_type: Literal["ipython", None]):
-        image_bytes = base64.b64decode(image_base64)
-        if interaction_type == "ipython":
-            from IPython.display import Image, display
-
-            display(Image(data=image_bytes))
-        else:
-            import io
-
-            from PIL import Image
-
-            image = Image.open(io.BytesIO(image_bytes))
-            image.show()
 
     def is_ipython(self) -> bool:
         try:

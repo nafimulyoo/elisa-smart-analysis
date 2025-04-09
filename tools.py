@@ -176,7 +176,7 @@ async def async_fetch_heatmap(start: str, end: str, faculty: str = "", building:
 @register_tool()
 async def async_fetch_compare(date: str):
     """
-    Fetch energy and cost comparison data for all faculties for a specific month.
+    Fetch energy and cost comparison data for all faculties for a specific month. Can also be used to get summary monthly data (total cost and energy) of each faculty efficiently
 
     Args:
         date (str): The month and year in 'YYYY-MM' format.
@@ -197,10 +197,10 @@ async def async_fetch_compare(date: str):
                     - "energy": The minimum energy consumption in the month. (kWh)
                     - "cost": The minimum cost associated with the energy consumption in the month. (Rupiah)
                 - "total": A dictionary with the total energy consumption and cost across all faculties in the month.
-                    - "energy": The total energy consumption in the month. (kWh)
+                    - "total": The total energy consumption in the month. (kWh)
                     - "cost": The total cost associated with the energy consumption in the month. (Rupiah)
                 - "average": A dictionary he average energy consumption and cost across all faculties in the month.
-                    - "energy": The average energy consumption in the month. (kWh)
+                    - "average": The average energy consumption in the month. (kWh)
                     - "cost": The average cost associated with the energy consumption in the month. (Rupiah)
             - "info": A list of dictionaries, each containing detailed information about a faculty:
                 - "faculty": The faculty name. (FTI, FSRD, etc.)

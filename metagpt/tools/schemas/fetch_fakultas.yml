@@ -1,6 +1,0 @@
-type: function
-description: 'Fetch a list of faculties. Returns: dict: A dictionary containing the
-  following key: - "fakultas": A list of dictionaries, each containing: - "label":
-  The display name of the faculty. - "value": The code for the faculty.'
-signature: ()
-parameters: ''

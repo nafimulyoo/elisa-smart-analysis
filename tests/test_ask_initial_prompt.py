@@ -1,7 +1,7 @@
 # tests/test_analysis_router.py
 import pytest
 import asyncio
-from tests.config import ASK_TEST_CASES_BASIC_KNOWLEDGE,  ASK_TEST_CASES_BASIC_KNOWLEDGE, ASK_TEST_CASES_UNRELEVANT, ASK_TEST_CASES_DATA_AVAILABILITY, ASK_TEST_CASES_RESPOND_INITIAL_PROMPT
+from tests.config import ASK_TEST_CASES_BASIC_KNOWLEDGE, ASK_TEST_CASES_UNRELEVANT, ASK_TEST_CASES_DATA_AVAILABILITY, ASK_TEST_CASES_RESPOND_INITIAL_PROMPT
 from mas_llm.roles.initial_prompt_handler import RespondInitialPrompt, AskAboutElisa, AskDataAvailability
 from tests.helper import prompt_expected_result_logger, prompt_and_result_logger
 import pytest
@@ -38,6 +38,6 @@ async def test_unrelevant(question):
 async def test_data_availability(question):
     ask_data_availability = AskDataAvailability()
     result = await ask_data_availability.run(question[0])
-    prompt_expected_result_logger(question[0], question[1], f"Type: {result.type}, Message: {result.message}", "test_data_availability")
+    prompt_expected_result_logger(question[0], question[1], result.type, "test_data_availability")
     assert result.type == question[1]
 

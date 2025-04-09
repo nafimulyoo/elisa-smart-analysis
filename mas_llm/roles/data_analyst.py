@@ -22,6 +22,12 @@ REACT_THINK_PROMPT = """
 # Context
 {context}
 
+# Note
+- If the attempt failed because of a code error, please provide a detailed explanation of the error and how to fix it.
+- If the attempt failed multiple times because of Error 500 when fetching data, don't take more action because the error might caused by internal server error or because the data is not available.
+- If the attempt failed because of data factor, do not ever use dummy data for substitution.
+- If the attempt failed multiple times because of timeout, don't take more action because the error might be caused by the user requirement is too complex or too much data needed. 
+
 Output a json following the format:
 ```json
 {{
@@ -42,7 +48,7 @@ class DataAnalyst(Role):
     tools: list[str] = []  # Use special symbol ["<all>"] to indicate use of all registered tools
     tool_recommender: ToolRecommender = None
     react_mode: Literal["plan_and_act", "react"] = "react"
-    max_react_loop: int = 10  # used for react mode
+    max_react_loop: int = 3  # used for react mode
 
     @model_validator(mode="after")
     def set_plan_and_tool(self):
@@ -61,9 +67,13 @@ class DataAnalyst(Role):
         return self.rc.working_memory
 
     # CHANGE MODE
-    def set_react_mode(self, react_mode: str, max_react_loop: int = 10, auto_run: bool = True):
+    def set_react_mode(self, react_mode: str, max_react_loop: int = 3, auto_run: bool = True):
         super()._set_react_mode(react_mode=react_mode, max_react_loop=max_react_loop, auto_run=auto_run)
         return
+    
+    async def reset_nb(self):
+        """reset notebook"""
+        await self.execute_code.reset_nb()
 
     # REACT MODE
     async def _think(self) -> bool:
@@ -109,7 +119,7 @@ class DataAnalyst(Role):
 
 
     # HELPER FUNCTIONS
-    async def _write_and_exec_code(self, max_retry: int = 3):
+    async def _write_and_exec_code(self, max_retry: int = 2):
         counter = 0
         success = False
 
@@ -146,9 +156,10 @@ class DataAnalyst(Role):
 
             if not success and counter >= max_retry:
                 logger.info("coding failed!")
-                review, _ = await self.planner.ask_review(auto_run=False, trigger=ReviewConst.CODE_REVIEW_TRIGGER)
-                if ReviewConst.CHANGE_WORDS[0] in review:
-                    counter = 0  # redo the task again with help of human suggestions
+                # review, _ = await self.planner.ask_review(auto_run=False, trigger=ReviewConst.CODE_REVIEW_TRIGGER)
+                # if ReviewConst.CHANGE_WORDS[0] in review:
+                #     counter = 0  # redo the task again with help of human suggestions
+                return "", "", ""
 
         return code, result, success
 
