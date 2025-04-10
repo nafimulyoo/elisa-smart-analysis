@@ -39,7 +39,19 @@ class ExecuteNbCode(Action):
     async def reset_nb(self):
         """reset notebook"""
         self.nb = nbformat.v4.new_notebook()
-        await self.reset()
+        # self.nb = {'nbformat': 4, 'nbformat_minor': 5, 'metadata': {}, 'cells': []}
+        await self.restart()
+        self.console = Console()
+
+    async def restart(self):
+        """reset NotebookClient"""
+        await self.terminate()
+
+        # sleep 1s to wait for the kernel to be cleaned up completely
+        # await asyncio.sleep(1)
+        # await self.build()
+        self.nb_client = NotebookClient(self.nb, timeout=self.timeout)
+
 
     def __init__(
         self,

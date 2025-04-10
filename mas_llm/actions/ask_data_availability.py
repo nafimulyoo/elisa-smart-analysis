@@ -1,7 +1,7 @@
 from model.model import InitialPromptHandlerResult
 import re
 from metagpt.actions import Action
-import orjson
+import json
 
 from mas_llm.prompts.initial_prompt import ASK_DATA_PROMPT
 from metagpt.rag.engines import SimpleEngine
@@ -34,7 +34,7 @@ class AskDataAvailability(Action):
         
         json_string = match.group(1) if match else response
 
-        json_object = orjson.loads(json_string)
+        json_object = json.loads(json_string)
 
         result = InitialPromptHandlerResult(
             type=json_object.get("type"),

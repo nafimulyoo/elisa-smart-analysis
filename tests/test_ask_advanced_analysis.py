@@ -4,7 +4,7 @@ import asyncio
 from tests.config import ASK_TEST_CASES_ADVANCED_ANALYSIS, ASK_TEST_CASES_DATE_CONCIOUS, ASK_TEST_CASES_FORECAST, ASK_TEST_CASES_CLUSTERING
 from mas_llm.roles.data_analyst import DataAnalyst
 from tests.helper import prompt_and_result_logger
-from tools import fetch_elisa_api_data
+from tools.tools import fetch_elisa_api_data
 from mas_llm.prompts.write_analysis_code import get_data_analyst_prompt
 from datetime import datetime
 from metagpt.utils.recovery_util import save_history

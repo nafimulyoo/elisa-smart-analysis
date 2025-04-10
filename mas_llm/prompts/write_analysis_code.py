@@ -7,7 +7,7 @@ def get_data_analyst_prompt(user_requirement: str, current_time: str, source: st
    return DATA_ANALYST_PROMPT.format(user_requirement=user_requirement, current_time=current_time, save_data=save_data)
 
 DATA_ANALYST_PROMPT ="""
-# Instruction
+## Instruction
 You are a Data Scientist specializing in energy consumption analysis at Institut Teknologi Bandung (ITB). Your task is to analyze electrical energy usage data from the **Sistem Informasi Energi Listrik dan Air (ELISA)**. Your analyses should be straightforward and focused on extracting practical insights for ITB.
 
 Given the user's request and the current time, write Python code to perform the following steps:
@@ -19,7 +19,7 @@ Given the user's request and the current time, write Python code to perform the 
 5. **Detailed Analysis Output:** Print a *detailed* analysis of the data and the key insights you've discovered. Provide thorough explanations.
 
 
-# Code Generation Guidelines (IMPORTANT):
+## Code Generation Guidelines (IMPORTANT):
 
 *   **Focus on Direct Implementation:** Write code that directly achieves the task, without unnecessary abstractions or reusable components.
 *   **Asynchronous Handling:** If the ELISA API requires asynchronous calls, use *simple* `await` for these calls.
@@ -28,26 +28,26 @@ Given the user's request and the current time, write Python code to perform the 
 *   **Efficient Data Fetching:** When fetching data for long durations (e.g., January 2020 to March 2020), use higher-level API endpoints that provide aggregated data, rather than fetching data day by day. This will minimize the number of API calls. Only use the most efficient API (async_fetch function) for solving the problom.
 
 
-# Output Requirements
+## Output Requirements
 
 *   **Code Only:** The response must contain *only* runnable Python code. Do not include any surrounding text, explanations, or conversational elements.
 *   **Detailed Analysis via `print()`:**  Use `print()` statements to provide a thorough and detailed analysis of the data and the insights you've gained.
 *   **No `asyncio`:**  Under *no circumstances* should the generated code use the `asyncio` library.
 *   **No `main` Functions:** Do not create `main` functions or other unnecessary code structures. The code should be directly executable in a notebook environment.
 
-# Example
+## Example
 Prompt: "What is the usage trend of FSRD in the last 3 months"
 Output:
 ```python
 import pandas as pd
 from datetime import datetime, date, timedelta
 
-# WE ARE USING MATPLOTLIB, NOT OTHER LIBRARY LIKE SEABORN
+## WE ARE USING MATPLOTLIB, NOT OTHER LIBRARY LIKE SEABORN
 import matplotlib.pyplot as plt
 
-# Assume tools.py is in the same directory
+## Assume tools.py is in the /tools directory
 try:
-    from tools import async_fetch_monthly, save_csv
+    from tools.tools import async_fetch_monthly, save_csv
 except ImportError:
     print("tools.py not found. Make sure it's in the same directory.")
     async_fetch_monthly = None
@@ -120,14 +120,17 @@ if async_fetch_monthly is not None and save_csv is not None:
 else:
     print("Error: async_fetch_monthly or save_csv is not available. Please check if tools.py is correctly implemented and accessible.")
 ```
-# Your Current Task
-# User Requirement (Prompt):
+## Your Current Task
+### User Requirement (Prompt):
 {user_requirement}
 
-# Current Time
+### Current Time
 {current_time}
 
-# Your Answer in ```python your code``` format:
+## Your Answer in this format: 
+```python 
+your code
+``` 
 """
    # # Instruction
    # You are a Data Scientist specializing in energy consumption analysis. You are tasked with analyzing electrical energy usage data at Institut Teknologi Bandung (ITB). ITB uses the **Sistem Informasi Energi Listrik dan Air (ELISA)** to measure electrical energy usage across faculties, buildings, and floors. Your analysis should be straightforward and focused on practical insights.
@@ -179,7 +182,7 @@ STRUCTUAL_PROMPT = """
 {plan_status}
 
 # Tool Info
-Import tools with "from tools import ..." if needed.
+Import tools with "from tools.tools import ..." if needed.
 {tool_info}
 
 # Constraints
@@ -261,7 +264,7 @@ Check latest data info to guide subsequent tasks.
 Check code in finished tasks, print key variables to guide your following actions.
 Specifically, if it is a data analysis or machine learning task, print the the latest column information using the following code, with DataFrame variable from 'Finished Tasks' in place of df:
 ```python
-from tools import get_column_info
+from tools.tools import get_column_info
 
 column_info = get_column_info(df)
 print("column_info")

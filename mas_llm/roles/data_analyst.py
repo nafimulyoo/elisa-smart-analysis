@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import orjson
+import json
 from typing import Literal
 
 from pydantic import Field, model_validator
@@ -9,11 +9,12 @@ from mas_llm.actions.ask_review import ReviewConst
 from mas_llm.actions.execute_nb_code import ExecuteNbCode
 from mas_llm.actions.write_analysis_code import CheckData, WriteAnalysisCode
 from mas_llm.prompts.write_analysis_code import DATA_INFO
+from tools.tool_recommend import BM25ToolRecommender, ToolRecommender
 from metagpt.logs import logger
+
 from metagpt.roles import Role
 from metagpt.schema import Message, Task, TaskResult
 from metagpt.strategy.task_type import TaskType
-from metagpt.tools.tool_recommend import BM25ToolRecommender, ToolRecommender
 from metagpt.utils.common import CodeParser
 
 REACT_THINK_PROMPT = """
@@ -65,6 +66,11 @@ class DataAnalyst(Role):
     @property
     def working_memory(self):
         return self.rc.working_memory
+    
+    def set_tools(self, tools: list[str]):
+        """Set tools for the DataAnalyst role."""
+        self.tools = tools
+        return
 
     # CHANGE MODE
     def set_react_mode(self, react_mode: str, max_react_loop: int = 3, auto_run: bool = True):
@@ -89,7 +95,7 @@ class DataAnalyst(Role):
 
         prompt = REACT_THINK_PROMPT.format(user_requirement=user_requirement, context=context)
         rsp = await self.llm.aask(prompt)
-        rsp_dict = orjson.loads(CodeParser.parse_code(block=None, text=rsp))
+        rsp_dict = json.loads(CodeParser.parse_code(block=None, text=rsp))
         self.working_memory.add(Message(content=rsp_dict["thoughts"], role="assistant"))
         need_action = rsp_dict["state"]
         self._set_state(0) if need_action else self._set_state(-1)
@@ -142,11 +148,13 @@ class DataAnalyst(Role):
         while not success and counter < max_retry:
             ### write code ###
             code, cause_by = await self._write_code(counter, plan_status, tool_info)
+            logger.info(f"CODE DONE")
 
             self.working_memory.add(Message(content=code, role="assistant", cause_by=cause_by))
 
             ### execute code ###
             result, success = await self.execute_code.run(code)
+
             print(result)
 
             self.working_memory.add(Message(content=result, role="user", cause_by=ExecuteNbCode))

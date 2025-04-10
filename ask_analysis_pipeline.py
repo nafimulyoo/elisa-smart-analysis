@@ -10,17 +10,19 @@ from datetime import datetime
 
 from mas_llm.prompts.write_analysis_code import get_data_analyst_prompt
 
-from tools import fetch_elisa_api_data
-from tools import save_csv, save_plot_image
-from tools import kmeans_clustering_auto
-from tools import prophet_forecast
+from tools.tools import fetch_elisa_api_data
+from tools.tools import save_csv, save_plot_image
+from tools.tools import kmeans_clustering_auto
+from loguru import logger as log
+from tools.tools import prophet_forecast
+import psutil
 
 import nbformat
 
 from metagpt.context import Context
 from metagpt.logs import logger
 
-test_response = False
+test_response = True
 
 class AskAnalysisPipeline:
     def __init__(self, source, example_mode=False):
@@ -29,46 +31,36 @@ class AskAnalysisPipeline:
         self.result = []
         self.progress_callback = None
 
-    async def set_progress_callback(self, callback):
-        """Set a callback to report progress"""
-        self.progress_callback = callback
-
-    async def update_progress(self, progress, message):
-        """Update the progress if a callback is set"""
-        if self.progress_callback:
-            # await self.progress_callback(progress, message)
-            self.progress_callback(progress, message)
-
-
     async def run(self, message):
+        # if test_response:
+        analysis_interpreter = AnalysisInterpreter()
+        prompt_validator=InitialPromptHandler()
+            
         if self.example_mode:
             return self.example_output(self.source)
+        
 
-        context = Context()
         logger.info(f"🎯 Prompt: {message}")
-        
-        # Initial prompt handling - 20% progress
-        await self.update_progress(20, "Analyzing request...")
+            
         logger.info(f"↗️ Forwarding to Initial Prompt Handler")
-        prompt_validator = InitialPromptHandler(context=context)
         prompt_validator_result = await prompt_validator.run(message)
-        
+            
         logger.info(f"↘️ Prompt Validator result: {prompt_validator_result}")
 
         if prompt_validator_result.type == "Final Answer" or prompt_validator_result.type == "Unrelevant":
-            await self.update_progress(50, "Answering question...")
             return self.early_response(prompt_validator_result.message)
 
         # 40% progress - Setting up tools
-        await self.update_progress(40, "Fetching data...")
-        tools = fetch_elisa_api_data
+        tools = []
+
+        # FOR TESTING ONLY
 
         if self.source == "web":
-            tools.append("save_csv")
+            tools = fetch_elisa_api_data + ["save_csv"]
             print(tools)
 
         if self.source == "line" or self.source == "whatsapp":
-            tools.append("save_plot_image")
+            tools = fetch_elisa_api_data + ["save_plot_image"]
 
         if prompt_validator_result.type == "Basic Analysis":
             logger.info(f"↗️ Forwarding to Basic Data Analyst")
@@ -80,90 +72,83 @@ class AskAnalysisPipeline:
             react_mode = "plan_and_act"
             tools += ["k_means_clustering_auto", "prophet_forecast"]
         
-        # 60% progress - Data analysis    
-        await self.update_progress(60, "Analyzing data...")
+        
+        data_analyst = DataAnalyst(tools=tools)
+        data_analyst.set_react_mode(react_mode=react_mode)
 
-        if not test_response:
-            data_analyst = DataAnalyst(tools=tools)
-            data_analyst.set_react_mode(react_mode=react_mode)
-            
-            
-            data_analyst_requirement = get_data_analyst_prompt(prompt_validator_result.message, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), self.source)
+        # initial prompt message 
+        data_analyst_requirement = get_data_analyst_prompt(message, datetime.now().strftime("%Y-%m-%d %H:%M:%S"), self.source)
 
-            logger.warning(f"NOTEBOOK BEFORE {data_analyst.execute_code.nb}")
-            await data_analyst.reset_nb()
-            data_analyst_result = await data_analyst.run(data_analyst_requirement)
+        await data_analyst.reset_nb()
+        logger.warning(f"NOTEBOOK: {data_analyst.execute_code.nb}")
+    
+        data_analyst_result = await data_analyst.run(data_analyst_requirement)
 
-            save_history(role=data_analyst, save_dir="mas_llm/data/output")
+        save_history(role=data_analyst, save_dir="mas_llm/data/output")
 
+        data_analyst_log = data_analyst.execute_code.nb.copy()
 
-            data_analyst_log = data_analyst.execute_code.nb.copy()
+        for cell in data_analyst_log.cells:
+            if "outputs" in cell:
+                for output in cell["outputs"]:
+                    if "data" in output and "image/png" in output["data"]:
+                        del output["data"]["image/png"]
+        
+        # logger.info(f"🟢 Data Analyst result: {data_analyst_log}")
 
-            logger.warning(f"NOTEBOOK AFTER {data_analyst.execute_code.nb}")
+        analysis_interpreter.set_source(self.source)
+        
+        logger.info(f"↗️ Forwarding to Analysis Interpreter")
+    
+        analysis_interpreter_result = await analysis_interpreter.run(f"{data_analyst_log}")
+        await data_analyst.reset_nb()
 
-            # delete data_analyst object
-            del data_analyst
+        log.remove()
+        del prompt_validator
+        del data_analyst
+        del analysis_interpreter
 
+        # else:
+        #     analysis_interpreter_result = [
+        #         {
+        #             "data_dir": "data/output/csv/example_one_column_data.csv",
+        #             "visualization_type": "bar_chart",
+        #             "explanation": "Simple data with bar chart"
+        #         },
+        #         {
+        #             "data_dir": "data/output/csv/example_one_column_data.csv",
+        #             "visualization_type": "line_chart",
+        #             "explanation": "Simple data with line chart"
+        #         },
+        #         {
+        #             "data_dir": "data/output/csv/example_two_column_data.csv",
+        #             "visualization_type": "bar_chart",
+        #             "explanation": "Multi data with bar chart"
+        #         },
+        #         {
+        #             "data_dir": "data/output/csv/example_two_column_data.csv",
+        #             "visualization_type": "line_chart",
+        #             "explanation": "Multi simple data with line chart"
+        #         },
+        #         {
+        #             "data_dir": "data/output/csv/example_cluster_data.csv",
+        #             "visualization_type": "scatter_plot",
+        #             "explanation": "Cluster data with scatter_plot"
+        #         },
+        #         {
+        #             "data_dir": "data/output/csv/example_very_long_data.csv",
+        #             "visualization_type": "",
+        #             "explanation": "Very long data (No Chart)"
+        #         },
+        #         {
+        #             "data_dir": "",
+        #             "visualization_type": "",
+        #             "explanation": "Analysis result with no data"
+        #         },
+        #     ]
+        # logger.info(f"🟢 Analysis Interpreter result: {analysis_interpreter_result}")
 
-            for cell in data_analyst_log.cells:
-                if "outputs" in cell:
-                    for output in cell["outputs"]:
-                        if "data" in output and "image/png" in output["data"]:
-                            del output["data"]["image/png"]
-            
-            logger.info(f"🟢 Data Analyst result: {data_analyst_log}")
-
-            # 80% progress - Interpreting results
-            await self.update_progress(80, "Interpreting results...")
-            analysis_interpreter = AnalysisInterpreter(context=context)
-            analysis_interpreter.set_source(self.source)
-            
-            logger.info(f"↗️ Forwarding to Analysis Interpreter")
-
-            analysis_interpreter_result = await analysis_interpreter.run(f"{data_analyst_log}")
-
-        else:
-            analysis_interpreter_result = [
-                {
-                    "data_dir": "data/output/csv/example_one_column_data.csv",
-                    "visualization_type": "bar_chart",
-                    "explanation": "Simple data with bar chart"
-                },
-                {
-                    "data_dir": "data/output/csv/example_one_column_data.csv",
-                    "visualization_type": "line_chart",
-                    "explanation": "Simple data with line chart"
-                },
-                {
-                    "data_dir": "data/output/csv/example_two_column_data.csv",
-                    "visualization_type": "bar_chart",
-                    "explanation": "Multi data with bar chart"
-                },
-                {
-                    "data_dir": "data/output/csv/example_two_column_data.csv",
-                    "visualization_type": "line_chart",
-                    "explanation": "Multi simple data with line chart"
-                },
-                {
-                    "data_dir": "data/output/csv/example_cluster_data.csv",
-                    "visualization_type": "scatter_plot",
-                    "explanation": "Cluster data with scatter_plot"
-                },
-                {
-                    "data_dir": "data/output/csv/example_very_long_data.csv",
-                    "visualization_type": "",
-                    "explanation": "Very long data (No Chart)"
-                },
-                {
-                    "data_dir": "",
-                    "visualization_type": "",
-                    "explanation": "Analysis result with no data"
-                },
-            ]
-        logger.info(f"🟢 Analysis Interpreter result: {analysis_interpreter_result}")
-
-        # 100% progress - Completed
-        await self.update_progress(100, "Finalization...")
+        
         
         return analysis_interpreter_result
 

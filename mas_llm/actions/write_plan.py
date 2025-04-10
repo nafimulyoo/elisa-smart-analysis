@@ -15,7 +15,7 @@ from metagpt.logs import logger
 from metagpt.schema import Message, Plan, Task
 from metagpt.strategy.task_type import TaskType
 from metagpt.utils.common import CodeParser
-import orjson
+import json
 
 class WritePlan(Action):
     PROMPT_TEMPLATE: str = """
@@ -52,7 +52,7 @@ class WritePlan(Action):
 
 
 def update_plan_from_rsp(rsp: str, current_plan: Plan):
-    rsp = orjson.loads(rsp)
+    rsp = json.loads(rsp)
     tasks = [Task(**task_config) for task_config in rsp]
 
     if len(tasks) == 1 or tasks[0].dependent_task_ids:

@@ -6,7 +6,7 @@ from typing import Optional, Tuple, Any, Dict, List
 import re
 import aiohttp
 from async_lru import alru_cache
-import orjson
+import json
 
 # Constants
 DATE_FORMATS = (
@@ -133,7 +133,7 @@ async def fetch_with_retry(url: str, max_retries: int = 3, timeout: float = 5.0)
             async with session.get(url, ssl=False) as response:
                 if response.status == 200:
                     text_response = await response.text()
-                    return orjson.loads(text_response)
+                    return json.loads(text_response)
                 elif response.status >= 500:
                     await asyncio.sleep(1 * (attempt + 1))
                     continue

@@ -2,6 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import sys
 print(sys.path)
+# In your FastAPI app
+import psutil
+import os
 
 from routers.ask import ask_router
 from routers.analysis import analysis_router
@@ -11,6 +14,21 @@ from routers.data import data_router
 from config import settings
 
 app = FastAPI()
+
+
+def kill_fastapi_processes():
+    for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
+        if 'fastapi' in ' '.join(proc.info['cmdline'] or []):
+            proc.kill()
+
+@app.middleware("http")
+async def restart_on_memory_limit(request, call_next):
+    os.system("pkill -f ipykernel_launcher")
+    if psutil.virtual_memory().percent > 80: 
+        kill_fastapi_processes()
+        os.system("fast run index.py")
+        return {"message": "Restarting FastAPI..."}
+    return await call_next(request)
 
 app.add_middleware(
     CORSMiddleware,
@@ -24,6 +42,10 @@ app.include_router(analysis_router)
 app.include_router(ask_router)
 app.include_router(health_router)
 app.include_router(data_router)
+
+@app.get("/test")
+async def test():
+    return {"hello": "world"}
 
 
 # from fastapi import FastAPI, Request
