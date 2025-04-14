@@ -5,13 +5,11 @@ import csv
 from ask_analysis_pipeline import AskAnalysisPipeline
 from config import settings
 
-import objgraph
 import psutil
 from loguru import logger as log
 
 from fastapi.responses import FileResponse
 
-from pyinstrument import Profiler
 from functools import wraps
 import time
 
@@ -51,20 +49,27 @@ whatsapp_pipeline = AskAnalysisPipeline(source="whatsapp", example_mode=example_
 @ask_router.get("/api/web")
 # @profile_endpoint()
 async def web_api(prompt):
+    print("Prompt received:", prompt)
     result = await web_pipeline.run(prompt)
 
-    # for res in result:
-    #     data = []
-    #     if res["data_dir"] == "":
-    #         res["data"] = data
-    #         continue
+    for res in result:
+       
+        data = []
+        if res["data_dir"] == "":
+            res["data"] = data
+            continue
 
-    #     with open(res["data_dir"]) as csvf:
-    #         csvReader = csv.DictReader(csvf)
-    #         for rows in csvReader:
-    #             data.append(rows)
-    #     res["data"] = data
-    #     del res["data_dir"]
+        try:
+            with open(res["data_dir"]) as csvf:
+                csvReader = csv.DictReader(csvf)
+                for rows in csvReader:
+                    data.append(rows)
+            res["data"] = data
+        except Exception as e:
+            log.error(f"Error reading CSV file: {e}")
+            res["data"] = []
+        
+        del res["data_dir"]
     log_file_path = f"memory.log"
     log.add(log_file_path, level="INFO", format="{time:YYYY-MM-DD HH:mm:ss} | {level} | {message}")
     log.info("MEMORY: " + str(psutil.virtual_memory()))

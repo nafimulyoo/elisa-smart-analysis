@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from typing import Literal
+from tenacity import retry, stop_after_attempt
 
 from pydantic import Field, model_validator
 
@@ -94,8 +95,14 @@ class DataAnalyst(Role):
             return True
 
         prompt = REACT_THINK_PROMPT.format(user_requirement=user_requirement, context=context)
-        rsp = await self.llm.aask(prompt)
-        rsp_dict = json.loads(CodeParser.parse_code(block=None, text=rsp))
+
+        @retry(stop=stop_after_attempt(3))
+        async def ask_llm(prompt):
+            rsp = await self.llm.aask(prompt)
+            rsp_dict = json.loads(CodeParser.parse_code(block=None, text=rsp))
+            return rsp_dict
+
+        rsp_dict = await ask_llm(prompt)
         self.working_memory.add(Message(content=rsp_dict["thoughts"], role="assistant"))
         need_action = rsp_dict["state"]
         self._set_state(0) if need_action else self._set_state(-1)

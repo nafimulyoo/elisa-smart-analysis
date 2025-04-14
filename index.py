@@ -24,10 +24,10 @@ def kill_fastapi_processes():
 @app.middleware("http")
 async def restart_on_memory_limit(request, call_next):
     os.system("pkill -f ipykernel_launcher")
-    if psutil.virtual_memory().percent > 80: 
-        kill_fastapi_processes()
-        os.system("fast run index.py")
-        return {"message": "Restarting FastAPI..."}
+#     if psutil.virtual_memory().percent > 80: 
+#         kill_fastapi_processes()
+#         os.system("fast run index.py")
+#         return {"message": "Restarting FastAPI..."}
     return await call_next(request)
 
 app.add_middleware(

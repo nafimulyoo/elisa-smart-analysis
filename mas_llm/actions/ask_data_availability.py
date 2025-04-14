@@ -5,7 +5,7 @@ import json
 
 from mas_llm.prompts.initial_prompt import ASK_DATA_PROMPT
 from metagpt.rag.engines import SimpleEngine
-from metagpt.rag.schema import FAISSRetrieverConfig, BM25RetrieverConfig, LLMRankerConfig
+from metagpt.rag.schema import BM25RetrieverConfig, LLMRankerConfig
 
 DOC_PATH = "mas_llm/rag/data/elisa/data_availability.txt"
 
