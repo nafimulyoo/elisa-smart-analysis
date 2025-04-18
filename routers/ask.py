@@ -53,10 +53,9 @@ async def web_api(prompt):
     result = await web_pipeline.run(prompt)
 
     for res in result:
-       
         data = []
         if res["data_dir"] == "":
-            res["data"] = data
+            res["data"] = []
             continue
 
         try:

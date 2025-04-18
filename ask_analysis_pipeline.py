@@ -99,8 +99,9 @@ class AskAnalysisPipeline:
         analysis_interpreter.set_source(self.source)
         
         logger.info(f"↗️ Forwarding to Analysis Interpreter")
-    
+        logger.info(f"🟢 Analysis Interpreter: Interpreting analysis: {data_analyst_log}")
         analysis_interpreter_result = await analysis_interpreter.run(f"{data_analyst_log}")
+        logger.info(f"🟢 Analysis Interpreter: Interpreting analysis Result: {analysis_interpreter_result}")
         await data_analyst.reset_nb()
 
         log.remove()
