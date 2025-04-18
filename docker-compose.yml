@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:  
+  elisa-smart-analysis-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: elisa-smart-analysis-app
+    network_mode: "container:vpn-itb" 
+    restart: unless-stopped
+    
+  vpn-itb:
+    image: qmcgaw/gluetun
+    container_name: vpn-itb
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - ./vpn-config:/gluetun/vpn-config:ro
+    environment:
+      - VPN_SERVICE_PROVIDER=custom
+      - VPN_TYPE=openvpn
+      - HTTPPROXY=on
+      - OPENVPN_CUSTOM_CONFIG=/gluetun/vpn-config/itb-2022-mac.conf
+      - OPENVPN_USER=13321029@mahasiswa.itb.ac.id
+      - OPENVPN_PASSWORD=secret_value
+      - LOG_LEVEL=debug
+      - HEALTH_TARGET_ADDRESS=elisa.itb.ac.id:433
+      - HEALTH_VPN_DURATION_INITIAL=1000s
+      - HEALTH_VPN_DURATION_ADDITION=1000s
+      - HEALTH_SUCESS_WAIT_DURATION=6000s
+      - BLOCK_MALICIOUS=false
+    restart: unless-stopped
+    ports:
+      - 8080:8080

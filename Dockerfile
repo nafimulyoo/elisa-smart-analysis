@@ -1,19 +1,30 @@
-# Use an official Python runtime as a parent image
 FROM python:3.9-slim
 
-# Install Git and other system dependencies
+# Set environment variables
+# ENV PYTHONDONTWRITEBYTECODE 1
+# ENV PYTHONUNBUFFERED 1
+
+ENV LLM_API_KEY AIzaSyBtS1Db2S-H1Rx4Sl2UeOBtltYy_ta5cw4
+ENV EMB_API_KEY AIzaSyBtS1Db2S-H1Rx4Sl2UeOBtltYy_ta5cw4
+
+# Install system dependencies
 RUN apt-get update && \
     apt-get install -y git && \
     rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first to leverage Docker cache
+# Set working directory
+WORKDIR /app
+
+# Copy and install requirements
 COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy the rest of the application
+# Copy application code
 COPY . .
 
-# Run the FastAPI app on port 8080 (Cloud Run's default)
-CMD ["uvicorn", "index:app", "--host", "0.0.0.0", "--port", "8080", "--workers", "4"]
+# Expose port (informational only, actual port is managed by gluetun)
+EXPOSE 8080
+
+# Run the application
+CMD ["uvicorn", "index:app", "--host", "0.0.0.0", "--port", "8080", "--reload"]

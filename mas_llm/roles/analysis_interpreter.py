@@ -19,12 +19,11 @@ class AnalysisInterpreter(Role):
     def set_source(self, source):
         self.source = source
 
-    async def _act(self):
+    async def run(self, message):
         logger.info(f"🟢 AnalysisInterpreter: Interpreting analysis")
-        msg = self.get_memories(k=1)[0]
 
         logger.info(f"⚠️ AnalysisInterpreter: Interpreting...")
-        result = await self.interpret_result.run(instruction=msg.content, source=self.source)
+        result = await self.interpret_result.run(instruction=message, source=self.source)
 
         return result
     
