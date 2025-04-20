@@ -2,9 +2,9 @@ from fastapi import HTTPException
 from model.model import AnalysisResultWeb, AnalysisResultLINE, AnalysisResultWhatsApp
 from metagpt.utils.recovery_util import save_history
 
-from mas_llm.roles.initial_prompt_handler import InitialPromptHandler
+from mas_llm.actions.handle_initial_prompt import handleInitialPrompt
+from mas_llm.actions.interpret_result import InterpretResult
 from mas_llm.roles.data_analyst import DataAnalyst
-from mas_llm.roles.analysis_interpreter import AnalysisInterpreter
 
 from datetime import datetime
 
@@ -32,9 +32,6 @@ class AskAnalysisPipeline:
         self.progress_callback = None
 
     async def run(self, message):
-        # if test_response:
-        analysis_interpreter = AnalysisInterpreter()
-        prompt_validator=InitialPromptHandler()
             
         if self.example_mode:
             return self.example_output(self.source)
@@ -43,7 +40,7 @@ class AskAnalysisPipeline:
         logger.info(f"🎯 Prompt: {message}")
             
         logger.info(f"↗️ Forwarding to Initial Prompt Handler")
-        prompt_validator_result = await prompt_validator.run(message)
+        prompt_validator_result = await handleInitialPrompt(message)
             
         logger.info(f"↘️ Prompt Validator result: {prompt_validator_result}")
 
@@ -52,8 +49,6 @@ class AskAnalysisPipeline:
 
         # 40% progress - Setting up tools
         tools = []
-
-        # FOR TESTING ONLY
 
         if self.source == "web":
             tools = fetch_elisa_api_data + ["save_csv"]
@@ -64,7 +59,7 @@ class AskAnalysisPipeline:
 
         if prompt_validator_result.type == "Basic Analysis":
             logger.info(f"↗️ Forwarding to Basic Data Analyst")
-            # react_mode = "plan_and_act"
+
             react_mode = "react"
 
         if prompt_validator_result.type == "Advanced Analysis":
@@ -95,19 +90,31 @@ class AskAnalysisPipeline:
                         del output["data"]["image/png"]
         
         # logger.info(f"🟢 Data Analyst result: {data_analyst_log}")
-
-        analysis_interpreter.set_source(self.source)
         
         logger.info(f"↗️ Forwarding to Analysis Interpreter")
         logger.info(f"🟢 Analysis Interpreter: Interpreting analysis: {data_analyst_log}")
-        analysis_interpreter_result = await analysis_interpreter.run(f"{data_analyst_log}")
+
+        interpret_result = InterpretResult()
+        analysis_interpreter_result = await interpret_result.run(instruction=f"{data_analyst_log}", source=self.source)
         logger.info(f"🟢 Analysis Interpreter: Interpreting analysis Result: {analysis_interpreter_result}")
         await data_analyst.reset_nb()
 
         log.remove()
-        del prompt_validator
+        del interpret_result
         del data_analyst
-        del analysis_interpreter
+
+        print("Killing ipykernel processes...")
+        for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
+            print(f"Checking process {proc.info['cmdline']} with PID {proc.info['name']}")
+            try:
+                if isinstance(proc.info['cmdline'], list):
+                    proc.info['cmdline'] = ' '.join(proc.info['cmdline'])
+                if "ipykernel" in proc.info['cmdline']:
+                    print(f"Killing process {proc.info['cmdline']} with PID {proc.info['name']}")
+                    proc.kill()
+            except:
+                pass
+
 
         # else:
         #     analysis_interpreter_result = [
@@ -153,49 +160,6 @@ class AskAnalysisPipeline:
         
         return analysis_interpreter_result
 
-    def example_output(self, type):
-        if type == "web":
-            result = [
-                AnalysisResultWeb(
-                    data={"example_key": "example_value"},
-                    visualization_type="bar_chart",
-                    explanation="1. This is an example explanation for the analysis."
-                ),
-                AnalysisResultWeb(
-                    data={"example_key": "example_value"},
-                    visualization_type="line_chart",
-                    explanation="2. This is an example explanation for the analysis."
-                ),
-            ]
-            return result
-        elif type == "line":
-            result = [
-                AnalysisResultLINE(
-                    image_url="https://example.com/image.png",
-                    explanation="1. This is an example explanation for the LINE analysis."
-                ),
-                AnalysisResultLINE(
-                    image_url="https://example.com/image.png",
-                    explanation="2. This is an example explanation for the LINE analysis."
-                )
-            ]
-            return result
-
-        elif type == "whatsapp":
-            result = [
-                AnalysisResultWhatsApp(
-                    image_url="https://example.com/image.png",
-                    explanation="1. This is an example explanation for the WhatsApp analysis."
-                ),
-                AnalysisResultWhatsApp(
-                    image_url="https://example.com/image.png",
-                    explanation="2. This is an example explanation for the WhatsApp analysis."
-                )
-            ]
-            return result
-        else :
-            logger.error(f"❌ Unknown source type: {type}")
-            raise HTTPException(status_code=500, detail="Unknown source type")
         
     def early_response(self, message):
         if self.source == "web":

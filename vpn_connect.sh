@@ -13,7 +13,7 @@ chmod 600 /dev/net/tun
 connect_vpn() {
     echo "Connecting to VPN..."    
     openvpn3 config-remove --config MAS-LLM_ITB
-    openvpn3 config-import --config ./vpn_itb/itb-2022-mac.ovpn --name MAS-LLM_ITB
+    openvpn3 config-import --config ./vpn-config/itb-2022-mac.ovpn --name MAS-LLM_ITB
     openvpn3 config-manage --config MAS-LLM_ITB --allow-compression yes
     openvpn3 session-start --config MAS-LLM_ITB
     

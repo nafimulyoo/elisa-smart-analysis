@@ -1,6 +1,7 @@
 logs
 config2.yaml
 login.conf 
+Dockerfile.dev
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

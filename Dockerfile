@@ -4,8 +4,6 @@ FROM python:3.9-slim
 # ENV PYTHONDONTWRITEBYTECODE 1
 # ENV PYTHONUNBUFFERED 1
 
-ENV LLM_API_KEY AIzaSyBtS1Db2S-H1Rx4Sl2UeOBtltYy_ta5cw4
-ENV EMB_API_KEY AIzaSyBtS1Db2S-H1Rx4Sl2UeOBtltYy_ta5cw4
 
 # Install system dependencies
 RUN apt-get update && \
@@ -22,6 +20,10 @@ RUN pip install --no-cache-dir --upgrade pip && \
 
 # Copy application code
 COPY . .
+
+ENV LLM_API_KEY=AIzaSyA-fdOs-FmQ9_r-VCS-n5HuTnr2yAWi-os
+ENV EMB_API_KEY=AIzaSyA-fdOs-FmQ9_r-VCS-n5HuTnr2yAWi-os
+
 
 # Expose port (informational only, actual port is managed by gluetun)
 EXPOSE 8080

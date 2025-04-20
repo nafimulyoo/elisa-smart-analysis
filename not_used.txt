@@ -1,9 +1,7 @@
 /home/nafimulyo/TA/elisa-smart-analysis/config/config.py
-/home/nafimulyo/TA/elisa-smart-analysis/config_generator.py
 /home/nafimulyo/TA/elisa-smart-analysis/dep_analyzer.py
 /home/nafimulyo/TA/elisa-smart-analysis/mas_llm/__init__.py
 /home/nafimulyo/TA/elisa-smart-analysis/mas_llm/actions/__init__.py
-/home/nafimulyo/TA/elisa-smart-analysis/mas_llm/actions/result_interpreter.py
 /home/nafimulyo/TA/elisa-smart-analysis/mas_llm/actions/write_plan.py
 /home/nafimulyo/TA/elisa-smart-analysis/mas_llm/prompts/__init__.py
 /home/nafimulyo/TA/elisa-smart-analysis/mas_llm/roles/__init__.py

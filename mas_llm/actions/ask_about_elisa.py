@@ -2,7 +2,6 @@ from metagpt.actions import Action
 from metagpt.rag.engines import SimpleEngine
 from metagpt.rag.schema import BM25RetrieverConfig
 import os
-from metagpt.logs import logger
 from mas_llm.prompts.initial_prompt import ASK_ELISA_PROMPT
 
 ELISA_DOC_PATH = "mas_llm/rag/data/elisa"

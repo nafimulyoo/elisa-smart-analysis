@@ -3,7 +3,6 @@ from fastapi import APIRouter
 import csv
 
 from ask_analysis_pipeline import AskAnalysisPipeline
-from config import settings
 
 import psutil
 from loguru import logger as log
@@ -15,6 +14,7 @@ import time
 
 ask_router = APIRouter(tags=["ask"]) #Added tags
 
+image_host_url = "http://localhost:8000/image"
 example_mode = False  # Consider putting this in the config
 
 web_pipeline = AskAnalysisPipeline(source="web", example_mode=example_mode)
@@ -83,7 +83,7 @@ async def line_api(prompt):
     result = await line_pipeline.run(prompt)
 
     for res in result:
-        res["image_url"] = res["image_dir"].replace("data/output/images/", f"{settings.host_url}/image/")
+        res["image_url"] = res["image_dir"].replace("data/output/images/", f"{image_host_url}/image/")
         del res["image_dir"]
 
     return result
@@ -93,7 +93,7 @@ async def whatsapp_api(prompt):
     result = await whatsapp_pipeline.run(prompt)
 
     for res in result:
-        res["image_url"] = res["image_dir"].replace("data/output/images/", f"{settings.host_url}/image/")
+        res["image_url"] = res["image_dir"].replace("data/output/images/", f"{image_host_url}/image/")
         del res["image_dir"]
 
 @ask_router.get("/image/{image_id}")

@@ -1,4 +1,3 @@
-from model.model import InitialPromptHandlerResult
 from mas_llm.prompts.interpret_result import INTERPRET_RESULT_WEB_PROMPT, INTERPRET_RESULT_LINE_PROMPT, INTERPRET_RESULT_WHATSAPP_PROMPT
 import re
 from metagpt.actions import Action
