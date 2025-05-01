@@ -8,22 +8,30 @@ from metagpt.rag.engines import SimpleEngine
 from metagpt.rag.schema import BM25RetrieverConfig, LLMRankerConfig
 
 DOC_PATH = "mas_llm/rag/data/elisa/data_availability.txt"
+DOC_SUMMARY = "mas_llm/rag/data/elisa/data_availability_summary.txt"
 
 class AskDataAvailability(Action):
 
     name: str = "AskDataAvailability"
 
     async def run(self, instruction: str):
-        prompt = ASK_DATA_PROMPT.format(instruction=instruction)
+        with open(DOC_PATH, "r") as f:
+            data = f.read()
 
-        engine = SimpleEngine.from_docs(
-            input_files=[DOC_PATH],
-            retriever_configs=[BM25RetrieverConfig()]
-        )
+        prompt = ASK_DATA_PROMPT.format(instruction=instruction, data=data)
 
-        response = await engine.aquery(prompt)
+        # engine = SimpleEngine.from_docs(
+        #     input_files=[DOC_PATH],
+        #     retriever_configs=[BM25RetrieverConfig()]
+        # )
+
+        # response = await engine.aquery(prompt)
+
+        # result = self.parse_json(response.response)
+
+        response = await self._aask(prompt)
+        result = self.parse_json(response)
         
-        result = self.parse_json(response.response)
 
         return result
 

@@ -1,0 +1,18 @@
+type: async_function
+description: 'Forecast daily energy usage data for a specific faculty, building, and
+  floor for the next specified days. The forecast is based on historical data and
+  uses the Prophet model for time series forecasting. Energy usage in kWh. Only get
+  the history if user wanted it. '
+signature: '(faculty: str = '''', building: str = '''', floor: str = '''', days_to_forecast:
+  int = 30)'
+parameters: 'Args: faculty (str, optional): Filter by faculty code (e.g., ''FTI'').
+  building (str, optional): Filter by building code (e.g., ''LABTEK IV''). floor (str,
+  optional): Filter by floor code (e.g., ''LANTAI 1''). days_to_forecast (int, optional):
+  Number of days to forecast ahead. Default is 7. Returns: tuple[pd.DataFrame, pd.DataFrame]:
+  A tuple containing two pandas DataFrames: - The first DataFrame contains historical
+  energy usage data with ''datetime'' and ''energy_usage'' columns. The date time
+  is in ''YYYY-MM-DD'' format. - The second DataFrame contains forecasted energy usage
+  data with ''datetime'', ''predicted_energy_usage'', ''predicted_energy_lower'',
+  and ''predicted_energy_upper'' columns. The date time is in ''YYYY-MM-DD'' format.
+  Raises: Exception: If the API request fails. Example: history_df, forecast_df =
+  forecast_energy_daily(faculty="FTI", building="LABTEK IV", days_to_forecast=7)'

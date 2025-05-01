@@ -8,7 +8,6 @@ from tools.tools import fetch_elisa_api_data
 from mas_llm.prompts.write_analysis_code import get_data_analyst_prompt
 from datetime import datetime
 from metagpt.utils.recovery_util import save_history
-import pytest
 
 source = ["web", "line", "whatsapp"]
 

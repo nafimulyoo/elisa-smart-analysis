@@ -20,7 +20,7 @@ from metagpt.tools.tool_registry import register_tool
 
 
 
-fetch_elisa_api_data = ["async_fetch_compare", "async_fetch_heatmap", "async_fetch_monthly", "async_fetch_daily", "async_fetch_now", "async_fetch_fakultas", "async_fetch_gedung", "async_fetch_lantai"]
+fetch_elisa_api_data = ["async_fetch_compare", "async_fetch_heatmap", "async_fetch_now", "async_fetch_fakultas", "async_fetch_gedung", "async_fetch_lantai", "async_fetch_daily_specific_date", "async_fetch_monthly_specific_month", "async_fetch_daily_from_x_to_y", "async_fetch_monthly_from_x_to_y", "async_forecast_energy_hourly", "async_forecast_energy_daily"]
 
 
 @register_tool()
@@ -60,7 +60,7 @@ async def async_fetch_now(faculty: str = "", building: str = "", floor: str = ""
         raise Exception(f"Failed to fetch data: {response.status_code}")
  
 @register_tool()
-async def async_fetch_daily(date: str, faculty: str = "", building: str = "", floor: str = ""):
+async def async_fetch_daily_specific_date(date: str, faculty: str = "", building: str = "", floor: str = ""):
     """
     Fetch daily energy and cost data for a specific date.
 
@@ -101,7 +101,7 @@ async def async_fetch_daily(date: str, faculty: str = "", building: str = "", fl
         raise Exception(f"Failed to fetch data: {response.status_code}")
 
 @register_tool()
-async def async_fetch_monthly(date: str, faculty: str = "", building: str = "", floor: str = ""):
+async def async_fetch_monthly_specific_month(date: str, faculty: str = "", building: str = "", floor: str = ""):
     """
     Fetch monthly energy and cost data for a specific month.
 
@@ -143,6 +143,90 @@ async def async_fetch_monthly(date: str, faculty: str = "", building: str = "", 
     else:
         raise Exception(f"Failed to fetch data: {response.status_code}")
 
+@register_tool()
+async def async_fetch_daily_from_x_to_y(start: str, end: str, faculty: str = "", building: str = "", floor: str = ""):
+    """
+    Fetch daily energy and cost data for a specific date range. Returns all data in a dictionary with date as key in 'YYYY-MM-DD' format.
+
+    Args:
+        start (str): The start date in 'YYYY-MM-DD' format.
+        end (str): The end date in 'YYYY-MM-DD'
+        faculty (str, optional): Filter by faculty code (e.g., 'FTI').
+        building (str, optional): Filter by building code (e.g., 'LABTEK IV').
+        floor (str, optional): Filter by floor code (e.g., 'LANTAI 1').
+    Returns:
+        dict: A dictionary with date as key in 'YYYY-MM-DD' format, and value as a dictionary containing:
+            - "chart_data": A list of dictionaries, each containing:
+                - "timestamp": The timestamp for the data point in 'YYYY-MM-DD HH:MM:SS' format.
+                - "R": Energy consumption for phase R. (kWh) 
+                - "S": Energy consumption for phase S. (kWh)
+                - "T": Energy consumption for phase T. (kWh)
+            - "hourly_data": A list of dictionaries, each containing:
+                - "hour": The hour of the day in 'HH:00' format, measured per one hour.
+                - "cost": The cost for the hour. (Rupiah)
+                - "energy": The energy consumption for the hour. (kWh)
+            - "today_data": A dictionary containing:
+                - "total_daya": Total energy consumption for the day. (kWh)
+                - "avg_daya": Average energy consumption per hour. (kWh/hour)
+                - "total_cost": Total cost for the day. (Rupiah)
+                - "avg_cost": Average cost per hour. (Rupiah/hour)
+            - "prev_month_data": A dictionary containing:
+                - "total_daya": Total energy consumption for the month. (kWh)
+                - "day_daya": Average energy consumption per day. (kWh/day)
+                - "total_cost": Total cost for the month. (Rupiah)
+                - "day_cost": Average cost per day. (Rupiah/day)
+    """
+
+    url = f"http://localhost:8080/api/daily/from-to?start_date={start}&end_date={end}&faculty={faculty}&building={building}&floor={floor}"
+    response = requests.get(url, verify=False)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        raise Exception(f"Failed to fetch data: {response.status_code}")
+
+@register_tool()
+async def async_fetch_monthly_from_x_to_y(start: str, end: str, faculty: str = "", building: str = "", floor: str = ""):
+    """
+    Fetch monthly energy and cost data for a specific month range. Returns all data in a dictionary with date as key in 'YYYY-MM' format.
+
+    Args:
+        start (str): The start date in 'YYYY-MM' format.
+        end (str): The end date in 'YYYY-MM'
+        faculty (str, optional): Filter by faculty code (e.g., 'FTI').
+        building (str, optional): Filter by building code (e.g., 'LABTEK IV').
+        floor (str, optional): Filter by floor code (e.g., 'LANTAI 1').
+    Returns:
+        dict: A dictionary with date as key in 'YYYY-MM' format, and value as a dictionary containing:
+            - "chart_data": A list of dictionaries, each containing:
+                - "timestamp": The timestamp for the data point in 'YYYY-MM-DD HH:MM:SS' format.
+                - "R": Energy consumption for phase R. (kWh) 
+                - "S": Energy consumption for phase S. (kWh)
+                - "T": Energy consumption for phase T. (kWh)
+            - "daily_data": A list of dictionaries, each containing:
+                - "timestamp": The timestamp for the data point in 'YYYY-MM-DD HH:MM:SS' format.
+                - "cost": The cost for the day. (Rupiah)
+                - "energy": The energy consumption for the day. (kWh)
+                - "phase 1": Energy consumption for phase 1 (R). (kWh)
+                - "phase 2": Energy consumption for phase 2 (S). (kWh)
+                - "phase 3": Energy consumption for phase 3 (T). (kWh)
+            - "month_data": A dictionary containing:
+                - "total_daya": Total energy consumption for the month. (kWh)
+                - "avg_daya": Average energy consumption per day. (kWh/day)
+                - "total_cost": Total cost for the month. (Rupiah)
+                - "avg_cost": Average cost per day. (Rupiah/day)
+            - "prev_month_data": A dictionary containing:
+                - "total_daya": Total energy consumption for the month. (kWh)
+                - "day_daya": Average energy consumption per day. (kWh/day)
+                - "total_cost": Total cost for the month. (Rupiah)
+                - "day_cost": Average cost per day. (Rupiah/day)
+    
+    """
+    url = f"http://localhost:8080/api/monthly/from-to?start_date={start}&end_date={end}&faculty={faculty}&building={building}&floor={floor}"
+    response = requests.get(url, verify=False)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        raise Exception(f"Failed to fetch data: {response.status_code}")
 
 @register_tool()
 async def async_fetch_heatmap(start: str, end: str, faculty: str = "", building: str = "", floor: str = ""):
@@ -301,7 +385,13 @@ def save_csv(dataframe: pd.DataFrame, title: str):
     """
     record_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     data_dir = f"data/output/csv/analysis_data_{record_time}_{title}.csv"
-    dataframe.to_csv(data_dir, index=False)
+    # if index is 0, 1, 2, remove
+
+    if dataframe.index.equals(pd.RangeIndex(start=0, stop=len(dataframe), step=1)) and (len(dataframe) % 24 != 0 or len(dataframe) % 12 != 0):
+        dataframe.to_csv(data_dir, index=False)  
+    else:
+        dataframe.to_csv(data_dir, index=True)  
+
     print(f"Data saved to {data_dir}")
     return data_dir
 
@@ -381,45 +471,91 @@ def _find_optimal_clusters(wcss: list, cluster_range: range) -> int:
     optimal_clusters = cluster_range[np.argmax(wcss_diff_ratio) + 1]
     return optimal_clusters
 
+import json 
 
 @register_tool()
-def prophet_forecast(dataframe: pd.DataFrame, timestamp_col: str, y_cols: list, periods: int = 30) -> pd.DataFrame:
+async def async_forecast_energy_hourly(faculty: str = "", building: str = "", floor: str = "", days_to_forecast: int = 7):
     """
-    Perform time series forecasting using Prophet for multiple y columns independently.
+    Forecast hourly energy usage data for a specific faculty, building, and floor for the next specified days. The forecast is based on historical data and uses the Prophet model for time series forecasting. Energy usage in kWh. Only get the history if user wanted it.
 
     Args:
-        dataframe (pd.DataFrame): The input DataFrame containing the timestamp and y columns.
-        timestamp_col (str): The name of the timestamp column.
-        y_cols (list): A list of column names to predict.
-        periods (int): The number of future periods to forecast. Default is 30.
+        faculty (str, optional): Filter by faculty code (e.g., 'FTI').
+        building (str, optional): Filter by building code (e.g., 'LABTEK IV').
+        floor (str, optional): Filter by floor code (e.g., 'LANTAI 1').
+        days_to_forecast (int, optional): Number of days to forecast ahead. Default is 7.
 
     Returns:
-        pd.DataFrame: A DataFrame containing the forecasted values for all y columns.
+        tuple[pd.DataFrame, pd.DataFrame]: A tuple containing two pandas DataFrames:
+            - The first DataFrame contains historical energy usage data with 'datetime' and 'energy_usage' columns. The date time is in 'YYYY-MM-DD HH:mm' format. Energy usage is in kWh
+            - The second DataFrame contains forecasted energy usage data with 'datetime', 'predicted_energy_usage', 'predicted_energy_lower', and 'predicted_energy_upper' columns. The date time is in 'YYYY-MM-DD HH:mm' format. Energy usage is in kWh
+
+    Raises:
+        Exception: If the API request fails.
+
+    Example:
+        history_df, forecast_df = forecast_energy_hourly(faculty="FTI", building="LABTEK IV", days_to_forecast=7)
+    
     """
-    results = []
+    url = f"http://localhost:8080/api/daily/forecast?faculty={faculty}&building={building}&floor={floor}&days_to_forecast={days_to_forecast}"
+    response = requests.get(url, verify=False)
+    if response.status_code == 200:
+        response_json = response.json()
 
-    for y_col in y_cols:
-        # Prepare data for Prophet
-        df = dataframe[[timestamp_col, y_col]].rename(columns={timestamp_col: 'ds', y_col: 'y'})
+        # print("Response")
+        # print(response_json)
+        # print("History")
 
-        # Initialize and fit Prophet model
-        model = Prophet()
-        model.fit(df)
+        history = pd.DataFrame(json.loads(response_json["history"]))
+        history['datetime'] = pd.to_datetime(history['datetime'], unit='ms')
+        history['datetime'] = history['datetime'].dt.strftime('%Y-%m-%d %H:00')
 
-        # Make future dataframe and predict
-        future = model.make_future_dataframe(periods=periods)
-        forecast = model.predict(future)
+        forecast = pd.DataFrame(json.loads(response_json["forecast"]))
+        forecast['datetime'] = pd.to_datetime(forecast['datetime'], unit='ms')
+        forecast['datetime'] = forecast['datetime'].dt.strftime('%Y-%m-%d %H:00')
 
-        # Add y_col name to the forecast columns
-        forecast = forecast[['ds', 'yhat', 'yhat_lower', 'yhat_upper']]
-        forecast.columns = ['ds', f'{y_col}_yhat', f'{y_col}_yhat_lower', f'{y_col}_yhat_upper']
+        return history, forecast
+    else:
+        raise Exception(f"Failed to fetch data: {response.status_code}")
+    
 
-        # Append to results
-        results.append(forecast)
+@register_tool()
+async def async_forecast_energy_daily(faculty: str = "", building: str = "", floor: str = "", days_to_forecast: int = 30):
+    """
+    Forecast daily energy usage data for a specific faculty, building, and floor for the next specified days. The forecast is based on historical data and uses the Prophet model for time series forecasting. Energy usage in kWh. Only get the history if user wanted it.
 
-    # Merge all forecasts on the 'ds' column
-    final_forecast = results[0]
-    for result in results[1:]:
-        final_forecast = final_forecast.merge(result, on='ds', how='outer')
+    Args:
+        faculty (str, optional): Filter by faculty code (e.g., 'FTI').
+        building (str, optional): Filter by building code (e.g., 'LABTEK IV').
+        floor (str, optional): Filter by floor code (e.g., 'LANTAI 1').
+        days_to_forecast (int, optional): Number of days to forecast ahead. Default is 7.
 
-    return final_forecast
+    Returns:
+        tuple[pd.DataFrame, pd.DataFrame]: A tuple containing two pandas DataFrames:
+            - The first DataFrame contains historical energy usage data with 'datetime' and 'energy_usage' columns. The date time is in 'YYYY-MM-DD' format.
+            - The second DataFrame contains forecasted energy usage data with 'datetime', 'predicted_energy_usage', 'predicted_energy_lower', and 'predicted_energy_upper' columns.  The date time is in 'YYYY-MM-DD' format.
+
+    Raises:
+        Exception: If the API request fails.
+
+    Example:
+        history_df, forecast_df = forecast_energy_daily(faculty="FTI", building="LABTEK IV", days_to_forecast=7)
+    
+    """
+    url = f"http://localhost:8080/api/monthly/forecast?faculty={faculty}&building={building}&floor={floor}&days_to_forecast={days_to_forecast}"
+    response = requests.get(url, verify=False)
+    if response.status_code == 200:
+        response_json = response.json()
+
+        # print(response_json)
+
+        history = pd.DataFrame(json.loads(response_json["history"]))
+        history['datetime'] = pd.to_datetime(history['datetime'], unit='ms')
+        history['datetime'] = history['datetime'].dt.strftime('%Y-%m-%d')
+
+        forecast = pd.DataFrame(json.loads(response_json["forecast"]))
+        forecast['datetime'] = pd.to_datetime(forecast['datetime'], unit='ms')
+        forecast['datetime'] = forecast['datetime'].dt.strftime('%Y-%m-%d')
+
+        return history, forecast
+    else:
+        raise Exception(f"Failed to fetch data: {response.status_code}")

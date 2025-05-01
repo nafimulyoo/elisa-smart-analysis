@@ -15,6 +15,8 @@ from metagpt.tools.tool_data_type import Tool
 from metagpt.tools.tool_registry import validate_tool_names
 from metagpt.utils.common import CodeParser
 
+from tenacity import retry, stop_after_attempt
+
 TOOL_INFO_PROMPT = """
 ## Capabilities
 - You can utilize pre-defined tools in any code lines from 'Available Tools' in the form of Python class or function.
@@ -117,6 +119,8 @@ class ToolRecommender(BaseModel):
         """
         raise NotImplementedError
 
+
+    @retry(stop=stop_after_attempt(3))
     async def rank_tools(
         self, recalled_tools: list[Tool], context: str = "", plan: Plan = None, topk: int = 5
     ) -> list[Tool]:

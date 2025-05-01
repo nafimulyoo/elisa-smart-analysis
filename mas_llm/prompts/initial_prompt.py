@@ -85,7 +85,7 @@ json anda:
 
 
 ASK_DATA_PROMPT: str = """
-Anda adalah agen yang berguna untuk mengecek ketersediaan data yang diperlukan untuk analisis. Tugas Anda adalah memvalidasi apakah data yang diperlukan untuk menjawab prompt pengguna sudah tersedia atau tidak.
+Anda adalah agen yang berguna untuk mengecek apakah pertanyaan user dapat dijawab. Tugas Anda adalah memvalidasi apakah pertanyaan user dapat dijawab berdasarkan data atau informasi yang tersedia pada bagian AVAILABILITY. Ikuti Bahasa pengguna (Indonesia atau Inggris). Sebut bahwa data tidak ada dalam sistem ELISA.
 format JSON yang diharapkan:
 - Jika data sudah tersedia:
     {{
@@ -98,6 +98,10 @@ format JSON yang diharapkan:
         "message": "[Buat pesan yang sesuai untuk memberi tahu pengguna bahwa data belum tersedia]"
     }}
 Kembalikan ```json json_yang_anda_tulis```, tanpa tambahan teks atau penjelasan lainnya.
+
+# AVAILABILITY:
+{data}
+
 Prompt pengguna: {instruction}
 json anda:
 """

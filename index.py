@@ -9,15 +9,15 @@ import yaml
 
 
 import requests
-try:
-    print("Checking VPN connection... -- FROM PYTHON")
-    response = requests.get("https://elisa.itb.ac.id")
-    if response.status_code == 200:
-        print("VPN connection is working, ping elisa.itb.ac.id -- FROM PYTHON")
-    else:
-        print("VPN connection is not working")
-except requests.exceptions.RequestException as e:   
-    print(f"VPN connection is not working: {e}")
+# try:
+#     print("Checking VPN connection... -- FROM PYTHON")
+#     response = requests.get("https://elisa.itb.ac.id")
+#     if response.status_code == 200:
+#         print("VPN connection is working, ping elisa.itb.ac.id -- FROM PYTHON")
+#     else:
+#         print("VPN connection is not working")
+# except requests.exceptions.RequestException as e:   
+#     print(f"VPN connection is not working: {e}")
 
 
 def generate_yaml_config():

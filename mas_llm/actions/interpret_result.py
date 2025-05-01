@@ -6,18 +6,18 @@ from metagpt.logs import logger
 
 class InterpretResult(Action):
     name: str = "InterpretResult"
-    async def run(self, instruction: str, source: str):
+    async def run(self, notebook: str, question: str, source: str):
         image_pattern = r"'image/png': \'.*?\'"
-        instruction_filtered = re.sub(image_pattern, "", instruction)
+        notebook_filtered = re.sub(image_pattern, "", notebook)
 
         # logger.info(f"🟢 InterpretResult Instruction: {instruction_filtered}")
         prompt = ""
         if source == "web":
-            prompt = INTERPRET_RESULT_WEB_PROMPT.format(instruction=instruction_filtered)
+            prompt = INTERPRET_RESULT_WEB_PROMPT.format(notebook=notebook_filtered, question=question)
         if source == "line":
-            prompt = INTERPRET_RESULT_LINE_PROMPT.format(instruction=instruction_filtered)
+            prompt = INTERPRET_RESULT_LINE_PROMPT.format(notebook=notebook_filtered, question=question)
         if source == "whatsapp":
-            prompt = INTERPRET_RESULT_WHATSAPP_PROMPT.format(instruction=instruction_filtered)
+            prompt = INTERPRET_RESULT_WHATSAPP_PROMPT.format(notebook=notebook_filtered, question=question)
 
         response = await self._aask(prompt)
 

@@ -50,31 +50,35 @@ whatsapp_pipeline = AskAnalysisPipeline(source="whatsapp", example_mode=example_
 # @profile_endpoint()
 async def web_api(prompt):
     print("Prompt received:", prompt)
-    result = await web_pipeline.run(prompt)
+    result, notebook = await web_pipeline.run(prompt)
 
     for res in result:
-        data = []
-        if res["data_dir"] == "":
-            res["data"] = []
-            continue
+        if res["visualization_type"] != "":
+            data = []
+            if res["data_dir"] == "":
+                res["data"] = []
+                continue
 
-        try:
-            with open(res["data_dir"]) as csvf:
-                csvReader = csv.DictReader(csvf)
-                for rows in csvReader:
-                    data.append(rows)
-            res["data"] = data
-        except Exception as e:
-            log.error(f"Error reading CSV file: {e}")
-            res["data"] = []
-        
-        del res["data_dir"]
+            try:
+                with open(res["data_dir"]) as csvf:
+                    csvReader = csv.DictReader(csvf)
+                    for rows in csvReader:
+                        data.append(rows)
+                res["data"] = data
+            except Exception as e:
+                log.error(f"Error reading CSV file: {e}")
+                res["data"] = []
+            
+            del res["data_dir"]
     log_file_path = f"memory.log"
     log.add(log_file_path, level="INFO", format="{time:YYYY-MM-DD HH:mm:ss} | {level} | {message}")
     log.info("MEMORY: " + str(psutil.virtual_memory()))
     log.remove() 
 
-    return result
+    return {
+        "result": result,
+        "notebook": notebook,
+    }
 
 @ask_router.get("/api/line")
 # @profile_endpoint()

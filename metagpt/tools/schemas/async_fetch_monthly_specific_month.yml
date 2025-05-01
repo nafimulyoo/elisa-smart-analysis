@@ -1,0 +1,22 @@
+type: async_function
+description: 'Fetch monthly energy and cost data for a specific month. '
+signature: '(date: str, faculty: str = '''', building: str = '''', floor: str = '''')'
+parameters: 'Args: date (str): The month and year in ''YYYY-MM'' format. faculty (str,
+  optional): Filter by faculty code (e.g., ''FTI''). building (str, optional): Filter
+  by building code (e.g., ''LABTEK IV''). floor (str, optional): Filter by floor code
+  (e.g., ''LANTAI 1''). Returns: dict: A dictionary containing the following keys:
+  - "chart_data": A list of dictionaries, each containing: - "timestamp": The timestamp
+  for the data point in ''YYYY-MM-DD HH:MM:SS'' format. - "R": Energy consumption
+  for phase R. (kWh) - "S": Energy consumption for phase S. (kWh) - "T": Energy consumption
+  for phase T. (kWh) - "daily_data": A list of dictionaries, each containing: - "timestamp":
+  The timestamp for the data point in ''YYYY-MM-DD HH:MM:SS'' format. - "cost": The
+  cost for the day. (Rupiah) - "energy": The energy consumption for the day. (kWh)
+  - "phase 1": Energy consumption for phase 1 (R). (kWh) - "phase 2": Energy consumption
+  for phase 2 (S). (kWh) - "phase 3": Energy consumption for phase 3 (T). (kWh) -
+  "month_data": A dictionary containing: - "total_daya": Total energy consumption
+  for the month. (kWh) - "avg_daya": Average energy consumption per day. (kWh/day)
+  - "total_cost": Total cost for the month. (Rupiah) - "avg_cost": Average cost per
+  day. (Rupiah/day) - "prev_month_data": A dictionary containing: - "total_daya":
+  Total energy consumption for the month. (kWh) - "day_daya": Average energy consumption
+  per day. (kWh/day) - "total_cost": Total cost for the month. (Rupiah) - "day_cost":
+  Average cost per day. (Rupiah/day)'

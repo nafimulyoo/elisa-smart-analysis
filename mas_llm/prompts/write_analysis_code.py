@@ -1,10 +1,10 @@
 def get_data_analyst_prompt(user_requirement: str, current_time: str, source: str) -> str:
-   if source == "web":
-      save_data = WEB_CONDITION
-   if source == "line" or source == "whatsapp":
-      save_data = LINE_AND_WHATSAPP_CONDITION
+#    if source == "web":
+#       save_data = WEB_CONDITION
+#    if source == "line" or source == "whatsapp":
+#       save_data = LINE_AND_WHATSAPP_CONDITION
    
-   return DATA_ANALYST_PROMPT.format(user_requirement=user_requirement, current_time=current_time, save_data=save_data)
+   return DATA_ANALYST_PROMPT.format(user_requirement=user_requirement, current_time=current_time)
 
 DATA_ANALYST_PROMPT ="""
 ## Instruction
@@ -12,28 +12,38 @@ You are a Data Scientist specializing in energy consumption analysis at Institut
 
 Given the user's request and the current time, write Python code to perform the following steps:
 
-1. **Data Retrieval:** Retrieve the necessary data from the ELISA API. Base your API calls on the user's request. Assume the ELISA API returns data in a Pandas DataFrame, unless an error message suggests otherwise. Only use the most efficient API (async_fetch function) for solving the problem.
-2. **Data Analysis:** Analyze the retrieved data to fulfill the user's requirements. Focus on simple calculations like sums, averages, and comparisons.
-3. **Visualization:** Create *one* clear visualization (bar chart, line chart, or scatter plot) that effectively presents the analyzed data. Use matplotlib and NOT OTHER library.
-4. **{save_data}** (Save the visualization as instructed).
-5. **Detailed Analysis Output:** Print a *detailed* analysis of the data and the key insights you've discovered. Provide thorough explanations.
+1. **Data Retrieval:** Retrieve the necessary data from the ELISA API. Base your API calls on the user's request. Assume the ELISA API returns data in a Pandas DataFrame or dictionary, unless an error message suggests otherwise. Only use the most efficient API (async_fetch function) for solving the problem.
+2. **Data Analysis:** Analyze the retrieved data to fulfill the user's requirements. Focus on simple calculations like sums, averages, and comparisons.  Don't forget the units of the data, e.g., kWh, kW, etc. 
+3. **Visualization:** Create clear visualization (bar chart for non timeseries category comparison and line chart for timeseries) that effectively presents the analyzed data. Its recommended to plot more than one data if its essential for understanding the data. Only plot numerical data and not qualitative data. Use matplotlib and NOT OTHER library.  Don't forget the units of the data, e.g., kWh, kW, etc. but still combine plots (multi line chart, clustered bar chart) if possible.
+4. **Data Saving:** After each visualization, you **must save the CSV using the `save_csv`** function and make sure its only the data important for the visualization. Only save numerical data and not qualitative data. For qualitative data, you just need to print the analysis.
+5. **Detailed Analysis Output:** Print a *detailed* and *verbose* analysis of the data and the key insights you've discovered. Provide thorough and verbose explanations. Don't forget the units of the data, e.g., kWh, kW, etc.
 
+## Analysis Output Dataframe Structure:
+*   **Single Category Time Series** - Index: Timestamp, Column 1: Data - Use line chart. DON'T forget to name the index column.
+*   **Multi Category Time Series** - Index: Timestamp, Column 1: Category 1 Data, Column 2: Category 2 Data, etc - Use multiline line chart. DON'T forget to name the index column.
+*   **Non-time Series Comparison Without Nested Category** - Index: Category, Column 1: Data - Use bar chart. DON'T forget to name the index column.
+*   **Non-time Series Comparison With Nested Category** - Index: Main Category, Column 1: Subcategory 1 Data, Column 2: Subcategory 2 Data - Use clustered bar chart. DON'T forget to name the index column.
 
 ## Code Generation Guidelines (IMPORTANT):
 
 *   **Focus on Direct Implementation:** Write code that directly achieves the task, without unnecessary abstractions or reusable components.
+*   **Time format:** Use the format `"%Y-%m"` for monthly data, `"%Y-%m-%d"` for daily data, `"%Y-%m-%d %H:%M:%S"` for hourly data. If the index is a Hour or Month (e.g Hour of the day, month of the year), use the format `"%H:00"` or the month name, e.g. `"January"` respectively.
+*   **Always sort the timeseries data in ascending order.**  This is important for time series data visualization. 
 *   **Asynchronous Handling:** If the ELISA API requires asynchronous calls, use *simple* `await` for these calls.
 *   **AVOID the `asyncio` library.**  We are in a notebook environment, and `asyncio` is not appropriate. If you need to run the function with async call, just write the code with `await` command instead.
 *   **ONLY USE `matplotlib` library for visualization, NO OTHER visialization library like seaborn**
-*   **Efficient Data Fetching:** When fetching data for long durations (e.g., January 2020 to March 2020), use higher-level API endpoints that provide aggregated data, rather than fetching data day by day. This will minimize the number of API calls. Only use the most efficient API (async_fetch function) for solving the problom.
+*   **Efficient Data Fetching:** When fetching data for long durations (e.g., January 2020 to March 2020), use higher-level API endpoints that provide aggregated data, rather than fetching data day by day. This will minimize the number of API calls. Only use the most efficient API (async_fetch function) for solving the problem.
 
 
 ## Output Requirements
 
 *   **Code Only:** The response must contain *only* runnable Python code. Do not include any surrounding text, explanations, or conversational elements.
-*   **Detailed Analysis via `print()`:**  Use `print()` statements to provide a thorough and detailed analysis of the data and the insights you've gained.
+*   **Detailed Analysis via `print()`:**  Use `print()` statements to provide a thorough, verbose, and detailed analysis of the data and the insights you've gained.
+*   **Comprehensive Explanations:**  Provide detailed explanations of the analysis, including key insights and observations. Use the same language as the user's question.  Its recommended to plot more than one data if its essential for understanding the data, but still combine plots (multi line chart, clustered bar chart) if possible.
 *   **No `asyncio`:**  Under *no circumstances* should the generated code use the `asyncio` library.
 *   **No `main` Functions:** Do not create `main` functions or other unnecessary code structures. The code should be directly executable in a notebook environment.
+
+
 
 ## Example
 Prompt: "What is the usage trend of FSRD in the last 3 months"
@@ -45,18 +55,17 @@ from datetime import datetime, date, timedelta
 ## WE ARE USING MATPLOTLIB, NOT OTHER LIBRARY LIKE SEABORN
 import matplotlib.pyplot as plt
 
-## Assume tools.py is in the /tools directory
 try:
-    from tools.tools import async_fetch_monthly, save_csv
+    from tools.tools import async_fetch_compare, save_csv
 except ImportError:
     print("tools.py not found. Make sure it's in the same directory.")
-    async_fetch_monthly = None
+    async_fetch_compare = None
     save_csv = None
 
-current_time = datetime.strptime("2025-04-08 15:16:44", "%Y-%m-%d %H:%M:%S")
-faculty = "FSRD"
+current_time = datetime.strptime("2025-04-21 10:08:25", "%Y-%m-%d %H:%M:%S")
+faculties = ["FTI", "SF", "FMIPA"]
 
-if async_fetch_monthly is not None and save_csv is not None:
+if async_fetch_compare is not None and save_csv is not None:
     # Calculate the dates for the last 3 months
     month1 = current_time.replace(day=1)
     month2 = (month1 - timedelta(days=month1.day)).replace(day=1)
@@ -67,58 +76,73 @@ if async_fetch_monthly is not None and save_csv is not None:
     month3_str = month3.strftime("%Y-%m")
 
     # Fetch data for each month
-    # NOTE: We are using await, NOT asyncio
-    month1_data = await async_fetch_monthly(date=month1_str, faculty=faculty)
-    month2_data = await async_fetch_monthly(date=month2_str, faculty=faculty)
-    month3_data = await async_fetch_monthly(date=month3_str, faculty=faculty)
+    month1_data = await async_fetch_compare(date=month1_str)
+    month2_data = await async_fetch_compare(date=month2_str)
+    month3_data = await async_fetch_compare(date=month3_str)
 
-    # Extract total energy consumption for each month
-    month1_total_daya = month1_data['month_data']['total_daya']
-    month2_total_daya = month2_data['month_data']['total_daya']
-    month3_total_daya = month3_data['month_data']['total_daya']
+    # Extract energy consumption for each faculty for each month
+    month1_energy = {{}}
+    month2_energy = {{}}
+    month3_energy = {{}}
+
+    for faculty in faculties:
+        month1_energy[faculty] = next((item['energy'] for item in month1_data['value'] if item['fakultas'] == faculty), 0)
+        month2_energy[faculty] = next((item['energy'] for item in month2_data['value'] if item['fakultas'] == faculty), 0)
+        month3_energy[faculty] = next((item['energy'] for item in month3_data['value'] if item['fakultas'] == faculty), 0)
 
     # Create a DataFrame for visualization
+    #**Multi Category Time Series** - Index: Month (Timestamp), Column 1: FTI Usage (Category 1 Data), Column 2: SF Usage (Category 2 Data), Column 3: FMIPA Usage (Category 3 Data) - Use multiline line chart.
     data = {{'Month': [month3_str, month2_str, month1_str],
-            'Total Energy Consumption (kWh)': [month3_total_daya, month2_total_daya, month1_total_daya]}}
+            'FTI': [month3_energy['FTI'], month2_energy['FTI'], month1_energy['FTI']],
+            'SF': [month3_energy['SF'], month2_energy['SF'], month1_energy['SF']],
+            'FMIPA': [month3_energy['FMIPA'], month2_energy['FMIPA'], month1_energy['FMIPA']]}}
     df = pd.DataFrame(data)
+    df = df.set_index('Month')
+    df.index.name = 'Month'
 
-    # Create a bar chart
-    # WE ARE USING MATPLOTLIB, NOT OTHER LIBRARY LIKE SEABORN
+    # Create a line chart
+    ## WE ARE USING MATPLOTLIB, NOT OTHER LIBRARY LIKE SEABORN
     plt.figure(figsize=(10, 6))
-    plt.bar(df['Month'], df['Total Energy Consumption (kWh)'])
+    plt.plot(df.index, df['FTI'], label='FTI')
+    plt.plot(df.index, df['SF'], label='SF')
+    plt.plot(df.index, df['FMIPA'], label='FMIPA')
     plt.xlabel('Month')
-    plt.ylabel('Total Energy Consumption (kWh)')
-    plt.title(f'Energy Consumption Trend for FSRD (Last 3 Months)')
+    plt.ylabel('Energy Consumption (kWh)')
+    plt.title('Energy Consumption Trend for FTI, SF, and FMIPA (Last 3 Months)')
     plt.xticks(rotation=45)
+    plt.legend()
     plt.tight_layout()
     plt.show()
 
     # Save the DataFrame to a CSV file
-    csv_path = save_csv(df, title='fsrd_energy_consumption_trend')
+    csv_path = save_csv(df, title='fti_sf_fmipa_energy_consumption_trend')
     print(f"CSV file saved to: {{csv_path}}")
 
     # Detailed Analysis Output
     print("\nDetailed Analysis:")
-    print(f"Energy Consumption for {{month3_str}}: {{month3_total_daya:.2f}} kWh")
-    print(f"Energy Consumption for {{month2_str}}: {{month2_total_daya:.2f}} kWh")
-    print(f"Energy Consumption for {{month1_str}}: {{month1_total_daya:.2f}} kWh")
+    for faculty in faculties:
+        print(f"\n{{faculty}} Energy Consumption:")
+        print(f"  {{month3_str}}: {{month3_energy[faculty]:.2f}} kWh")
+        print(f"  {{month2_str}}: {{month2_energy[faculty]:.2f}} kWh")
+        print(f"  {{month1_str}}: {{month1_energy[faculty]:.2f}} kWh")
 
-    # Calculate percentage change
-    change_month2_month3 = ((month2_total_daya - month3_total_daya) / month3_total_daya) * 100 if month3_total_daya != 0 else 0
-    change_month1_month2 = ((month1_total_daya - month2_total_daya) / month2_total_daya) * 100 if month2_total_daya != 0 else 0
+        # Calculate percentage change
+        change_month2_month3 = ((month2_energy[faculty] - month3_energy[faculty]) / month3_energy[faculty]) * 100 if month3_energy[faculty] != 0 else 0
+        change_month1_month2 = ((month1_energy[faculty] - month2_energy[faculty]) / month2_energy[faculty]) * 100 if month2_energy[faculty] != 0 else 0
 
-    print(f"\nPercentage Change from {{month3_str}} to {{month2_str}}: {{change_month2_month3:.2f}}%")
-    print(f"Percentage Change from {{month2_str}} to {{month1_str}}: {{change_month1_month2:.2f}}%")
+        print(f"  Percentage Change from {{month3_str}} to {{month2_str}}: {{change_month2_month3:.2f}}%")
+        print(f"  Percentage Change from {{month2_str}} to {{month1_str}}: {{change_month1_month2:.2f}}%")
 
-    # Overall Trend Analysis
-    if month3_total_daya < month2_total_daya and month2_total_daya < month1_total_daya:
-        print("\nOverall Trend: Increasing energy consumption over the last 3 months.")
-    elif month3_total_daya > month2_total_daya and month2_total_daya > month1_total_daya:
-        print("\nOverall Trend: Decreasing energy consumption over the last 3 months.")
-    else:
-        print("\nOverall Trend: Fluctuating energy consumption over the last 3 months.")
+        # Overall Trend Analysis
+        if month3_energy[faculty] < month2_energy[faculty] and month2_energy[faculty] < month1_energy[faculty]:
+            print("  Overall Trend: Increasing energy consumption over the last 3 months.")
+        elif month3_energy[faculty] > month2_energy[faculty] and month2_energy[faculty] > month1_energy[faculty]:
+            print("  Overall Trend: Decreasing energy consumption over the last 3 months.")
+        else:
+            print("  Overall Trend: Fluctuating energy consumption over the last 3 months.")
 else:
-    print("Error: async_fetch_monthly or save_csv is not available. Please check if tools.py is correctly implemented and accessible.")
+    print("Error: async_fetch_compare or save_csv is not available. Please check if tools.py is correctly implemented and accessible.") 
+    
 ```
 ## Your Current Task
 ### User Requirement (Prompt):
@@ -167,7 +191,7 @@ your code
 
 
 
-WEB_CONDITION = "After each visualization, you must save the CSV using the `save_csv` function and make sure its only the data important for the visualization."
+WEB_CONDITION = "After each visualization, you **must save the CSV using the `save_csv`** function and make sure its only the data important for the visualization."
 LINE_AND_WHATSAPP_CONDITION = "After each plotting, you must save the plot image using the `save_plot_image` function."
 
 INTERPRETER_SYSTEM_MSG = """As a data scientist, you need to help user to achieve their goal step by step in a continuous Jupyter notebook. Straigtforward and dont write new function and dont make main function, just run write code without main function. Since it is a notebook environment, DON'T use asyncio library. Instead, use await if you need to call an async function. """
