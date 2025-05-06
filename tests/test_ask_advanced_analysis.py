@@ -18,10 +18,6 @@ async def test_ask_advanced_analysis(question):
         tools = fetch_elisa_api_data
         if src == "web":
             tools.append("save_csv")
-        elif src == "line":
-            tools.append("save_plot_image")
-        elif src == "whatsapp":
-            tools.append("save_plot_image")
 
         react_mode = "plan_and_act"
         data_analyst = DataAnalyst(tools=tools)
@@ -44,10 +40,6 @@ async def test_ask_date_concious(question):
         tools = fetch_elisa_api_data
         if src == "web":
             tools.append("save_csv")
-        elif src == "line":
-            tools.append("save_plot_image")
-        elif src == "whatsapp":
-            tools.append("save_plot_image")
 
         react_mode = "plan_and_act"
         data_analyst = DataAnalyst(tools=tools)
@@ -70,10 +62,7 @@ async def test_ask_forecast(question):
         tools = fetch_elisa_api_data
         if src == "web":
             tools.append("save_csv")
-        elif src == "line":
-            tools.append("save_plot_image")
-        elif src == "whatsapp":
-            tools.append("save_plot_image")
+
 
         react_mode = "plan_and_act"
         data_analyst = DataAnalyst(tools=tools)
@@ -96,10 +85,7 @@ async def test_ask_clustering(question):
         tools = fetch_elisa_api_data
         if src == "web":
             tools.append("save_csv")
-        elif src == "line":
-            tools.append("save_plot_image")
-        elif src == "whatsapp":
-            tools.append("save_plot_image")
+
 
         react_mode = "plan_and_act"
         data_analyst = DataAnalyst(tools=tools)

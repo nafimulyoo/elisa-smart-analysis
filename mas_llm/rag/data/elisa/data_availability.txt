@@ -432,7 +432,8 @@ async def async_forecast_energy_daily(faculty: str = "", building: str = "", flo
 
 # Faculty and Building Available:
 ITB has 3 campus, Bandung (Ganesha), Jatinangor, and Jakarta. Currently we only have Bandung (Ganesha) and some of Jatinangor data. We have these faculty and building data available, the default is in Bandung (Ganesha):
-Data bangunan dan fakultas di luar yang disebutkan pada Faculty and Building du bawah ini, di luar itu fix tidak ada
+Data bangunan dan fakultas di luar yang disebutkan pada Faculty and Building du bawah ini, di luar itu fix tidak ada.
+Some of building has specific data for each floor.
 
 Faculty and Building List:
 1. All Unit (ITB Overall):
@@ -511,7 +512,7 @@ Building List:
 - CAS
 - LABTEK III
 - LABTEK V
-- LABTEK VI
+- LABTEK VI (with special Floor: Lab)
 - LABTEK X
 6. FTMD:
 Building List:

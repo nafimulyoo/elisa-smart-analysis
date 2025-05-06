@@ -19,26 +19,33 @@ async def handleInitialPrompt(message):
     initial_result = await respond_initial_prompt.run(message)
 
     while max_retry > 0:
-        if initial_result.type not in ["Basic Analysis", "Advanced Analysis", "Unrelevant", "Basic Knowledge"]:
+        if initial_result.type not in ["Basic Analysis", "Advanced Analysis", "Unrelevant", "Basic Knowledge Answerable", "Basic Knowledge Unaswerable"]:
             logger.info(f"⚠️ InitialPromptHandler (Respond Initial) - Result: {initial_result}, retrying..")
             initial_result = await respond_initial_prompt.run(message)
             max_retry -= 1
         else:
             break
     
-    if initial_result.type not in ["Basic Analysis", "Advanced Analysis", "Unrelevant", "Basic Knowledge"]:
+    if initial_result.type not in ["Basic Analysis", "Advanced Analysis", "Unrelevant", "Basic Knowledge Answerable", "Basic Knowledge Unaswerable"]:
         logger.info(f"🔴 InitialPromptHandler - Failed, Result: {initial_result}")
         raise HTTPException(status_code=400, detail="Prompt validation failed")
     
     logger.info(f"🟢 InitialPromptHandler (Respond Initial) -  Type: {initial_result.type}, Message: {initial_result.message}")
     
+
     if initial_result.type == "Unrelevant":
         agent_response.type = "Final Answer"
         agent_response.message = initial_result.message
 
         return initial_result
     
-    if initial_result.type == "Basic Knowledge":
+    if initial_result.type == "Basic Knowledge Answerable":
+        agent_response.type = "Final Answer"
+        agent_response.message = initial_result.message
+
+        return agent_response
+
+    if initial_result.type == "Basic Knowledge Unaswerable":
         logger.info(f"🔍 InitialPromptHandler (Ask ELISA)- Asking about ELISA..")
         ask_elisa_result = await ask_about_elisa.run(message)
         agent_response.type = "Final Answer"

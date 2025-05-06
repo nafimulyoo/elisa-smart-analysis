@@ -1,5 +1,5 @@
 import requests
-from metagpt.tools.tool_registry import register_tool
+# from metagpt.tools.tool_registry import register_tool
 
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
@@ -327,7 +327,7 @@ async def async_fetch_gedung(fakultas: str):
     Fetch a list of buildings for a specific faculty.
 
     Args:
-        fakultas (str): The faculty code (e.g., 'FTI').
+        fakultas (str): The faculty code (e.g., 'FTI'), for getting all building in ITB, use '-'.
 
     Returns:
         dict: A dictionary containing the following key:
@@ -394,82 +394,6 @@ def save_csv(dataframe: pd.DataFrame, title: str):
 
     print(f"Data saved to {data_dir}")
     return data_dir
-
-@register_tool()
-def save_plot_image(plt, title: str) :
-    """
-    Save the given plot to an image file. This is important to ensure that the plot is saved and can be accessed later.
-
-    Args:
-        plt: The plot to save.
-        title (str): The title to use for the saved image file.
-
-    Returns:
-        str: The path to the saved image file.
-    """
-    record_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    image_dir = f"data/output/images/plot_{record_time}_{title}.png"
-    plt.savefig(image_dir)
-    print(f"Image saved to {image_dir}")
-    return image_dir
-
-@register_tool()
-def kmeans_clustering_auto(dataframe: pd.DataFrame, max_clusters: int = 10, random_state: int = 42) -> pd.DataFrame:
-    """
-    Perform KMeans clustering on the input DataFrame with automatic determination of the optimal number of clusters.
-
-    Args:
-        dataframe (pd.DataFrame): The input DataFrame containing numerical data for clustering.
-        max_clusters (int): The maximum number of clusters to consider. Default is 10.
-        random_state (int): Random seed for reproducibility. Default is 42.
-
-    Returns:
-        pd.DataFrame: The input DataFrame with an additional column 'cluster' for cluster labels.
-    """
-    # Select only numerical columns for clustering
-    X = dataframe.select_dtypes(include=['number'])
-
-    # Calculate Within-Cluster-Sum of Squared Errors (WCSS) for different numbers of clusters
-    wcss = []
-    silhouette_scores = []
-    cluster_range = range(2, max_clusters + 1)
-
-    for n in cluster_range:
-        kmeans = KMeans(n_clusters=n, random_state=random_state)
-        kmeans.fit(X)
-        wcss.append(kmeans.inertia_)
-        silhouette_scores.append(silhouette_score(X, kmeans.labels_))
-
-    # Determine the optimal number of clusters using the Elbow Method
-    optimal_clusters = _find_optimal_clusters(wcss, cluster_range)
-
-    # Perform KMeans clustering with the optimal number of clusters
-    kmeans = KMeans(n_clusters=optimal_clusters, random_state=random_state)
-    clusters = kmeans.fit_predict(X)
-
-    # Add cluster labels to the DataFrame
-    dataframe['cluster'] = clusters
-
-    return dataframe
-
-def _find_optimal_clusters(wcss: list, cluster_range: range) -> int:
-    """
-    Determine the optimal number of clusters using the Elbow Method.
-
-    Args:
-        wcss (list): List of Within-Cluster-Sum of Squared Errors (WCSS) for each number of clusters.
-        cluster_range (range): Range of cluster numbers considered.
-
-    Returns:
-        int: The optimal number of clusters.
-    """
-    # Calculate the differences in WCSS
-    wcss_diff = np.diff(wcss)
-    wcss_diff_ratio = wcss_diff[:-1] / wcss_diff[1:]
-
-    # Find the "elbow" point (where the change in WCSS starts to level off)
-    optimal_clusters = cluster_range[np.argmax(wcss_diff_ratio) + 1]
-    return optimal_clusters
 
 import json 
 

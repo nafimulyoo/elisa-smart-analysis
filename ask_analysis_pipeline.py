@@ -11,8 +11,7 @@ from datetime import datetime
 from mas_llm.prompts.write_analysis_code import get_data_analyst_prompt
 
 from tools.tools import fetch_elisa_api_data
-from tools.tools import save_csv, save_plot_image
-from tools.tools import kmeans_clustering_auto
+from tools.tools import save_csv
 from loguru import logger as log
 
 from tools.tools import async_fetch_compare, async_fetch_heatmap, async_fetch_now, async_fetch_fakultas, async_fetch_gedung, async_fetch_lantai, async_fetch_daily_specific_date, async_fetch_monthly_specific_month, async_fetch_daily_from_x_to_y, async_fetch_monthly_from_x_to_y
@@ -39,7 +38,6 @@ class AskAnalysisPipeline:
             if self.example_mode:
                 return self.example_output(self.source)
             
-
             logger.info(f"🎯 Prompt: {message}")
                 
             logger.info(f"↗️ Forwarding to Initial Prompt Handler")
@@ -57,19 +55,17 @@ class AskAnalysisPipeline:
                 tools = fetch_elisa_api_data + ["save_csv", "async_forecast_energy_daily", "async_forecast_energy_hourly"]
                 print(tools)
 
-            if self.source == "line" or self.source == "whatsapp":
-                tools = fetch_elisa_api_data + ["save_plot_image"]
 
             if prompt_validator_result.type == "Basic Analysis" or prompt_validator_result.type == "Advanced Analysis":
                 logger.info(f"↗️ Forwarding to Basic Data Analyst")
 
                 react_mode = "react"
 
-            # if prompt_validator_result.type == "Advanced Analysis":
-            #     logger.info(f"↗️ Forwarding to Advanced Data Analyst")
-            #     react_mode = "plan_and_act"
-            #     tools = fetch_elisa_api_data + ["save_csv", "async_forecast_energy_daily", "async_forecast_energy_hourly"]
-            
+        # if prompt_validator_result.type == "Advanced Analysis":
+        #     logger.info(f"↗️ Forwarding to Advanced Data Analyst")
+        #     react_mode = "plan_and_act"
+        #     tools = fetch_elisa_api_data + ["save_csv", "async_forecast_energy_daily", "async_forecast_energy_hourly"]
+        
             
             data_analyst = DataAnalyst(tools=tools)
             data_analyst.set_react_mode(react_mode=react_mode)
@@ -159,11 +155,18 @@ class AskAnalysisPipeline:
             #             "explanation": "Analysis result with no data"
             #         },
             #     ]
+            # data_analyst_log = {
+            #         "cells": [],
+            #         "metadata": {},
+            #         "nbformat": 4,
+            #         "nbformat_minor": 5
+            #         }
             # logger.info(f"🟢 Analysis Interpreter result: {analysis_interpreter_result}")
 
             
             
             return analysis_interpreter_result, data_analyst_log
+        
         except Exception as e:
             early_response_message = f"Error: {str(e)}"
             logger.error(f"Error: {str(e)}")

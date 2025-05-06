@@ -13,10 +13,7 @@ async def test_ask_result_interpreter(question):
         tools = ["fetch_elisa_api_data"]
         if src == "web":
             tools.append("save_csv")
-        elif src == "line":
-            tools.append("save_plot_image")
-        elif src == "whatsapp":
-            tools.append("save_plot_image")
+
     analysis_interpreter = AnalysisInterpreter()
     analysis_interpreter.set_source(src)
     result = await analysis_interpreter.run(question)

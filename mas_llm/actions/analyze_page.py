@@ -117,7 +117,7 @@ def cached_analysis(func_name: str):
         return wrapper
     return decorator
 
-@cached_analysis("now")
+# @cached_analysis("now")
 async def now_analysis(data, faculty="", building="", floor="") -> str:
     """
     Analyzes last one hour and today energy data, comparing against data last month
@@ -236,7 +236,7 @@ async def now_analysis(data, faculty="", building="", floor="") -> str:
     except Exception as e:
         return f"Error generating analysis: {str(e)}"
 
-@cached_analysis("daily")
+# @cached_analysis("daily")
 async def daily_analysis(data, date, faculty="", building="", floor="") -> str:
     """
     Analyzes daily energy data, comparing it to a heatmap of the past week.
@@ -366,7 +366,7 @@ async def daily_analysis(data, date, faculty="", building="", floor="") -> str:
     except Exception as e:
         return f"Error generating analysis: {str(e)}"
 
-@cached_analysis("monthly")
+# @cached_analysis("monthly")
 async def monthly_analysis(data, date, faculty="", building="", floor="") -> str:
     """
     Analyzes monthly energy data, comparing to a list of previous months.
@@ -491,7 +491,7 @@ async def monthly_analysis(data, date, faculty="", building="", floor="") -> str
     except Exception as e:
         return f"Error generating analysis: {str(e)}"
 
-@cached_analysis("heatmap")
+# @cached_analysis("heatmap")
 async def heatmap_analysis(data, history, faculty="", building="", floor="") -> str:
     """
     Analyzes energy usage heatmap data, no history
@@ -695,7 +695,7 @@ async def heatmap_analysis(data, history, faculty="", building="", floor="") -> 
     except Exception as e:
         return f"Error generating analysis: {str(e)}"
 
-@cached_analysis("compare_faculty")
+# @cached_analysis("compare_faculty")
 async def compare_faculty_analysis(data, history, date) -> str:
     """
     Analyzes energy consumption across faculties, comparing to previous month.

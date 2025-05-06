@@ -56,7 +56,7 @@ class ExecuteNbCode(Action):
     def __init__(
         self,
         nb=nbformat.v4.new_notebook(),
-        timeout= 30,
+        timeout= 1200,
     ):
         super().__init__(
             nb=nb,

@@ -1,7 +1,7 @@
 type: async_function
 description: 'Fetch a list of buildings for a specific faculty. '
 signature: '(fakultas: str)'
-parameters: 'Args: fakultas (str): The faculty code (e.g., ''FTI''). Returns: dict:
-  A dictionary containing the following key: - "gedung": A list of dictionaries, each
-  containing: - "value": The code for the building. - "label": The display name of
-  the building.'
+parameters: 'Args: fakultas (str): The faculty code (e.g., ''FTI''), for getting all
+  building in ITB, use ''-''. Returns: dict: A dictionary containing the following
+  key: - "gedung": A list of dictionaries, each containing: - "value": The code for
+  the building. - "label": The display name of the building.'
