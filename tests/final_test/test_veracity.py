@@ -50,7 +50,8 @@ random_faculty_and_building_pair = [
     ["FTI", "LABTEK VI", ""],
     ["UNIT KERJA", "Villa Merah", ""],
     ["FTTM", "Gedung Energi", ""],
-    ["SF", "LABTEK VII", "Lantai 3"],
+    ["", "", ""],
+    
     ["SBM", "", ""],
     ["FSRD", "", ""],
     ["FTI", "LABTEK VI", ""],
@@ -96,12 +97,10 @@ def get_response(url, max_retries=3, retry_delay=1):
                 return None  # Return None if all retries failed
 
 
-model = "gemma-3-4b"
-case_count = 20
 
 
 def process_and_write_data(
-    file_prefix, data_type, dates, faculty_building_data=None
+    file_prefix, data_type, dates, faculty_building_data=None, model=""
 ):
     """
     Processes data and writes to a CSV file with retry logic for empty analyses.
@@ -136,16 +135,18 @@ def process_and_write_data(
                 faculty_building_data[i][2] if faculty_building_data else None
             )
 
-            if data_type == "daily":
-                url = f"/api/analysis/daily?date={date}&faculty={faculty}&building={building}&floor={floor}"
+            if data_type == "now":
+                url = f"/api/analysis/now?faculty={faculty}&building={building}&floor={floor}&model={model}"
+            elif data_type == "daily":
+                url = f"/api/analysis/daily?date={date}&faculty={faculty}&building={building}&floor={floor}&model={model}"
             elif data_type == "monthly":
-                url = f"/api/analysis/monthly?date={date}&faculty={faculty}&building={building}&floor={floor}"
+                url = f"/api/analysis/monthly?date={date}&faculty={faculty}&building={building}&floor={floor}&model={model}"
             elif data_type == "faculty":
-                url = f"/api/analysis/faculty?date={date}"
+                url = f"/api/analysis/faculty?date={date}&model={model}"
             elif data_type == "heatmap":
                 start_date = date + "-01"
                 end_date = date + "-07"
-                url = f"/api/analysis/heatmap?start={start_date}&end={end_date}&faculty={faculty}&building={building}&floor={floor}"
+                url = f"/api/analysis/heatmap?start={start_date}&end={end_date}&faculty={faculty}&building={building}&floor={floor}&model={model}"
 
             analysis = ""
             max_attempts = 10  # Maximum attempts to get non-empty analysis
@@ -186,20 +187,83 @@ def process_and_write_data(
                 writer.writerow([date, analysis, elapsed_time])
 
 
+
+models = ["gemini", "gemma", "deepseek"]
+case_count = 4
+
+# for model in models:
+#     #  NOW
+#     process_and_write_data(
+#         "now", "now", random_dates, random_faculty_and_building_pair, model
+#     )
+
+# # DAILY
+# process_and_write_data(
+#     "daily", "daily", random_dates, random_faculty_and_building_pair
+# )
+
+# # MONTHLY
+# process_and_write_data(
+#     "monthly", "monthly", random_months, random_faculty_and_building_pair
+# )
+
+# # FACULTY
+# process_and_write_data("compare", "faculty", random_months)
+
+# # HEATMAP
+# process_and_write_data(
+#     "heatmap", "heatmap", random_months, random_faculty_and_building_pair
+# )
+
 # DAILY
-process_and_write_data(
-    "daily", "daily", random_dates, random_faculty_and_building_pair
-)
+
+print("Daily Analysis URLs:")
+for i in range(20):
+    building = random_faculty_and_building_pair[i][1]
+    faculty = random_faculty_and_building_pair[i][0]
+    floor = random_faculty_and_building_pair[i][2]
+    date = random_dates[i]
+
+    # change space to %20
+    building = building.replace(" ", "%20")
+    faculty = faculty.replace(" ", "%20")
+    floor = floor.replace(" ", "%20")
+
+    print(f"Faculty: {faculty}, Building: {building}, Floor: {floor}, Date: {date} => http://localhost:3000/daily?date={date}&faculty={faculty}&building={building}&floor={floor}")
 
 # MONTHLY
-process_and_write_data(
-    "monthly", "monthly", random_months, random_faculty_and_building_pair
-)
+print("\nMonthly Analysis URLs:")
+for i in range(20):
+    building = random_faculty_and_building_pair[i][1]
+    faculty = random_faculty_and_building_pair[i][0]
+    floor = random_faculty_and_building_pair[i][2]
+    date = random_months[i]
+
+    # change space to %20
+    building = building.replace(" ", "%20")
+    faculty = faculty.replace(" ", "%20")
+    floor = floor.replace(" ", "%20")
+
+    print(f"Faculty: {faculty}, Building: {building}, Floor: {floor}, Date: {date} => http://localhost:3000/monthly?date={date}&faculty={faculty}&building={building}&floor={floor}")
 
 # FACULTY
-process_and_write_data("compare", "faculty", random_months)
+print("\nFaculty Analysis URLs:")
+for i in range(20):
+    date = random_months[i]
+    print(f"Date: {date} => http://localhost:3000/faculty?date={date}")
 
 # HEATMAP
-process_and_write_data(
-    "heatmap", "heatmap", random_months, random_faculty_and_building_pair
-)
+print("\nHeatmap Analysis URLs:")
+for i in range(20):
+    building = random_faculty_and_building_pair[i][1]
+    faculty = random_faculty_and_building_pair[i][0]
+    floor = random_faculty_and_building_pair[i][2]
+    start_date = random_months[i] + "-01"
+    end_date = random_months[i] + "-07"
+
+    # change space to %20
+    building = building.replace(" ", "%20")
+    faculty = faculty.replace(" ", "%20")
+    floor = floor.replace(" ", "%20")
+
+    print(f"Faculty: {faculty}, Building: {building}, Floor: {floor}, Date: {date} => http://localhost:3000/heatmap?start={start_date}&end={end_date}&faculty={faculty}&building={building}&floor={floor}")

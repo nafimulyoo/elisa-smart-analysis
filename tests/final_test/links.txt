@@ -1,0 +1,87 @@
+Daily Analysis URLs:
+Faculty: FTI, Building: LABTEK%20VI, Floor: , Date: 2024-03-15 => http://localhost:3000/daily?date=2024-03-15&faculty=FTI&building=LABTEK%20VI&floor=
+Faculty: UNIT%20KERJA, Building: Villa%20Merah, Floor: , Date: 2025-01-20 => http://localhost:3000/daily?date=2025-01-20&faculty=UNIT%20KERJA&building=Villa%20Merah&floor=
+Faculty: FTTM, Building: Gedung%20Energi, Floor: , Date: 2025-01-05 => http://localhost:3000/daily?date=2025-01-05&faculty=FTTM&building=Gedung%20Energi&floor=
+Faculty: , Building: , Floor: , Date: 2024-12-01 => http://localhost:3000/daily?date=2024-12-01&faculty=&building=&floor=
+Faculty: SBM, Building: , Floor: , Date: 2024-09-28 => http://localhost:3000/daily?date=2024-09-28&faculty=SBM&building=&floor=
+Faculty: FSRD, Building: , Floor: , Date: 2025-05-01 => http://localhost:3000/daily?date=2025-05-01&faculty=FSRD&building=&floor=
+Faculty: FTI, Building: LABTEK%20VI, Floor: , Date: 2024-06-12 => http://localhost:3000/daily?date=2024-06-12&faculty=FTI&building=LABTEK%20VI&floor=
+Faculty: FSRD, Building: CAD, Floor: , Date: 2025-04-18 => http://localhost:3000/daily?date=2025-04-18&faculty=FSRD&building=CAD&floor=
+Faculty: SBM, Building: SBM%20FREEPORT, Floor: , Date: 2024-10-03 => http://localhost:3000/daily?date=2024-10-03&faculty=SBM&building=SBM%20FREEPORT&floor=
+Faculty: FTI, Building: , Floor: , Date: 2024-01-23 => http://localhost:3000/daily?date=2024-01-23&faculty=FTI&building=&floor=
+Faculty: UNIT%20KERJA, Building: Villa%20Merah, Floor: , Date: 2024-11-08 => http://localhost:3000/daily?date=2024-11-08&faculty=UNIT%20KERJA&building=Villa%20Merah&floor=
+Faculty: SITH, Building: LABTEK%20XI, Floor: , Date: 2024-08-29 => http://localhost:3000/daily?date=2024-08-29&faculty=SITH&building=LABTEK%20XI&floor=
+Faculty: FTMD, Building: , Floor: , Date: 2025-02-14 => http://localhost:3000/daily?date=2025-02-14&faculty=FTMD&building=&floor=
+Faculty: STEI, Building: Lab.%20Konversi, Floor: , Date: 2024-06-07 => http://localhost:3000/daily?date=2024-06-07&faculty=STEI&building=Lab.%20Konversi&floor=
+Faculty: , Building: , Floor: , Date: 2024-04-05 => http://localhost:3000/daily?date=2024-04-05&faculty=&building=&floor=
+Faculty: , Building: LABTEK%20X, Floor: , Date: 2024-12-20 => http://localhost:3000/daily?date=2024-12-20&faculty=&building=LABTEK%20X&floor=
+Faculty: FTTM, Building: Gedung%20Energi, Floor: , Date: 2024-09-16 => http://localhost:3000/daily?date=2024-09-16&faculty=FTTM&building=Gedung%20Energi&floor=
+Faculty: FTI, Building: LABTEK%20VI, Floor: Lab%20Manajemen%20Energi, Date: 2025-03-02 => http://localhost:3000/daily?date=2025-03-02&faculty=FTI&building=LABTEK%20VI&floor=Lab%20Manajemen%20Energi
+Faculty: , Building: , Floor: , Date: 2024-11-25 => http://localhost:3000/daily?date=2024-11-25&faculty=&building=&floor=
+Faculty: FMIPA, Building: FISIKA, Floor: , Date: 2024-07-31 => http://localhost:3000/daily?date=2024-07-31&faculty=FMIPA&building=FISIKA&floor=
+
+Monthly Analysis URLs:
+Faculty: FTI, Building: LABTEK%20VI, Floor: , Date: 2024-03 => http://localhost:3000/monthly?date=2024-03&faculty=FTI&building=LABTEK%20VI&floor=
+Faculty: UNIT%20KERJA, Building: Villa%20Merah, Floor: , Date: 2025-01 => http://localhost:3000/monthly?date=2025-01&faculty=UNIT%20KERJA&building=Villa%20Merah&floor=
+Faculty: FTTM, Building: Gedung%20Energi, Floor: , Date: 2025-01 => http://localhost:3000/monthly?date=2025-01&faculty=FTTM&building=Gedung%20Energi&floor=
+Faculty: , Building: , Floor: , Date: 2024-12 => http://localhost:3000/monthly?date=2024-12&faculty=&building=&floor=
+Faculty: SBM, Building: , Floor: , Date: 2024-09 => http://localhost:3000/monthly?date=2024-09&faculty=SBM&building=&floor=
+Faculty: FSRD, Building: , Floor: , Date: 2025-05 => http://localhost:3000/monthly?date=2025-05&faculty=FSRD&building=&floor=
+Faculty: FTI, Building: LABTEK%20VI, Floor: , Date: 2024-06 => http://localhost:3000/monthly?date=2024-06&faculty=FTI&building=LABTEK%20VI&floor=
+Faculty: FSRD, Building: CAD, Floor: , Date: 2025-04 => http://localhost:3000/monthly?date=2025-04&faculty=FSRD&building=CAD&floor=
+Faculty: SBM, Building: SBM%20FREEPORT, Floor: , Date: 2024-10 => http://localhost:3000/monthly?date=2024-10&faculty=SBM&building=SBM%20FREEPORT&floor=
+Faculty: FTI, Building: , Floor: , Date: 2024-01 => http://localhost:3000/monthly?date=2024-01&faculty=FTI&building=&floor=
+Faculty: UNIT%20KERJA, Building: Villa%20Merah, Floor: , Date: 2024-11 => http://localhost:3000/monthly?date=2024-11&faculty=UNIT%20KERJA&building=Villa%20Merah&floor=
+Faculty: SITH, Building: LABTEK%20XI, Floor: , Date: 2024-08 => http://localhost:3000/monthly?date=2024-08&faculty=SITH&building=LABTEK%20XI&floor=
+Faculty: FTMD, Building: , Floor: , Date: 2025-02 => http://localhost:3000/monthly?date=2025-02&faculty=FTMD&building=&floor=
+Faculty: STEI, Building: Lab.%20Konversi, Floor: , Date: 2024-06 => http://localhost:3000/monthly?date=2024-06&faculty=STEI&building=Lab.%20Konversi&floor=
+Faculty: , Building: , Floor: , Date: 2024-04 => http://localhost:3000/monthly?date=2024-04&faculty=&building=&floor=
+Faculty: , Building: LABTEK%20X, Floor: , Date: 2024-12 => http://localhost:3000/monthly?date=2024-12&faculty=&building=LABTEK%20X&floor=
+Faculty: FTTM, Building: Gedung%20Energi, Floor: , Date: 2024-09 => http://localhost:3000/monthly?date=2024-09&faculty=FTTM&building=Gedung%20Energi&floor=
+Faculty: FTI, Building: LABTEK%20VI, Floor: Lab%20Manajemen%20Energi, Date: 2025-03 => http://localhost:3000/monthly?date=2025-03&faculty=FTI&building=LABTEK%20VI&floor=Lab%20Manajemen%20Energi
+Faculty: , Building: , Floor: , Date: 2024-11 => http://localhost:3000/monthly?date=2024-11&faculty=&building=&floor=
+Faculty: FMIPA, Building: FISIKA, Floor: , Date: 2024-07 => http://localhost:3000/monthly?date=2024-07&faculty=FMIPA&building=FISIKA&floor=
+
+Faculty Analysis URLs:
+Date: 2024-03 => http://localhost:3000/faculty?date=2024-03
+Date: 2025-01 => http://localhost:3000/faculty?date=2025-01
+Date: 2025-01 => http://localhost:3000/faculty?date=2025-01
+Date: 2024-12 => http://localhost:3000/faculty?date=2024-12
+Date: 2024-09 => http://localhost:3000/faculty?date=2024-09
+Date: 2025-05 => http://localhost:3000/faculty?date=2025-05
+Date: 2024-06 => http://localhost:3000/faculty?date=2024-06
+Date: 2025-04 => http://localhost:3000/faculty?date=2025-04
+Date: 2024-10 => http://localhost:3000/faculty?date=2024-10
+Date: 2024-01 => http://localhost:3000/faculty?date=2024-01
+Date: 2024-11 => http://localhost:3000/faculty?date=2024-11
+Date: 2024-08 => http://localhost:3000/faculty?date=2024-08
+Date: 2025-02 => http://localhost:3000/faculty?date=2025-02
+Date: 2024-06 => http://localhost:3000/faculty?date=2024-06
+Date: 2024-04 => http://localhost:3000/faculty?date=2024-04
+Date: 2024-12 => http://localhost:3000/faculty?date=2024-12
+Date: 2024-09 => http://localhost:3000/faculty?date=2024-09
+Date: 2025-03 => http://localhost:3000/faculty?date=2025-03
+Date: 2024-11 => http://localhost:3000/faculty?date=2024-11
+Date: 2024-07 => http://localhost:3000/faculty?date=2024-07
+
+Heatmap Analysis URLs:
+Faculty: FTI, Building: LABTEK%20VI, Floor: , Date: 2024-07 => http://localhost:3000/heatmap?start=2024-03-01&end=2024-03-07&faculty=FTI&building=LABTEK%20VI&floor=
+Faculty: UNIT%20KERJA, Building: Villa%20Merah, Floor: , Date: 2024-07 => http://localhost:3000/heatmap?start=2025-01-01&end=2025-01-07&faculty=UNIT%20KERJA&building=Villa%20Merah&floor=
+Faculty: FTTM, Building: Gedung%20Energi, Floor: , Date: 2024-07 => http://localhost:3000/heatmap?start=2025-01-01&end=2025-01-07&faculty=FTTM&building=Gedung%20Energi&floor=
+Faculty: , Building: , Floor: , Date: 2024-07 => http://localhost:3000/heatmap?start=2024-12-01&end=2024-12-07&faculty=&building=&floor=
+Faculty: SBM, Building: , Floor: , Date: 2024-07 => http://localhost:3000/heatmap?start=2024-09-01&end=2024-09-07&faculty=SBM&building=&floor=
+Faculty: FSRD, Building: , Floor: , Date: 2024-07 => http://localhost:3000/heatmap?start=2025-05-01&end=2025-05-07&faculty=FSRD&building=&floor=
+Faculty: FTI, Building: LABTEK%20VI, Floor: , Date: 2024-07 => http://localhost:3000/heatmap?start=2024-06-01&end=2024-06-07&faculty=FTI&building=LABTEK%20VI&floor=
+Faculty: FSRD, Building: CAD, Floor: , Date: 2024-07 => http://localhost:3000/heatmap?start=2025-04-01&end=2025-04-07&faculty=FSRD&building=CAD&floor=
+Faculty: SBM, Building: SBM%20FREEPORT, Floor: , Date: 2024-07 => http://localhost:3000/heatmap?start=2024-10-01&end=2024-10-07&faculty=SBM&building=SBM%20FREEPORT&floor=
+Faculty: FTI, Building: , Floor: , Date: 2024-07 => http://localhost:3000/heatmap?start=2024-01-01&end=2024-01-07&faculty=FTI&building=&floor=
+Faculty: UNIT%20KERJA, Building: Villa%20Merah, Floor: , Date: 2024-07 => http://localhost:3000/heatmap?start=2024-11-01&end=2024-11-07&faculty=UNIT%20KERJA&building=Villa%20Merah&floor=
+Faculty: SITH, Building: LABTEK%20XI, Floor: , Date: 2024-07 => http://localhost:3000/heatmap?start=2024-08-01&end=2024-08-07&faculty=SITH&building=LABTEK%20XI&floor=
+Faculty: FTMD, Building: , Floor: , Date: 2024-07 => http://localhost:3000/heatmap?start=2025-02-01&end=2025-02-07&faculty=FTMD&building=&floor=
+Faculty: STEI, Building: Lab.%20Konversi, Floor: , Date: 2024-07 => http://localhost:3000/heatmap?start=2024-06-01&end=2024-06-07&faculty=STEI&building=Lab.%20Konversi&floor=
+Faculty: , Building: , Floor: , Date: 2024-07 => http://localhost:3000/heatmap?start=2024-04-01&end=2024-04-07&faculty=&building=&floor=
+Faculty: , Building: LABTEK%20X, Floor: , Date: 2024-07 => http://localhost:3000/heatmap?start=2024-12-01&end=2024-12-07&faculty=&building=LABTEK%20X&floor=
+Faculty: FTTM, Building: Gedung%20Energi, Floor: , Date: 2024-07 => http://localhost:3000/heatmap?start=2024-09-01&end=2024-09-07&faculty=FTTM&building=Gedung%20Energi&floor=
+Faculty: FTI, Building: LABTEK%20VI, Floor: Lab%20Manajemen%20Energi, Date: 2024-07 => http://localhost:3000/heatmap?start=2025-03-01&end=2025-03-07&faculty=FTI&building=LABTEK%20VI&floor=Lab%20Manajemen%20Energi
+Faculty: , Building: , Floor: , Date: 2024-07 => http://localhost:3000/heatmap?start=2024-11-01&end=2024-11-07&faculty=&building=&floor=
+Faculty: FMIPA, Building: FISIKA, Floor: , Date: 2024-07 => http://localhost:3000/heatmap?start=2024-07-01&end=2024-07-07&faculty=FMIPA&building=FISIKA&floor=

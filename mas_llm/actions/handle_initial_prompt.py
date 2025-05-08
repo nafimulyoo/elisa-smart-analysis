@@ -4,13 +4,16 @@ from fastapi import HTTPException
 from mas_llm.actions.respond_initial_prompt import RespondInitialPrompt
 from mas_llm.actions.ask_about_elisa import AskAboutElisa
 from mas_llm.actions.ask_data_availability import AskDataAvailability
-
+from metagpt.config2 import Config
+from pathlib import Path
 from metagpt.logs import logger
 
-async def handleInitialPrompt(message):
-    ask_about_elisa = AskAboutElisa()
-    ask_data_availability = AskDataAvailability()
-    respond_initial_prompt = RespondInitialPrompt()
+async def handleInitialPrompt(message, config):
+
+    ask_about_elisa = AskAboutElisa(config=config)
+    ask_data_availability = AskDataAvailability(config=config)
+    respond_initial_prompt = RespondInitialPrompt(config=config)
+    
     max_retry = 3
     
     agent_response = InitialPromptHandlerResult(type="", message="")

@@ -15,16 +15,17 @@ import hashlib
 import json
 import time
 from datetime import datetime
-
-
+from metagpt.config2 import Config
+import os
+from pathlib import Path
 
 class AnalyzePage(Action):
     name: str = "AnalyzePage"
 
 
-analyze_page = AnalyzePage()
-
-
+deepseek = Config.from_yaml_file(Path("config/deepseek-r1.yaml"))
+gemma = Config.from_yaml_file(Path("config/gemma3.yaml"))
+gemini = Config.default()
 """
 Analysis objectives:
 for now_analysis:
@@ -118,7 +119,7 @@ def cached_analysis(func_name: str):
     return decorator
 
 # @cached_analysis("now")
-async def now_analysis(data, faculty="", building="", floor="") -> str:
+async def now_analysis(data, faculty="", building="", floor="", model="") -> str:
     """
     Analyzes last one hour and today energy data, comparing against data last month
 
@@ -140,9 +141,15 @@ async def now_analysis(data, faculty="", building="", floor="") -> str:
                 - "hour_daya": Hourly energy consumption for the previous month. (kWh/hour)
                 - "hour_cost": Hourly cost for the previous month. (Rupiah/hour)
     """
-
+    if model == "deepseek":
+        analyze_page = AnalyzePage(config=deepseek)
+    elif model == "gemma":
+        analyze_page = AnalyzePage(config=gemma)
+    else:
+        analyze_page = AnalyzePage(config=gemini)
     try:
         # Extract Current Data
+        
         chart_data = data.get("chart_data", [])
         measurement_start_time = chart_data[0].get("timestamp", "N/A") if chart_data else "N/A"
         measurement_end_time = chart_data[-1].get("timestamp", "N/A") if chart_data else "N/A"
@@ -237,7 +244,7 @@ async def now_analysis(data, faculty="", building="", floor="") -> str:
         return f"Error generating analysis: {str(e)}"
 
 # @cached_analysis("daily")
-async def daily_analysis(data, date, faculty="", building="", floor="") -> str:
+async def daily_analysis(data, date, faculty="", building="", floor="", model="") -> str:
     """
     Analyzes daily energy data, comparing it to a heatmap of the past week.
     history is the result of async_fetch_heatmap.
@@ -264,6 +271,12 @@ async def daily_analysis(data, date, faculty="", building="", floor="") -> str:
                 - "total_cost": Total cost for the month. (Rupiah)
                 - "day_cost": Average cost per day. (Rupiah/day)
     """
+    if model == "deepseek":
+        analyze_page = AnalyzePage(config=deepseek)
+    elif model == "gemma":
+        analyze_page = AnalyzePage(config=gemma)
+    else:
+        analyze_page = AnalyzePage(config=gemini)
 
     try:
         # add Total Power in chart_data R + S + T
@@ -367,7 +380,7 @@ async def daily_analysis(data, date, faculty="", building="", floor="") -> str:
         return f"Error generating analysis: {str(e)}"
 
 # @cached_analysis("monthly")
-async def monthly_analysis(data, date, faculty="", building="", floor="") -> str:
+async def monthly_analysis(data, date, faculty="", building="", floor="", model="") -> str:
     """
     Analyzes monthly energy data, comparing to a list of previous months.
 
@@ -396,6 +409,12 @@ async def monthly_analysis(data, date, faculty="", building="", floor="") -> str
                 - "total_cost": Total cost for the month. (Rupiah)
                 - "day_cost": Average cost per day. (Rupiah/day)
     """
+    if model == "deepseek":
+        analyze_page = AnalyzePage(config=deepseek)
+    elif model == "gemma":
+        analyze_page = AnalyzePage(config=gemma)
+    else:
+        analyze_page = AnalyzePage(config=gemini)
 
     try:
         max_energy = max(
@@ -492,7 +511,7 @@ async def monthly_analysis(data, date, faculty="", building="", floor="") -> str
         return f"Error generating analysis: {str(e)}"
 
 # @cached_analysis("heatmap")
-async def heatmap_analysis(data, history, faculty="", building="", floor="") -> str:
+async def heatmap_analysis(data, history, faculty="", building="", floor="", model="") -> str:
     """
     Analyzes energy usage heatmap data, no history
 
@@ -507,6 +526,12 @@ async def heatmap_analysis(data, history, faculty="", building="", floor="") -> 
                 - "value": The energy consumption value for the given day and hour. (kWh)
         history: dict: A dictionary containing the same structure as data, but for the previous week.
     """
+    if model == "deepseek":
+        analyze_page = AnalyzePage(config=deepseek)
+    elif model == "gemma":
+        analyze_page = AnalyzePage(config=gemma)
+    else:
+        analyze_page = AnalyzePage(config=gemini)
 
     try:
         days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
@@ -696,7 +721,7 @@ async def heatmap_analysis(data, history, faculty="", building="", floor="") -> 
         return f"Error generating analysis: {str(e)}"
 
 # @cached_analysis("compare_faculty")
-async def compare_faculty_analysis(data, history, date) -> str:
+async def compare_faculty_analysis(data, history, date, model="") -> str:
     """
     Analyzes energy consumption across faculties, comparing to previous month.
     The history is the result of async_fetch_compare for the previous month.
@@ -732,7 +757,12 @@ async def compare_faculty_analysis(data, history, date) -> str:
                 - "specific energy": The specific energy consumption per student. (kWh/student)
         history: dict: A dictionary containing the same structure as data.
     """
-    
+    if model == "deepseek":
+        analyze_page = AnalyzePage(config=deepseek)
+    elif model == "gemma":
+        analyze_page = AnalyzePage(config=gemma)
+    else:
+        analyze_page = AnalyzePage(config=gemini)    
 
     try:
         total_energy = data.get("data", {}).get("total", 0.0)

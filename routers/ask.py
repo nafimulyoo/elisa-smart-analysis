@@ -48,9 +48,10 @@ whatsapp_pipeline = AskAnalysisPipeline(source="whatsapp", example_mode=example_
 
 @ask_router.get("/api/web")
 # @profile_endpoint()
-async def web_api(prompt):
+async def web_api(prompt, model=""):
     print("Prompt received:", prompt)
-    result, notebook = await web_pipeline.run(prompt)
+    print("Model received:", model)
+    result, notebook = await web_pipeline.run(prompt, model)
 
     for res in result:
         if res["visualization_type"] != "":

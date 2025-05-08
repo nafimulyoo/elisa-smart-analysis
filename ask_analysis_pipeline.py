@@ -23,6 +23,9 @@ import nbformat
 from metagpt.context import Context
 from metagpt.logs import logger
 
+from metagpt.config2 import Config
+from pathlib import Path
+
 test_response = True
 
 class AskAnalysisPipeline:
@@ -32,7 +35,17 @@ class AskAnalysisPipeline:
         self.result = []
         self.progress_callback = None
 
-    async def run(self, message):
+    async def run(self, message, model):
+        deepseek = Config.from_yaml_file(Path("config/deepseek-r1.yaml"))
+        gemma = Config.from_yaml_file(Path("config/gemma3.yaml"))
+        gemini = Config.default()
+
+        if model == "deepseek":
+            config = deepseek
+        elif model == "gemma":
+            config = gemma
+        else:
+            config = gemini
             
         try:
             if self.example_mode:
@@ -41,7 +54,7 @@ class AskAnalysisPipeline:
             logger.info(f"🎯 Prompt: {message}")
                 
             logger.info(f"↗️ Forwarding to Initial Prompt Handler")
-            prompt_validator_result = await handleInitialPrompt(message)
+            prompt_validator_result = await handleInitialPrompt(message, config)
                 
             logger.info(f"↘️ Prompt Validator result: {prompt_validator_result}")
 
@@ -65,9 +78,10 @@ class AskAnalysisPipeline:
         #     logger.info(f"↗️ Forwarding to Advanced Data Analyst")
         #     react_mode = "plan_and_act"
         #     tools = fetch_elisa_api_data + ["save_csv", "async_forecast_energy_daily", "async_forecast_energy_hourly"]
-        
-            
-            data_analyst = DataAnalyst(tools=tools)
+    
+
+
+            data_analyst = DataAnalyst(tools=tools, config=config)
             data_analyst.set_react_mode(react_mode=react_mode)
 
             # initial prompt message 
@@ -96,7 +110,7 @@ class AskAnalysisPipeline:
             logger.info(f"🟢 Analysis Interpreter: Interpreting analysis: {data_analyst_log}")
 
             interpret_result = InterpretResult()
-            analysis_interpreter_result = await interpret_result.run(notebook=f"{data_analyst_log}", question=message, source=self.source)
+            analysis_interpreter_result = await interpret_result.run(notebook=f"{data_analyst_log}", question=message, source=self.source, model=model)
             logger.info(f"🟢 Analysis Interpreter: Interpreting analysis Result: {analysis_interpreter_result}")
             await data_analyst.reset_nb()
 

@@ -30,18 +30,19 @@ async def handle_elisa_response(data_task, analysis_func, *args, **kwargs):
         }
 
 @analysis_router.get("/now")
-async def get_now_analysis(faculty: str = "", building: str = "", floor: str = ""):
+async def get_now_analysis(faculty: str = "", building: str = "", floor: str = "", model: str = ""):
     data_task = asyncio.create_task(async_fetch_now(faculty, building, floor))
     return await handle_elisa_response(
         data_task, 
         now_analysis, 
         faculty=faculty, 
         building=building, 
-        floor=floor
+        floor=floor,
+        model=model
     )
 
 @analysis_router.get("/daily")
-async def get_daily_analysis(date: str, faculty: str = "", building: str = "", floor: str = ""):
+async def get_daily_analysis(date: str, faculty: str = "", building: str = "", floor: str = "", model: str = ""):
     data_task = asyncio.create_task(async_fetch_daily(date, faculty, building, floor))
     return await handle_elisa_response(
         data_task,
@@ -49,11 +50,12 @@ async def get_daily_analysis(date: str, faculty: str = "", building: str = "", f
         date,
         faculty=faculty,
         building=building,
-        floor=floor
+        floor=floor,
+        model=model
     )
 
 @analysis_router.get("/monthly")
-async def get_monthly_analysis(date: str, faculty: str = "", building: str = "", floor: str = ""):
+async def get_monthly_analysis(date: str, faculty: str = "", building: str = "", floor: str = "", model: str = ""):
     data_task = asyncio.create_task(async_fetch_monthly(date, faculty, building, floor))
     return await handle_elisa_response(
         data_task,
@@ -61,11 +63,12 @@ async def get_monthly_analysis(date: str, faculty: str = "", building: str = "",
         date,
         faculty=faculty,
         building=building,
-        floor=floor
+        floor=floor,
+        model=model
     )
 
 @analysis_router.get("/faculty")
-async def get_faculty_analysis(date: str):
+async def get_faculty_analysis(date: str, model: str = ""):
     date_in_datetime = datetime.strptime(date, "%Y-%m")
     past_month_in_datetime = date_in_datetime.replace(day=1) - timedelta(days=1)
     past_month = past_month_in_datetime.strftime("%Y-%m")
@@ -82,7 +85,7 @@ async def get_faculty_analysis(date: str):
     # Process through the unified handler
     result = await handle_elisa_response(
         faculty_data_handler(),
-        lambda x: compare_faculty_analysis(x["data"], x["history"], date)
+        lambda x: compare_faculty_analysis(x["data"], x["history"], date, model=model)
     )
     
     # If we got an error response, return it directly
@@ -93,7 +96,7 @@ async def get_faculty_analysis(date: str):
 
 
 @analysis_router.get("/heatmap")
-async def get_heatmap_analysis(start: str, end: str, faculty: str = None, building: str = None, floor: str = None):
+async def get_heatmap_analysis(start: str, end: str, faculty: str = None, building: str = None, floor: str = None, model: str = ""):
     start_date_in_datetime = datetime.strptime(start, "%Y-%m-%d")
     end_date_in_datetime = datetime.strptime(end, "%Y-%m-%d")
 
@@ -115,7 +118,7 @@ async def get_heatmap_analysis(start: str, end: str, faculty: str = None, buildi
     # Process through the unified handler
     result = await handle_elisa_response(
         heatmap_data_handler(),
-        lambda x: heatmap_analysis(x["data"], x["history"], faculty=faculty, building=building, floor=floor)
+        lambda x: heatmap_analysis(x["data"], x["history"], faculty=faculty, building=building, floor=floor, model=model)
     )
     
     # If we got an error response, return it directly
