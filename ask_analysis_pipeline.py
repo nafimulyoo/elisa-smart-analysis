@@ -38,12 +38,19 @@ class AskAnalysisPipeline:
     async def run(self, message, model):
         deepseek = Config.from_yaml_file(Path("config/deepseek-r1.yaml"))
         gemma = Config.from_yaml_file(Path("config/gemma3.yaml"))
+        gemini_25 = Config.from_yaml_file(Path("config/gemini-2.5.yaml"))
         gemini = Config.default()
+        config = None
+        config_2 = None
 
         if model == "deepseek":
             config = deepseek
         elif model == "gemma":
             config = gemma
+        elif model == "gemini-2.5":
+            config = gemini
+            config_2 = gemini_25
+
         else:
             config = gemini
             
@@ -80,8 +87,11 @@ class AskAnalysisPipeline:
         #     tools = fetch_elisa_api_data + ["save_csv", "async_forecast_energy_daily", "async_forecast_energy_hourly"]
     
 
-
-            data_analyst = DataAnalyst(tools=tools, config=config)
+            if config_2:
+                data_analyst = DataAnalyst(tools=tools, config=config_2)
+            else:
+                data_analyst = DataAnalyst(tools=tools, config=config)
+                
             data_analyst.set_react_mode(react_mode=react_mode)
 
             # initial prompt message 
@@ -109,8 +119,12 @@ class AskAnalysisPipeline:
             logger.info(f"↗️ Forwarding to Analysis Interpreter")
             logger.info(f"🟢 Analysis Interpreter: Interpreting analysis: {data_analyst_log}")
 
-            interpret_result = InterpretResult()
-            analysis_interpreter_result = await interpret_result.run(notebook=f"{data_analyst_log}", question=message, source=self.source, model=model)
+            if config_2:
+                interpret_result = InterpretResult(config=config_2)
+            else:
+                interpret_result = InterpretResult(config=config)
+
+            analysis_interpreter_result = await interpret_result.run(notebook=f"{data_analyst_log}", question=message, source=self.source)
             logger.info(f"🟢 Analysis Interpreter: Interpreting analysis Result: {analysis_interpreter_result}")
             await data_analyst.reset_nb()
 

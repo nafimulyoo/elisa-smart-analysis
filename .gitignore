@@ -1,7 +1,5 @@
 logs
-config2.yaml
-gemma3.yaml
-deepseek-r1.yaml
+config/*.yaml
 login.conf 
 
 # Byte-compiled / optimized / DLL files
