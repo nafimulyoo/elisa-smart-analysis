@@ -26,7 +26,11 @@ class YamlModel(BaseModel):
             return yaml.safe_load(file)
 
     @classmethod
-    def from_yaml_file(cls, file_path: Path) -> "YamlModel":
+    # def from_yaml_file(cls, file_path: Path) -> "YamlModel":
+    #     """Read yaml file and return a YamlModel instance"""
+    #     return cls(**cls.read_yaml(file_path))
+
+    def from_yaml_file(cls, file_path: Path):
         """Read yaml file and return a YamlModel instance"""
         return cls(**cls.read_yaml(file_path))
 
