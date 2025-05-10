@@ -62,7 +62,7 @@ class Context(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
     kwargs: AttrDict = AttrDict()
-    config: Config = Config.default()
+    config: Config = Config.from_yaml_file(Path("config/config2.yaml"))
 
     repo: Optional[ProjectRepo] = None
     git_repo: Optional[GitRepository] = None

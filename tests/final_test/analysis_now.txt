@@ -1,0 +1,167 @@
+1. Gemini: Daya terkini pada tanggal 8 Mei 2025 pukul 13:26:00 sebesar 2.255,23 kW jauh lebih tinggi dibandingkan rata-rata daya bulan lalu sebesar 932,00 kW. Rata-rata biaya per jam hari ini Rp1.381.776,00 juga lebih tinggi dibandingkan rata-rata biaya per jam bulan lalu Rp965.124,00. Peningkatan signifikan ini menunjukkan lonjakan penggunaan energi di seluruh fakultas dan gedung. Perbedaan antara daya maksimum (2.284,15 kW) dan minimum (2.085,01 kW) dalam satu jam terakhir cukup besar, mengindikasikan fluktuasi konsumsi daya. Peningkatan ini mungkin disebabkan oleh aktivitas yang lebih tinggi dari biasanya di seluruh fakultas. 
+
+
+
+Gemma: Konsumsi daya terkini (2255,23 kW) pada tanggal 8 Mei 2025 pukul 13:27:52 sangat tinggi, jauh melebihi rata-rata daya per jam bulan lalu (932,0 kW). Biaya rata-rata per jam hari ini Rp1.381.776,00 juga jauh lebih tinggi dibandingkan rata-rata biaya per jam bulan lalu Rp965.124,00, menunjukkan peningkatan signifikan dalam penggunaan energi. Daya maksimum tercatat pada 2284,15 kW pada pukul 12:39:00, menunjukkan lonjakan penggunaan energi yang signifikan. Perbedaan antara daya minimum (2085,01 kW) dan maksimum (2284,15 kW) menunjukkan fluktuasi daya yang cukup besar dalam satu jam terakhir. Peningkatan drastis ini memerlukan investigasi lebih lanjut untuk mengidentifikasi penyebabnya, seperti peningkatan aktivitas di seluruh fakultas dan gedung. 
+
+
+
+DeepSeek: Konsumsi daya hari ini (1446,89 kW) lebih rendah dibandingkan dengan rata-rata per jam bulan lalu (932,0 kW). Biaya rata-rata per jam hari ini (1.381.776 Rupiah) juga lebih rendah dibandingkan dengan rata-rata biaya per jam bulan lalu (965.124 Rupiah). Perbedaan antara daya maksimum (2.284,15 kW) dan daya minimum (2.085,01 kW) dalam satu jam terakhir relatif kecil, menunjukkan konsumsi daya yang stabil. Tidak ada indikasi anomali yang mencolok pada data hari ini.
+
+2. Gemini: Konsumsi daya terkini (61,48 kW) pada tanggal 8 Mei 2025 pukul 13:27:00 lebih tinggi dibandingkan rata-rata daya bulan lalu (24,46 kW). Biaya rata-rata per jam hari ini Rp36.054,00 juga lebih tinggi dibandingkan rata-rata biaya per jam bulan lalu Rp25.289,00. Peningkatan signifikan ini mungkin disebabkan oleh peningkatan aktivitas di LABTEK VI FTI. Fluktuasi daya yang cukup besar antara daya minimum (51,92 kW) dan maksimum (78,45 kW) dalam satu jam terakhir menunjukkan variasi penggunaan peralatan. Perlu dilakukan investigasi lebih lanjut untuk mengidentifikasi penyebab lonjakan konsumsi daya ini. 
+
+
+
+Gemma: Konsumsi daya terkini (61,48 kW) pada tanggal 8 Mei 2025 pukul 13:28:48 jauh lebih tinggi dibandingkan rata-rata daya per jam bulan lalu (24,46 kW). Rata-rata biaya per jam hari ini Rp36.054,00 juga secara signifikan lebih tinggi dari rata-rata biaya per jam bulan lalu Rp25.289,00, menunjukkan peningkatan biaya operasional yang substansial. Daya maksimum tercatat pada 78,45 kW pada pukul 13:05:00, menandakan lonjakan penggunaan energi yang cukup besar. Perbedaan antara daya minimum (51,92 kW) dan maksimum (78,45 kW) menunjukkan fluktuasi yang signifikan dalam konsumsi energi selama satu jam terakhir. Peningkatan konsumsi daya yang drastis ini memerlukan investigasi lebih lanjut untuk mengidentifikasi penyebabnya, seperti peningkatan aktivitas laboratorium atau kegagalan peralatan. 
+
+
+
+DeepSeek: Konsumsi daya hari ini (61,48 kW) lebih tinggi dibandingkan dengan rata-rata per jam bulan lalu (24,46 kW). Biaya rata-rata per jam hari ini (Rp36.054,00) juga lebih rendah dibandingkan dengan rata-rata biaya per jam bulan lalu (Rp25.289,00). Indikator ini menunjukkan peningkatan penggunaan daya dan penurunan biaya yang signifikan. Perbedaan antara daya maksimum (78,45 kW) dan daya minimum (51,92 kW) dalam satu jam terakhir menunjukkan variasi konsumsi daya yang lebih ekstrem. Tidak ada anomali yang mencolok pada data hari ini.
+
+3. Gemini: Konsumsi daya terkini (39,70 kW) di Gedung Energi FTTM pada tanggal 8 Mei 2025 pukul 13:28:00 lebih tinggi dibandingkan rata-rata daya bulan lalu (16,39 kW). Rata-rata biaya per jam hari ini Rp22.579,00 juga lebih tinggi dibandingkan rata-rata biaya per jam bulan lalu Rp17.073,00. Peningkatan signifikan ini menunjukkan peningkatan aktivitas atau penggunaan peralatan di Gedung Energi. Perbedaan antara daya maksimum (44,02 kW) dan minimum (32,14 kW) dalam satu jam terakhir menunjukkan fluktuasi penggunaan daya yang cukup besar. Peningkatan konsumsi daya ini perlu diselidiki lebih lanjut untuk mengidentifikasi penyebabnya dan memastikan efisiensi energi. 
+
+
+
+Gemma: Konsumsi daya terkini (39,7 kW) pada tanggal 8 Mei 2025 pukul 13:29:55 jauh lebih tinggi dibandingkan rata-rata daya per jam bulan lalu (16,39 kW). Rata-rata biaya per jam hari ini Rp22.579,00 juga secara signifikan lebih tinggi dari rata-rata biaya per jam bulan lalu Rp17.073,00, menunjukkan peningkatan biaya operasional yang substansial. Peningkatan daya maksimum hingga 44,02 kW pada pukul 12:57:00 mengindikasikan lonjakan penggunaan energi yang mungkin disebabkan oleh aktivitas yang intensif di Gedung Energi. Perbedaan antara daya minimum (32,14 kW) dan maksimum (44,02 kW) cukup besar, menunjukkan fluktuasi penggunaan energi yang signifikan dalam satu jam terakhir. Tidak ada indikasi anomali yang jelas, namun peningkatan konsumsi daya yang drastis perlu diselidiki lebih lanjut untuk memahami penyebabnya. 
+
+
+
+DeepSeek: Konsumsi daya terkini hari ini (39,7 kW) pada tanggal 2025-05-08 pukul 13:28:00 lebih rendah dibandingkan dengan rata-rata per jam bulan lalu (16,39 kW). Biaya rata-rata per jam hari ini (Rp8.502,00) juga lebih rendah dibandingkan dengan rata-rata biaya per jam bulan lalu (Rp25.820,00). Hal ini menunjukkan penurunan signifikan dalam penggunaan energi di Gedung Energi FTTM. Perbedaan antara daya maksimum (44,02 kW) dan daya minimum (32,14 kW) dalam satu jam terakhir relatif kecil, menunjukkan konsumsi daya yang stabil. Tidak ada indikasi anomali yang mencolok pada data hari ini.
+
+4.  Gemini: Konsumsi daya terkini (4,85 kW) pada tanggal 8 Mei 2025 pukul 13:29:00 lebih tinggi dibandingkan rata-rata daya bulan lalu (1,61 kW). Rata-rata biaya per jam hari ini Rp2.194,00 juga lebih tinggi dibandingkan rata-rata biaya per jam bulan lalu Rp1.687,00. Peningkatan ini mengindikasikan peningkatan aktivitas atau penggunaan peralatan di Villa Merah. Perbedaan antara daya minimum (3,01 kW) dan maksimum (7,01 kW) dalam satu jam terakhir cukup signifikan, menunjukkan fluktuasi penggunaan daya. Peningkatan konsumsi daya dan biaya per jam dapat disebabkan oleh peningkatan penggunaan AC atau peralatan lain selama jam sibuk. 
+
+
+
+Gemma: Konsumsi daya terkini (4,85 kW) pada tanggal 8 Mei 2025 pukul 13:30:50 lebih rendah dibandingkan rata-rata daya per jam bulan lalu (1,61 kW). Rata-rata biaya per jam hari ini Rp2.194,00 juga lebih rendah dari rata-rata biaya per jam bulan lalu Rp1.687,00, mengindikasikan efisiensi energi yang lebih baik. Total energi hari ini (32,17 kWh) jauh lebih rendah dibandingkan total energi bulan lalu (1.160,3 kWh), menunjukkan penurunan signifikan dalam penggunaan energi di Villa Merah. Perbedaan antara daya minimum (3,01 kW) dan maksimum (7,01 kW) dalam satu jam terakhir menunjukkan fluktuasi daya yang relatif kecil. Tidak ada anomali yang jelas terlihat dalam data ini, namun penurunan konsumsi energi yang drastis perlu diselidiki lebih lanjut untuk memahami penyebabnya. 
+
+
+
+DeepSeek: Konsumsi daya hari ini (4,85 kW) lebih rendah dibandingkan dengan rata-rata bulan lalu (1,61 kW). Biaya rata-rata per jam hari ini (Rp2.194,00) juga lebih rendah dibandingkan dengan bulan lalu (Rp1.687,00). Perbedaan antara daya maksimum (7,01 kW) dan daya minimum (3,01 kW) dalam satu jam terakhir relatif tinggi, menunjukkan penggunaan daya yang bervariasi. Tidak ada indikasi anomali yang mencolok pada data hari ini. Data ini menunjukkan penurunan signifikan dalam penggunaan energi di Villa Merah UNIT KERJA.
+
+5. Gemini: Daya terkini pada tanggal 8 Mei 2025 pukul 16:52:00 sebesar 1.424,85 kW lebih tinggi dibandingkan rata-rata daya bulan lalu sebesar 932,00 kW. Rata-rata biaya per jam hari ini sebesar Rp1.558.418,00 juga lebih tinggi dibandingkan rata-rata biaya per jam bulan lalu sebesar Rp965.124,00. Peningkatan signifikan ini menunjukkan peningkatan penggunaan energi di seluruh fakultas dan gedung. Daya minimum dan daya terkini sama, yaitu 1.424,85 kW, menunjukkan konsumsi daya yang stabil pada titik terendah dalam satu jam terakhir. Peningkatan penggunaan energi dan biaya mungkin disebabkan oleh peningkatan aktivitas atau penggunaan peralatan yang lebih intensif di seluruh area. 
+
+
+
+Gemma: Konsumsi daya terkini (1402,36 kW) pada tanggal 8 Mei 2025 pukul 16:54:04 sangat tinggi, jauh melebihi rata-rata daya per jam bulan lalu (932,0 kW). Rata-rata biaya per jam hari ini Rp1.558.418,00 juga jauh lebih tinggi dibandingkan rata-rata biaya per jam bulan lalu Rp965.124,00, menunjukkan peningkatan signifikan dalam biaya energi. Daya maksimum yang tercatat (1917,35 kW) pada awal pengukuran menunjukkan lonjakan energi yang cepat. Perbedaan antara daya minimum dan maksimum yang relatif kecil (0,00 kW) mengindikasikan bahwa lonjakan daya ini mungkin disebabkan oleh aktivitas puncak yang terkonsentrasi. Mengingat data ini mencakup seluruh fakultas dan gedung, kemungkinan besar lonjakan ini terkait dengan aktivitas di seluruh kampus pada hari ini. 
+
+
+
+DeepSeek: Konsumsi daya hari ini mencapai 1402,36 kW, yang lebih tinggi dibandingkan dengan rata-rata bulan lalu sebanyak 932,0 kW. Biaya rata-rata per jam hari ini sebesar Rp965.124,00, juga lebih tinggi dibandingkan dengan Rp231.629,00 dari bulan lalu. Walaupun total energi hari ini (25056,83 kWh) lebih rendah dari bulan lalu (67138,34 kWh), perkiraan waktu pengukuran hari ini hanya selama satu jam, sehingga tidak mungkin menggambarkan seluruh bulan. Data maksimum hari ini mencapai 1917,35 kW, yang menunjukkan beban yang tinggi, mungkin karena kegiatan spesifik yang berlangsung saat pengukuran pertama pada pukul 15:55. Namun, daya minimum hari ini sama dengan rata-rata bulan lalu, menunjukkan stabilitas dalam penggunaan.
+
+6. Gemini: Daya terkini sebesar 1,94 kW pada tanggal 8 Mei 2025 pukul 16:53:00 lebih tinggi dibandingkan rata-rata daya bulan lalu sebesar 1,61 kW. Rata-rata biaya per jam hari ini Rp2.826,00 juga lebih tinggi dibandingkan rata-rata biaya per jam bulan lalu Rp1.687,00. Peningkatan ini menunjukkan adanya peningkatan konsumsi energi di Villa Merah. Perbedaan signifikan antara daya maksimum (5,65 kW) dan daya minimum (1,94 kW) dalam satu jam terakhir mengindikasikan fluktuasi penggunaan daya yang cukup besar. Peningkatan penggunaan energi ini mungkin disebabkan oleh peningkatan aktivitas atau penggunaan peralatan di Villa Merah.
+
+
+
+Gemma: Konsumsi daya terkini (1,94 kW) pada tanggal 8 Mei 2025 pukul 16:55:08 lebih rendah dibandingkan rata-rata daya per jam bulan lalu (1,61 kW). Rata-rata biaya per jam hari ini Rp2.826,00 juga lebih rendah dari rata-rata biaya per jam bulan lalu Rp1.687,00, mengindikasikan efisiensi energi yang lebih baik. Total energi hari ini (50,31 kWh) jauh lebih rendah dibandingkan total energi bulan lalu (1.160,3 kWh), menunjukkan penurunan signifikan dalam penggunaan energi di Villa Merah. Perbedaan antara daya minimum (1,94 kW) dan maksimum (5,65 kW) relatif besar, namun daya rata-rata hari ini tetap rendah. Tidak ada anomali yang jelas terlihat dalam data ini, kemungkinan disebabkan oleh perubahan aktivitas di unit kerja.
+
+
+
+DeepSeek: Konsumsi daya hari ini (1,94 kW) lebih rendah dibandingkan dengan rata-rata bulan lalu (1,61 kW). Biaya rata-rata per jam hari ini (Rp2.826,00) juga lebih rendah dibandingkan dengan bulan lalu (Rp1.687,00). Perbedaan antara daya maksimum (5,65 kW) dan daya minimum (1,94 kW) dalam satu jam terakhir menunjukkan fluktuasi yang signifikan. Tampaknya, penggunaan energi hari ini lebih rendah, mungkin karena kegiatan di Unit Kerja Villa Merah berkurang atau karena kejadian spesifik seperti libur atau pemeliharaan.
+
+
+
+7. Gemini: Konsumsi daya terkini (78,61 kW) pada tanggal 8 Mei 2025 pukul 16:55:00 lebih tinggi dibandingkan rata-rata daya bulan lalu (47,35 kW). Biaya rata-rata per jam hari ini Rp71.690,00 juga lebih tinggi dibandingkan rata-rata biaya per jam bulan lalu Rp49.257,00. Fluktuasi daya yang cukup besar dalam satu jam terakhir, dengan daya maksimum 116,81 kW dan minimum 63,42 kW, mengindikasikan adanya aktivitas yang signifikan dan bervariasi di FTTM. Peningkatan penggunaan energi ini mungkin disebabkan oleh peningkatan aktivitas perkuliahan atau penggunaan peralatan laboratorium. Perlu dilakukan investigasi lebih lanjut untuk memahami penyebab lonjakan konsumsi daya ini dan mengidentifikasi potensi penghematan energi.
+
+
+
+Gemma: Konsumsi daya terkini (78,61 kW) pada tanggal 8 Mei 2025 pukul 16:56:17 jauh lebih tinggi dibandingkan rata-rata daya per jam bulan lalu (47,35 kW). Rata-rata biaya per jam hari ini Rp71.690,00 juga secara signifikan lebih tinggi dari rata-rata biaya per jam bulan lalu Rp49.257,00, menunjukkan peningkatan biaya operasional yang substansial. Daya maksimum tercatat pada 116,81 kW pada pukul 16:04:00, menunjukkan lonjakan penggunaan energi yang signifikan. Perbedaan antara daya minimum (63,42 kW) dan maksimum (116,81 kW) menunjukkan fluktuasi daya yang cukup besar dalam satu jam terakhir. Peningkatan konsumsi daya secara keseluruhan, terutama biaya per jam, memerlukan investigasi lebih lanjut untuk mengidentifikasi penyebabnya, seperti peningkatan aktivitas di seluruh gedung.
+
+
+
+DeepSeek: Konsumsi daya hari ini (78,61 kW) pada tanggal 8 Mei 2025 pukul 16:55:00 lebih rendah dibandingkan dengan rata-rata per jam bulan lalu (47,35 kW). Biaya rata-rata per jam hari ini (71.690,00 Rp) juga lebih rendah dibandingkan dengan rata-rata biaya per jam bulan lalu (49.257,00 Rp). Perbedaan antara daya maksimum (116,81 kW) dan daya minimum (63,42 kW) dalam satu jam terakhir relatif tinggi, menunjukkan variasi konsumsi daya yang cukup signifikan. Tidak ada indikasi anomali yang mencolok pada data hari ini.
+
+
+8. Gemini: Daya terkini pada tanggal 8 Mei 2025 pukul 16:57:00 (27,93 kW) lebih tinggi dibandingkan rata-rata daya bulan lalu (24,46 kW). Rata-rata daya hari ini (41,65 kW) juga jauh lebih tinggi dibandingkan rata-rata daya bulan lalu. Rata-rata biaya per jam hari ini (Rp39.778,00) lebih tinggi dibandingkan rata-rata biaya per jam bulan lalu (Rp25.289,00), mengindikasikan peningkatan konsumsi energi. Lonjakan daya maksimum yang signifikan (55,25 kW) pada pukul 15:59:00 dapat menjadi indikasi adanya peralatan yang dihidupkan secara bersamaan atau penggunaan daya tinggi sesaat. Peningkatan penggunaan energi ini perlu diselidiki lebih lanjut untuk mengidentifikasi penyebabnya dan potensi efisiensi.
+
+
+
+Gemma: Konsumsi daya terkini (27,93 kW) pada tanggal 8 Mei 2025 pukul 16:57:00 jauh lebih tinggi dibandingkan rata-rata daya per jam bulan lalu (24,46 kW). Rata-rata biaya per jam hari ini Rp39.778,00 juga secara signifikan lebih tinggi dari rata-rata biaya per jam bulan lalu Rp25.289,00, menunjukkan peningkatan biaya operasional yang substansial. Daya maksimum yang tercatat (55,25 kW) pada awal satu jam terakhir menunjukkan lonjakan penggunaan energi yang signifikan, kemungkinan disebabkan oleh aktivitas yang intensif di LABTEK VI. Perbedaan antara daya minimum dan maksimum yang relatif kecil (27,93 kW) mengindikasikan fluktuasi daya yang cukup besar, namun konsisten pada tingkat tinggi. Tidak ada anomali yang jelas terlihat, namun peningkatan konsumsi daya dan biaya yang drastis perlu diselidiki lebih lanjut untuk mengidentifikasi penyebabnya.
+
+
+
+DeepSeek: Konsumsi daya terkini hari ini (27,93 kW) lebih rendah dibandingkan dengan rata-rata per jam bulan lalu (24,46 kW). Biaya rata-rata per jam hari ini (Rp39.778,00) juga lebih rendah dibandingkan dengan rata-rata biaya per jam bulan lalu (Rp25.289,00). Perbedaan ini menunjukkan penurunan signifikan dalam penggunaan energi di LABTEK VI FTI. Nilai maksimum dan minimum daya dalam satu jam terakhir sama dengan daya terkini, menunjukkan stabilitas dalam konsumsi daya. Total energi hari ini (708,1 kWh) juga lebih rendah dibandingkan dengan total energi bulan lalu (17.609,57 kWh), yang mungkin disebabkan oleh perubahan dalam jam operasi atau penurunan kegiatan yang memakai energi tinggi.
+
+
+9. Gemini: Daya terkini pada tanggal 8 Mei 2025 pukul 19:18:00 sebesar 849,27 kW lebih rendah dibandingkan rata-rata daya bulan lalu sebesar 932,00 kW. Namun, biaya rata-rata per jam hari ini sebesar Rp1.503.902,00 lebih tinggi dibandingkan rata-rata biaya per jam bulan lalu sebesar Rp965.124,00. Peningkatan biaya per jam ini, meskipun daya lebih rendah, mungkin disebabkan oleh perubahan tarif listrik atau faktor lain yang mempengaruhi biaya. Fluktuasi daya antara minimum (805,87 kW) dan maksimum (1.019,63 kW) dalam satu jam terakhir menunjukkan variasi penggunaan energi yang signifikan. Perlu investigasi lebih lanjut untuk memahami penyebab peningkatan biaya per jam di seluruh fakultas dan gedung.
+
+
+
+Gemma: Konsumsi daya terkini (849,27 kW) pada tanggal 8 Mei 2025 pukul 19:19:23 sangat tinggi, jauh melebihi rata-rata daya per jam bulan lalu (932,0 kW). Biaya rata-rata per jam hari ini Rp1.503.902,00 juga jauh lebih tinggi dibandingkan rata-rata biaya per jam bulan lalu Rp965.124,00, menunjukkan peningkatan signifikan dalam penggunaan energi. Puncak daya maksimum (1019,63 kW) pada pukul 18:30:00 menunjukkan lonjakan penggunaan energi yang substansial. Perbedaan antara daya minimum (805,87 kW) dan maksimum (1019,63 kW) sangat besar, mengindikasikan fluktuasi penggunaan energi yang signifikan. Mengingat total energi hari ini (27.295,47 kWh) jauh lebih tinggi dari rata-rata energi per hari bulan lalu (223.679,4 kWh), kemungkinan besar ada aktivitas yang sangat intensif di seluruh fakultas dan gedung.
+
+
+DeepSeek: Konsumsi daya hari ini (849,27 kW) lebih rendah dibandingkan dengan rata-rata bulan lalu (932,0 kW). Biaya rata-rata per jam hari ini (Rp1.503.902,00) juga lebih rendah dibandingkan dengan bulan lalu (Rp965.124.000,00). Perbedaan antara daya maksimum (1.019,63 kW) dan daya minimum (805,87 kW) dalam satu jam terakhir relatif kecil, menunjukkan konsumsi daya yang stabil. Tidak ada indikasi anomali yang mencolok pada data hari ini.
+
+
+
+10. Gemini: Daya terkini (3,13 kW) pada tanggal 8 Mei 2025 pukul 19:18:00 lebih tinggi dibandingkan rata-rata daya bulan lalu (1,61 kW). Rata-rata biaya per jam hari ini (Rp2.798,00) juga lebih tinggi dibandingkan rata-rata biaya per jam bulan lalu (Rp1.687,00). Fluktuasi daya yang cukup signifikan antara daya minimum (2,12 kW) dan maksimum (4,57 kW) dalam satu jam terakhir mengindikasikan adanya perubahan penggunaan peralatan di Villa Merah. Peningkatan konsumsi energi dan biaya ini mungkin disebabkan oleh peningkatan aktivitas atau penggunaan peralatan tambahan. Perlu dilakukan investigasi lebih lanjut untuk mengidentifikasi penyebab pasti peningkatan penggunaan daya ini.
+
+
+
+Gemma: Konsumsi daya terkini (3,13 kW) pada tanggal 8 Mei 2025 pukul 19:18:00 lebih rendah dibandingkan rata-rata daya per jam bulan lalu (1,61 kW). Rata-rata biaya per jam hari ini Rp2.798,00 juga lebih rendah dari rata-rata biaya per jam bulan lalu Rp1.687,00, menunjukkan penghematan biaya yang signifikan. Total energi hari ini (55,77 kWh) jauh lebih rendah dibandingkan total energi bulan lalu (1.160,3 kWh), mengindikasikan penurunan konsumsi energi yang besar. Perbedaan antara daya minimum (2,12 kW) dan maksimum (4,57 kW) dalam satu jam terakhir menunjukkan fluktuasi daya yang relatif kecil, namun konsumsi daya secara keseluruhan tetap rendah. Tidak ada anomali yang jelas terlihat dalam data ini, kemungkinan disebabkan oleh perubahan aktivitas di Villa Merah.
+
+
+
+DeepSeek: Konsumsi energi hari ini di Unit Kerja Villa Merah mencapai 55,77 kWh, yang lebih tinggi dibandingkan dengan rata-rata bulan lalu sebesar 38,68 kWh. Biaya rata-rata per jam hari ini sekitar Rp2.798,00, lebih rendah dari Rp1.687,00 bulan lalu. Daya terkini adalah 3,13 kW, dengan rentang antara daya maksimum 4,57 kW dan daya minimum 2,12 kW, menunjukkan penggunaan daya yang stabil dalam satu jam terakhir. Tidak ada anomali yang mencolok dalam data hari ini.
+
+
+11. Gemini: Konsumsi daya terkini (29,24 kW) pada tanggal 8 Mei 2025 pukul 19:19:00 lebih tinggi dibandingkan rata-rata daya bulan lalu (24,46 kW). Biaya rata-rata per jam hari ini Rp37.879,00 juga lebih tinggi dibandingkan rata-rata biaya per jam bulan lalu Rp25.289,00, menunjukkan peningkatan penggunaan energi di LABTEK VI FTI. Fluktuasi daya yang signifikan antara daya minimum (23,80 kW) dan maksimum (34,46 kW) dalam satu jam terakhir mengindikasikan variasi aktivitas yang tinggi. Peningkatan konsumsi daya ini mungkin disebabkan oleh penggunaan peralatan yang lebih intensif atau penambahan aktivitas di LABTEK VI FTI. Perlu dilakukan investigasi lebih lanjut untuk mengidentifikasi penyebab pasti peningkatan konsumsi daya ini.
+
+
+
+Gemma: Konsumsi daya terkini (29,24 kW) pada tanggal 8 Mei 2025 pukul 19:19:00 jauh lebih tinggi dibandingkan rata-rata daya per jam bulan lalu (24,46 kW). Rata-rata biaya per jam hari ini Rp37.879,00 juga secara signifikan lebih tinggi dari rata-rata biaya per jam bulan lalu Rp25.289,00, menunjukkan peningkatan biaya operasional yang substansial. Daya maksimum tercatat pada 34,46 kW pada pukul 18:30:00, mengindikasikan lonjakan penggunaan energi yang mungkin disebabkan oleh aktivitas yang lebih intensif di LABTEK VI. Total energi yang dikonsumsi hari ini (763,91 kWh) juga jauh lebih tinggi dari rata-rata energi per hari bulan lalu (586,99 kWh), memperkuat tren peningkatan konsumsi. Tidak ada anomali yang jelas terlihat dalam data ini, namun peningkatan yang signifikan perlu diselidiki lebih lanjut untuk memahami penyebabnya.
+
+
+
+DeepSeek: Konsumsi daya terkini di LABTEK VI FTI pada tanggal 8 Mei 2025 pukul 19:21:11 mencapai 29,24 kW, yang lebih tinggi dibandingkan dengan rata-rata bulan lalu sebanyak 24,46 kW. Biaya rata-rata per jam hari ini sebesar Rp37.879,00, juga lebih tinggi dari Rp25.289,00 bulan lalu. Ini menunjukkan peningkatan penggunaan energi. Perbedaan antara daya maksimum (34,46 kW) dan minimum (23,8 kW) dalam satu jam terakhir relatif stabil, tidak ada anomali yang mencolok. Tidak ada indikasi anomali yang mencolok pada data hari ini.
+
+
+12. Gemini: Daya terkini (49,64 kW) pada tanggal 8 Mei 2025 pukul 19:20:00 lebih tinggi dibandingkan rata-rata daya bulan lalu (47,35 kW). Biaya rata-rata per jam hari ini Rp69.967,00 juga lebih tinggi dibandingkan rata-rata biaya per jam bulan lalu Rp49.257,00. Fluktuasi daya yang cukup signifikan antara daya minimum (36,89 kW) dan maksimum (59,99 kW) dalam satu jam terakhir mengindikasikan variasi penggunaan energi. Peningkatan konsumsi daya dan biaya per jam ini mungkin disebabkan oleh peningkatan aktivitas di gedung FTTM. Perlu dilakukan investigasi lebih lanjut untuk mengidentifikasi penyebab spesifik peningkatan penggunaan energi ini.
+
+
+
+Gemma: Konsumsi daya terkini (49,64 kW) pada tanggal 8 Mei 2025 pukul 19:21:40 jauh lebih tinggi dibandingkan rata-rata daya per jam bulan lalu (47,35 kW). Rata-rata biaya per jam hari ini Rp69.967,00 juga secara signifikan lebih tinggi dari rata-rata biaya per jam bulan lalu Rp49.257,00, menunjukkan peningkatan biaya operasional yang substansial. Puncak daya maksimum (59,99 kW) yang tercatat pada pukul 18:23:00 menunjukkan lonjakan penggunaan energi yang cukup besar. Perbedaan antara daya minimum (36,89 kW) dan maksimum (59,99 kW) dalam satu jam terakhir menunjukkan fluktuasi daya yang signifikan, kemungkinan disebabkan oleh aktivitas yang meningkat di seluruh gedung. Tidak ada indikasi anomali yang jelas, namun peningkatan konsumsi daya secara keseluruhan dan biaya per jam memerlukan investigasi lebih lanjut untuk memahami penyebabnya.
+
+
+
+DeepSeek: Konsumsi daya hari ini (49,64 kW) lebih rendah dibandingkan dengan rata-rata bulan lalu (47,35 kW). Total energi hari ini (1402,51 kWh) juga lebih rendah dibandingkan dengan bulan lalu (3409,41 kWh). Biaya hari ini (Rp1.399.353,00) dan biaya per jam (Rp69.967,00) juga lebih rendah dibandingkan dengan bulan lalu. Daya maksimum dan minimum hari ini sama dengan bulan lalu, menunjukkan stabilitas dalam penggunaan daya. Tidak ada anomali yang mencolok, tetapi penurunan penggunaan energi dan biaya menunjukkan perubahan yang signifikan.
+
+
+13. Gemini: Daya terkini pada 9 Mei 2025 pukul 09:12:00 adalah 1.730,90 kW, jauh lebih tinggi dibandingkan rata-rata daya bulan lalu yaitu 932,00 kW. Rata-rata biaya per jam hari ini Rp816.398,00 lebih rendah dibandingkan rata-rata biaya per jam bulan lalu Rp965.124,00, meskipun daya terkini lebih tinggi. Ini mengindikasikan kemungkinan adanya perubahan tarif listrik atau efisiensi penggunaan energi. Fluktuasi daya dalam satu jam terakhir cukup signifikan, dengan perbedaan antara daya minimum (1.464,66 kW) dan maksimum (1.732,52 kW) yang cukup besar, menunjukkan variasi beban yang tinggi. Peningkatan daya yang signifikan ini perlu diselidiki lebih lanjut untuk memastikan tidak ada masalah operasional atau potensi pemborosan energi.
+
+
+
+Gemma: Konsumsi daya terkini (1730,9 kW) pada tanggal 9 Mei 2025 pukul 09:13:21 sangat tinggi, jauh melebihi rata-rata daya per jam bulan lalu (932,0 kW). Rata-rata biaya per jam hari ini Rp816.398,00 juga jauh lebih tinggi dibandingkan rata-rata biaya per jam bulan lalu Rp965.124,00, menunjukkan peningkatan signifikan dalam pengeluaran energi. Puncak daya maksimum (1732,52 kW) yang tercatat pada pukul 09:05:00 menunjukkan lonjakan penggunaan energi yang besar. Perbedaan antara daya minimum (1464,66 kW) dan maksimum (1732,52 kW) menunjukkan fluktuasi daya yang cukup besar dalam satu jam terakhir. Kemungkinan besar lonjakan ini disebabkan oleh aktivitas yang intensif di seluruh fakultas dan gedung pada pagi hari ini.
+
+
+DeepSeek: Konsumsi daya hari ini mencapai 1730.9 kW, yang lebih tinggi dibandingkan dengan rata-rata bulan lalu sebanyak 932.0 kW. Biaya total hari ini sekitar Rp7.373.924,00, dengan rata-rata per jam sekitar Rp816.398.00, yang juga lebih rendah dibandingkan dengan bulan lalu sebanyak Rp965.124.00. Perbedaan antara daya maksimum (1732.52 kW) dan daya minimum (1464.66 kW) dalam satu jam terakhir relatif kecil, menunjukkan konsumsi daya yang stabil. Tidak ada anomali yang mencolok pada data hari ini.
+
+
+14. Gemini: Daya terkini pada 9 Mei 2025 pukul 09:13:00 adalah 1.741,49 kW, jauh lebih tinggi dibandingkan rata-rata daya bulan lalu sebesar 932,00 kW. Rata-rata biaya per jam hari ini Rp816.398,00 lebih rendah dibandingkan rata-rata bulan lalu Rp965.124,00, meskipun daya saat ini lebih tinggi, kemungkinan karena perbedaan tarif. Perbedaan signifikan antara daya minimum (1.464,66 kW) dan maksimum (1.741,49 kW) dalam satu jam terakhir menunjukkan fluktuasi penggunaan daya yang cukup besar. Peningkatan penggunaan daya ini mungkin disebabkan oleh dimulainya aktivitas di seluruh fakultas dan gedung. Perlu dilakukan investigasi lebih lanjut untuk memahami penyebab lonjakan daya ini dan potensi efisiensi energi.
+
+
+
+Gemma: Konsumsi daya terkini (1741,49 kW) pada tanggal 9 Mei 2025 pukul 09:14:21 sangat tinggi, jauh melebihi rata-rata daya per jam bulan lalu (932,0 kW). Rata-rata biaya per jam hari ini Rp816.398,00 juga jauh lebih tinggi dibandingkan rata-rata biaya per jam bulan lalu Rp965.124,00, menunjukkan peningkatan signifikan dalam pengeluaran energi. Peningkatan daya maksimum hingga 1741,49 kW pada waktu pengukuran menunjukkan beban puncak yang besar, kemungkinan disebabkan oleh aktivitas yang intensif di seluruh fakultas dan gedung. Perbedaan antara daya minimum (1464,66 kW) dan maksimum (1741,49 kW) menunjukkan fluktuasi beban yang cukup besar sepanjang satu jam terakhir. Tidak ada anomali yang jelas terlihat, namun peningkatan drastis dalam konsumsi daya dan biaya memerlukan investigasi lebih lanjut untuk memahami penyebabnya.
+
+
+
+DeepSeek: Konsumsi daya hari ini adalah 1741,49 kW, yang lebih tinggi dibandingkan dengan rata-rata bulan lalu sebesar 932,0 kW. Biaya total hari ini sekitar Rp7.373.924,00, sedangkan bulan lalu total biaya Rp694.889.771,00. Meskipun penggunaan daya lebih tinggi, biaya per jam hari ini Rp816.398,00 juga lebih rendah daripada Rp965.124.00 bulan lalu. Perbedaan ini menunjukkan penurunan signifikan dalam biaya energi per jam. Anomali tidak teramati dalam data hari ini, dengan daya maksimum dan minimum dalam batas yang normal.
+
+
+15. Gemini: Daya terkini pada tanggal 9 Mei 2025 pukul 09:13:00 adalah 32,02 kW, jauh lebih tinggi dibandingkan rata-rata daya bulan lalu yaitu 16,39 kW. Rata-rata biaya per jam hari ini Rp13.862,00 lebih rendah dibandingkan rata-rata biaya per jam bulan lalu Rp17.073,00, meskipun daya lebih tinggi, ini mungkin disebabkan oleh perubahan tarif atau efisiensi penggunaan. Fluktuasi daya yang signifikan antara minimum 25,55 kW dan maksimum 39,22 kW dalam satu jam terakhir menunjukkan variasi penggunaan energi yang besar. Peningkatan konsumsi daya ini mungkin disebabkan oleh dimulainya aktivitas perkuliahan atau penggunaan peralatan laboratorium di Gedung Energi FTTM. Perlu dilakukan investigasi lebih lanjut untuk memahami penyebab lonjakan daya ini dan mengoptimalkan penggunaan energi.
+
+
+
+Gemma: Konsumsi daya terkini (31,65 kW) pada tanggal 9 Mei 2025 pukul 09:14:00 jauh lebih tinggi dibandingkan rata-rata daya per jam bulan lalu (16,39 kW). Rata-rata biaya per jam hari ini Rp13.862,00 juga secara signifikan lebih tinggi dari rata-rata biaya per jam bulan lalu Rp17.073,00. Peningkatan yang drastis ini menunjukkan peningkatan aktivitas di Gedung Energi FTTM. Perbedaan antara daya minimum (25,55 kW) dan maksimum (39,22 kW) dalam satu jam terakhir cukup besar, mengindikasikan fluktuasi beban yang signifikan. Perlu dilakukan investigasi lebih lanjut untuk mengidentifikasi penyebab lonjakan daya ini, seperti peningkatan penggunaan peralatan atau perubahan jadwal operasional.
+
+
+DeepSeek: Konsumsi daya hari ini (31,65 kW) lebih tinggi dibandingkan dengan rata-rata bulan lalu (16,39 kW). Biaya rata-rata per jam hari ini (Rp13.862,00) juga lebih rendah dibandingkan dengan bulan lalu (Rp17.073,00). Total energi hari ini (145,16 kWh) juga lebih rendah dibandingkan dengan bulan lalu (11.800,68 kWh). Indikator ini menunjukkan penurunan signifikan dalam penggunaan energi dan biaya di Gedung Energi FTTM. Perbedaan antara daya maksimum (39,22 kW) dan minimum (25,55 kW) dalam satu jam terakhir menunjukkan variasi konsumsi daya yang lebih ekspresif dibandingkan bulan lalu.
+
+
+16  Gemini: Daya terkini pada 9 Mei 2025 pukul 09:14:00 sebesar 211,12 kW jauh lebih tinggi dibandingkan rata-rata daya bulan lalu yaitu 92,24 kW. Rata-rata biaya per jam hari ini sebesar Rp69.536,00 lebih rendah dibandingkan rata-rata biaya per jam bulan lalu sebesar Rp95.271,00, meskipun penggunaan daya lebih tinggi. Fluktuasi daya yang signifikan antara daya minimum (159,88 kW) dan maksimum (216,46 kW) dalam satu jam terakhir menunjukkan aktivitas yang bervariasi. Peningkatan penggunaan daya ini mungkin disebabkan oleh peningkatan aktivitas di seluruh gedung FTI. Perlu dilakukan investigasi lebih lanjut untuk mengidentifikasi penyebab spesifik lonjakan penggunaan energi ini.
+
+
+
+Gemma: Konsumsi daya terkini (211,12 kW) pada tanggal 9 Mei 2025 pukul 09:14:00 sangat tinggi dibandingkan rata-rata daya per jam bulan lalu (92,24 kW). Biaya rata-rata per jam hari ini Rp69.536,00 juga jauh lebih tinggi dibandingkan rata-rata biaya per jam bulan lalu Rp95.271,00, menunjukkan peningkatan signifikan dalam penggunaan energi. Daya maksimum tercatat pada 216,46 kW pada pukul 09:05:00, yang jauh melampaui rata-rata daya hari ini (72,81 kW). Perbedaan antara daya minimum (159,88 kW) dan maksimum (216,46 kW) menunjukkan fluktuasi daya yang cukup besar. Kemungkinan besar peningkatan konsumsi daya ini disebabkan oleh aktivitas yang lebih intensif di seluruh gedung FTI pada hari ini.
+
+
+DeepSeek: Konsumsi daya hari ini (211,12 kW) lebih tinggi dibandingkan dengan rata-rata per jam bulan lalu (92,24 kW). Biaya rata-rata per jam hari ini (Rp69536,00) juga lebih tinggi dibandingkan dengan bulan lalu (Rp95271,00). Hal ini menunjukkan peningkatan signifikan dalam penggunaan energi dan biaya di gedung All building FTI. Perbedaan antara daya minimum (159,88 kW) dan maksimum (216,46 kW) dalam satu jam terakhir menunjukkan fluktuasi yang lebih tinggi dibandingkan bulan lalu, mungkin disebabkan oleh kegiatan atau event spesifik yang meningkatkan permintaan energi.

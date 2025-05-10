@@ -39,7 +39,7 @@ class AskAnalysisPipeline:
         deepseek = Config.from_yaml_file(Path("config/deepseek-r1.yaml"))
         gemma = Config.from_yaml_file(Path("config/gemma3.yaml"))
         gemini_25 = Config.from_yaml_file(Path("config/gemini-2.5.yaml"))
-        gemini = Config.default()
+        gemini = Config.from_yaml_file(Path("config/config2.yaml"))
         config = None
         config_2 = None
 

@@ -148,4 +148,4 @@ def merge_dict(dicts: Iterable[Dict]) -> Dict:
     return result
 
 
-config = Config.default()
+config = Config.from_yaml_file(Path("config/config2.yaml"))

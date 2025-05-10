@@ -36,7 +36,7 @@ Rata-rata Biaya Per Jam Bulan Lalu: Rp25.820,00
 Konsumsi daya terkini (8,36 kW) pada tanggal 31 Maret 2025 pukul 22:55:00 lebih rendah dibandingkan rata-rata per jam bulan lalu (24,95 kW). Biaya rata-rata per jam hari ini Rp8.502,00 juga lebih rendah dibandingkan rata-rata biaya per jam bulan lalu Rp25.820,00. Hal ini menunjukkan penurunan signifikan dalam penggunaan energi di LABTEK VI FTI. Perbedaan antara daya minimum (8,34 kW) dan maksimum (9,54 kW) dalam satu jam terakhir relatif kecil, menunjukkan konsumsi daya yang stabil. Tidak ada indikasi anomali yang mencolok pada data hari ini.
 
 # Tugas Analisis Anda
-## Timestamp Saat Ini: {current_timestamp}
+## Timestamp Saat Ini: {measurement_end_time}
 ## Lokasi:
 Fakultas: {faculty}
 Gedung: {building}
