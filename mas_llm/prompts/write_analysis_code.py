@@ -40,7 +40,7 @@ Given the user's request and the current time, write Python code to perform the 
 ## Extra Notes
 *   **Current Time:** The current time is {current_time}. Use this to determine the time range for data retrieval.
 *   **Semester Information:** ITB operates on a semester system. Odd semesters are in February-July, and even semesters are in August-January. Use this information to determine the semester for the current time.
-*   **Faculty, Building, and Floor Information:** The list of faculties, buildings, and floors is available in the ELISA API. Use this information to filter data as needed. Please differ between the faculty and building name, for example, FTI is a faculty name, while Labtek VI is a building name. Building is inside the faculty, and floor is inside the building.
+*   **Faculty, Building, and Floor Information:** The list of faculties, buildings, and floors is available in the ELISA API. Use this information to filter data as needed. 
 
 ## Output Requirements
 

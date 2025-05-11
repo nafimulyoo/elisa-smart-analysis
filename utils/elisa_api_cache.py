@@ -157,12 +157,14 @@ async def async_fetch_now(faculty: str = "", building: str = "", floor: str = ""
 async def async_fetch_daily(date: str, faculty: str = "", building: str = "", floor: str = ""):
     """Fetch daily data with 15-minute cache"""
     url = f"https://elisa.itb.ac.id/api/daily?date={date}&faculty={faculty}&building={building}&floor={floor}"
+    print(f"Fetching daily data from {url}")
     return await fetch_with_retry(url)
 
 @cached("monthly")
 async def async_fetch_monthly(date: str, faculty: str = "", building: str = "", floor: str = ""):
     """Fetch monthly data with 2-hour cache"""
     url = f"https://elisa.itb.ac.id/api/monthly?date={date}&faculty={faculty}&building={building}&floor={floor}"
+    print(f"Fetching monthly data from {url}")
     return await fetch_with_retry(url)
 
 @cached("heatmap")

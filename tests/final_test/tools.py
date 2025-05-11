@@ -177,7 +177,7 @@ async def async_fetch_daily_from_x_to_y(start: str, end: str, faculty: str = "",
                 - "day_cost": Average cost per day. (Rupiah/day)
     """
 
-    url = f"http://localhost:8080/api/daily/from-to?start_date={start}&end_date={end}&faculty={faculty}&building={building}&floor={floor}"
+    url = f"http://0.0.0.0:8080/api/daily/from-to?start_date={start}&end_date={end}&faculty={faculty}&building={building}&floor={floor}"
     response = requests.get(url, verify=False)
     if response.status_code == 200:
         return response.json()
@@ -221,7 +221,7 @@ async def async_fetch_monthly_from_x_to_y(start: str, end: str, faculty: str = "
                 - "day_cost": Average cost per day. (Rupiah/day)
     
     """
-    url = f"http://localhost:8080/api/monthly/from-to?start_date={start}&end_date={end}&faculty={faculty}&building={building}&floor={floor}"
+    url = f"http://0.0.0.0:8080/api/monthly/from-to?start_date={start}&end_date={end}&faculty={faculty}&building={building}&floor={floor}"
     response = requests.get(url, verify=False)
     if response.status_code == 200:
         return response.json()
@@ -420,7 +420,7 @@ async def async_forecast_energy_hourly(faculty: str = "", building: str = "", fl
         history_df, forecast_df = forecast_energy_hourly(faculty="FTI", building="LABTEK IV", days_to_forecast=7)
     
     """
-    url = f"http://localhost:8080/api/daily/forecast?faculty={faculty}&building={building}&floor={floor}&days_to_forecast={days_to_forecast}"
+    url = f"http://0.0.0.0:8080/api/daily/forecast?faculty={faculty}&building={building}&floor={floor}&days_to_forecast={days_to_forecast}"
     response = requests.get(url, verify=False)
     if response.status_code == 200:
         response_json = response.json()
@@ -465,7 +465,7 @@ async def async_forecast_energy_daily(faculty: str = "", building: str = "", flo
         history_df, forecast_df = forecast_energy_daily(faculty="FTI", building="LABTEK IV", days_to_forecast=7)
     
     """
-    url = f"http://localhost:8080/api/monthly/forecast?faculty={faculty}&building={building}&floor={floor}&days_to_forecast={days_to_forecast}"
+    url = f"http://0.0.0.0:8080/api/monthly/forecast?faculty={faculty}&building={building}&floor={floor}&days_to_forecast={days_to_forecast}"
     response = requests.get(url, verify=False)
     if response.status_code == 200:
         response_json = response.json()
