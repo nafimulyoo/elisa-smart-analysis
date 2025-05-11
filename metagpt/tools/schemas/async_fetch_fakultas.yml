@@ -1,6 +1,9 @@
 type: async_function
-description: 'Fetch a list of faculties. Returns: dict: A dictionary containing the
-  following key: - "fakultas": A list of dictionaries, each containing: - "label":
-  The display name of the faculty. - "value": The code for the faculty.'
+description: 'Fetch a list of faculties. Returns all faculties in a dictionary with
+  code as key and name as value. Also contain "All Unit" with code ''-'' which you
+  don''t need to include in the analysis if you want to compare or rank the faculties.
+  Returns: dict: A dictionary containing the following key: - "fakultas": A list of
+  dictionaries, each containing: - "label": The display name of the faculty. - "value":
+  The code for the faculty.'
 signature: ()
 parameters: ''

@@ -260,7 +260,7 @@ async def async_fetch_heatmap(start: str, end: str, faculty: str = "", building:
 @register_tool()
 async def async_fetch_compare(date: str):
     """
-    Fetch energy and cost comparison data for all faculties for a specific month. Can also be used to get summary monthly data (total cost and energy) of each faculty efficiently
+    Fetch energy and cost comparison data for all faculties for a specific month. Can also be used to get summary monthly data (total cost and energy) of each faculty efficiently. Use this if you want to get the summary of all faculties in one request.
 
     Args:
         date (str): The month and year in 'YYYY-MM' format.
@@ -305,7 +305,7 @@ async def async_fetch_compare(date: str):
 @register_tool()
 async def async_fetch_fakultas():
     """
-    Fetch a list of faculties.
+    Fetch a list of faculties. Returns all faculties in a dictionary with code as key and name as value. Also contain "All Unit" with code '-' which you don't need to include in the analysis if you want to compare or rank the faculties.
     
 
     Returns:
@@ -325,7 +325,6 @@ async def async_fetch_fakultas():
 async def async_fetch_gedung(fakultas: str):
     """
     Fetch a list of buildings for a specific faculty.
-
     Args:
         fakultas (str): The faculty code (e.g., 'FTI'), for getting all building in ITB, use '-'.
 
@@ -338,7 +337,10 @@ async def async_fetch_gedung(fakultas: str):
     url = f"https://elisa.itb.ac.id/api/get-gedung?fakultas={fakultas}"
     response = requests.get(url, verify=False)
     if response.status_code == 200:
-        return response.json()
+        # remove "All Unit" from the list
+        data = response.json()
+        data["gedung"] = [x for x in data["gedung"] if x["value"] != "-"]
+        return data
     else:
         raise Exception(f"Failed to fetch data: {response.status_code}")
 

@@ -8,6 +8,7 @@
 from pathlib import Path
 from typing import Dict, Optional
 
+
 import yaml
 from pydantic import BaseModel, model_validator
 
@@ -21,6 +22,7 @@ class YamlModel(BaseModel):
     def read_yaml(cls, file_path: Path, encoding: str = "utf-8") -> Dict:
         """Read yaml file and return a dict"""
         if not file_path.exists():
+            print(f"File {file_path} does not exist.")
             return {}
         with open(file_path, "r", encoding=encoding) as file:
             return yaml.safe_load(file)

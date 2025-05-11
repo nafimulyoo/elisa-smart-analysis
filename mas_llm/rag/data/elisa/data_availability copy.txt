@@ -1,8 +1,7 @@
-# Source: ChatGPT 4o
-
+# Kemampuan Elisa
 Sistem ELISA (Energy and Water Information System) mengumpulkan berbagai data terkait penggunaan energi listrik dan air. Berikut adalah rincian mengenai jenis data listrik yang diukur oleh ELISA serta analisis yang dapat dilakukan dari data tersebut:
 
-### Data Listrik yang Diukur oleh ELISA
+### Data Listrik yang Diukur dan available oleh ELISA
 
 1. **Penggunaan Energi Listrik**
    - **Total Konsumsi Energi**: Pengukuran total penggunaan energi listrik dalam kWh untuk setiap unit atau gedung.
@@ -21,83 +20,84 @@ Sistem ELISA (Energy and Water Information System) mengumpulkan berbagai data te
    - **Status Komunikasi**: Informasi mengenai status komunikasi smart meter yang digunakan untuk pengukuran.
    - **Tarif Listrik**: Data tarif listrik yang berlaku untuk analisis biaya.
 
-# Source: DeepSeek V3
+5. **Data Historis**
+   - **Data Historis**: Data penggunaan energi listrik yang telah dikumpulkan sejak awal sistem ELISA diimplementasikan, yaitu dari tahun 2023 hingga saat ini.
+   - **Dapat Diakses melalui API**: Data historis dapat diakses melalui API untuk analisis lebih lanjut, misalnya untuk analisis tren atau prediksi.
 
-Berdasarkan informasi yang tersedia dari dokumen-dokumen yang diberikan, berikut adalah daftar data yang tersedia di Sistem Informasi Energi Listrik dan Air (ELISA) ITB, serta analisis data yang dapat dilakukan dari data tersebut:
 
-### **Data yang Tersedia di ELISA:**
+### Example Use Case (Data Available)
 
-1. **Data Listrik:**
-   - **Tegangan (Voltage):** Data tegangan listrik yang diukur dalam volt (V).
-   - **Arus (Current):** Data arus listrik yang diukur dalam ampere (A).
-   - **Daya Aktif (Active Power):** Data daya listrik yang dikonsumsi dalam watt (W) atau kilowatt (kW).
-   - **Daya Reaktif (Reactive Power):** Data daya reaktif yang diukur dalam volt-ampere reaktif (VAR).
-   - **Faktor Daya (Power Factor):** Data faktor daya yang menunjukkan efisiensi penggunaan daya listrik.
-   - **Konsumsi Energi (Energy Consumption):** Data konsumsi energi listrik dalam kilowatt-hour (kWh).
-   - **Frekuensi (Frequency):** Data frekuensi listrik yang diukur dalam hertz (Hz).
-   - **Harmonik (Harmonics):** Data harmonik yang menunjukkan distorsi pada gelombang listrik.
-   - **Data Historis (Historical Data):** Data historis konsumsi energi listrik harian, bulanan, dan tahunan.
+["Compare SF and FMIPA usage trends", "Data Available"],
+["Total ITB usage over the past month", "Data Available"],
+["Total ITB usage over the past year", "Data Available"],
+["Top 3 buildings with highest usage last year", "Data Available"],
+["Lowest 3 faculty usage in the last 3 months", "Data Available"],
+["Top 3 faculty usage in the last 3 months", "Data Available"],
+["FTI usage in the last 3 months", "Data Available"],
+["Hourly power consumption for Labtek V yesterday", "Data Available"],
+["Monthly water consumption for SBM", "Data Not Available"],
+["Three-phase balance analysis for Labtek VII", "Data Available"],
+["Energy cost comparison between FTI and FTMD", "Data Available"],
+["Power factor analysis for FMIPA buildings", "Data Available"],
+["Identify peak usage hours for FSRD last week", "Data Available"],
+["Water pressure trends in Jatinangor campus", "Data Available"],
+["Pump operation status for all buildings", "Data Available"],
+["Voltage fluctuations in Labtek III last month", "Data Available"],
+["Energy consumption per student in each faculty", "Data Available"],
+["Usage patterns during holidays vs regular days", "Data Available"],
+["Predict next month's energy consumption", "Data Available"],
+["What is the usage trend of FSRD in the last 3 months", "Data Available"]
+["Compare SF and FMIPA usage trends", "Data Available"]
+["Total ITB usage over the past month", "Data Available"]
+["Total ITB usage over the past year", "Data Available"]
+["FTI usage in the last 3 months", "Data Available"]
+["Plot last hour usage of FSRD", "Data Available"]
+["Lowest 3 faculty usage in the last 3 months", "Data Available"]
+["Top 3 faculty usage in the last 3 months", "Data Available"]
+["Top 3 buildings (not faculty) with highest usage last year", "Data Available"]
+["Plot FKK usage last 3 months" "Data Available"]
+["Compare FSRD and FTMD usage trends", "Data Available"]
+["Forecast CC Barat usage during holidays", "Data Available"]
+["Predict Labtek VI peak hours next week", "Data Available"]
+["Average Engineering Physics Building usage during summer", "Data Available"]
+["Compare STEI usage: weekdays vs weekends", "Data Available"]
+["Forecast ITB usage for next academic year", "Data Available"]
+["Labtek III usage trends last 3 semesters", "Data Available"]
+["Predict FTI usage during next major event", "Data Available"]
+["Forecast Labtek VII usage during winter break", "Data Available"]
 
-2. **Data Air:**
-   - **Flow Rate (Laju Aliran):** Data laju aliran air yang diukur dalam meter kubik per jam (m³/jam) atau liter per detik (L/s).
-   - **Level Air (Water Level):** Data ketinggian air dalam tangki atau reservoir yang diukur dalam meter (m).
-   - **Konsumsi Air (Water Consumption):** Data konsumsi air dalam meter kubik (m³) atau liter (L).
-   - **Tekanan Air (Water Pressure):** Data tekanan air yang diukur dalam bar atau pascal (Pa).
+### Available Analysis yang Dapat Dilakukan oleh Data Tersedia
 
-3. **Data Operasional:**
-   - **Status Pompa (Pump Status):** Data status operasional pompa air (ON/OFF).
-   - **Status Sensor (Sensor Status):** Data status operasional sensor listrik dan air.
-   - **Data Real-Time:** Data real-time dari penggunaan energi listrik dan air.
+1. **Analisis Tren Penggunaan Energi**
+   - Mengidentifikasi pola penggunaan energi dari waktu ke waktu (harian, bulanan, tahunan, semesters)
+   - Menganalisis fluktuasi penggunaan energi berdasarkan waktu (misalnya, jam sibuk vs. jam sepi).
+   - Menganalisis puncak, rata, minimum, dan anomali penggunaan energi.
 
-4. **Data Fakultas/Gedung:**
-   - **Data Konsumsi Energi per Fakultas:** Data konsumsi energi listrik dan air berdasarkan fakultas atau unit kerja.
-   - **Data Konsumsi Energi per Gedung:** Data konsumsi energi listrik dan air berdasarkan gedung.
-   - **Data Konsumsi Energi per Lantai:** Data konsumsi energi listrik dan air berdasarkan lantai gedung.
+2. **Analisis Efisiensi Energi**
+   - Menghitung faktor daya untuk menilai efisiensi penggunaan energi.
+   - Menganalisis perbandingan konsumsi energi antara berbagai gedung atau fakultas.
 
-### **Analisis Data yang Dapat Dilakukan:**
+3. **Analisis Kualitas Energi**
+   - Memantau kualitas energi dengan menganalisis data tegangan dan arus untuk mendeteksi masalah potensial.
+   - Mengidentifikasi penyebab gangguan atau fluktuasi dalam sistem kelistrikan.
 
-1. **Analisis Konsumsi Energi:**
-   - **Pola Konsumsi Harian/Bulanan/Tahunan:** Menganalisis pola konsumsi energi listrik dan air dalam periode harian, bulanan, atau tahunan.
-   - **Perbandingan Konsumsi Antar Fakultas/Gedung:** Membandingkan konsumsi energi listrik dan air antara fakultas atau gedung yang berbeda.
-   - **Identifikasi Waktu Puncak Konsumsi:** Menentukan waktu-waktu puncak konsumsi energi listrik dan air.
+4. **Peramalan Konsumsi Energi**
+   - 
+   - Menggunakan data historis untuk memprediksi konsumsi energi di masa depan, membantu dalam perencanaan dan penganggaran.
+   - Dapat juga meramal pemakaian pada hari-hari libur nasional di Indonesia
+   
+5. **Analisis Biaya Energi**
+   - Menghitung biaya energi berdasarkan tarif listrik dan konsumsi untuk membantu dalam pengelolaan anggaran.
+   - Menganalisis dampak dari perubahan tarif listrik terhadap biaya operasional.
 
-2. **Analisis Efisiensi Energi:**
-   - **Perhitungan Intensitas Konsumsi Energi (IKE):** Menghitung intensitas konsumsi energi (kWh/m²) untuk menilai efisiensi penggunaan energi.
-   - **Perhitungan Energy Performance Indicator (EnPI):** Menghitung indikator kinerja energi (kWh/mahasiswa) untuk menilai efisiensi energi per mahasiswa.
-   - **Analisis Faktor Daya:** Menganalisis faktor daya untuk menilai efisiensi penggunaan daya listrik.
+### Kesimpulan
 
-3. **Deteksi Anomali:**
-   - **Deteksi Kebocoran Daya:** Mengidentifikasi kebocoran daya listrik atau air berdasarkan data historis dan real-time.
-   - **Deteksi Gangguan Listrik:** Mengidentifikasi gangguan listrik seperti lonjakan tegangan, arus lebih, atau harmonik yang tidak normal.
-   - **Deteksi Kegagalan Pompa:** Mengidentifikasi kegagalan operasional pompa air berdasarkan status pompa dan data aliran air.
+Dengan mengumpulkan dan menganalisis data listrik yang komprehensif, ELISA dapat memberikan wawasan yang berharga untuk pengelolaan energi yang lebih efisien dan berkelanjutan di institusi. Analisis ini tidak hanya membantu dalam penghematan biaya tetapi juga dalam upaya untuk mengurangi dampak lingkungan dari konsumsi energi.
 
-4. **Analisis Prediktif:**
-   - **Prediksi Konsumsi Energi:** Memprediksi konsumsi energi listrik dan air di masa depan berdasarkan data historis.
-   - **Prediksi Biaya Energi:** Memprediksi biaya energi listrik dan air berdasarkan tarif dan pola konsumsi.
-
-5. **Analisis Visualisasi Data:**
-   - **Heatmap Konsumsi Energi:** Menampilkan visualisasi heatmap untuk menunjukkan distribusi konsumsi energi listrik dan air.
-   - **Grafik Konsumsi Harian/Bulanan:** Menampilkan grafik konsumsi energi listrik dan air dalam periode harian atau bulanan.
-   - **Visualisasi 3 Fasa:** Menampilkan distribusi penggunaan energi listrik pada sistem 3 fasa (R, S, T).
-
-6. **Analisis Manajemen Energi:**
-   - **Rekomendasi Penghematan Energi:** Memberikan rekomendasi penghematan energi berdasarkan analisis pola konsumsi dan efisiensi.
-   - **Optimasi Operasional Pompa:** Memberikan rekomendasi optimasi operasional pompa air berdasarkan data aliran dan tekanan.
-
-7. **Analisis Keuangan:**
-   - **Perhitungan Biaya Energi:** Menghitung biaya energi listrik dan air berdasarkan tarif dan konsumsi.
-   - **Analisis Penghematan Biaya:** Menganalisis potensi penghematan biaya energi berdasarkan rekomendasi efisiensi.
-
-### **Contoh Analisis Spesifik:**
-- **Analisis Kesetimbangan Beban:** Menganalisis distribusi beban listrik pada sistem 3 fasa untuk memastikan kesetimbangan beban.
-- **Analisis Kebocoran Air:** Mengidentifikasi kebocoran air berdasarkan perbedaan antara laju aliran masuk dan keluar.
-- **Analisis Efisiensi Pompa:** Menganalisis efisiensi pompa air berdasarkan daya yang dikonsumsi dan laju aliran air yang dihasilkan.
 
 Dengan data-data tersebut, ELISA dapat digunakan untuk melakukan berbagai analisis yang mendukung manajemen energi dan air yang lebih efisien di kampus ITB.
 
 # Accessible API (Python)
-
-@register_tool()
 async def async_fetch_now(faculty: str = "", building: str = "", floor: str = ""):
     """
     Fetch real-time energy data for the last hour and today summary.
@@ -133,8 +133,7 @@ async def async_fetch_now(faculty: str = "", building: str = "", floor: str = ""
     else:
         raise Exception(f"Failed to fetch data: {response.status_code}")
  
-@register_tool()
-async def async_fetch_daily_specific_date(date: str, faculty: str = "", building: str = "", floor: str = ""):
+async def async_fetch_daily(date: str, faculty: str = "", building: str = "", floor: str = ""):
     """
     Fetch daily energy and cost data for a specific date.
 
@@ -174,8 +173,7 @@ async def async_fetch_daily_specific_date(date: str, faculty: str = "", building
     else:
         raise Exception(f"Failed to fetch data: {response.status_code}")
 
-@register_tool()
-async def async_fetch_monthly_specific_month(date: str, faculty: str = "", building: str = "", floor: str = ""):
+async def async_fetch_monthly(date: str, faculty: str = "", building: str = "", floor: str = ""):
     """
     Fetch monthly energy and cost data for a specific month.
 
@@ -217,92 +215,7 @@ async def async_fetch_monthly_specific_month(date: str, faculty: str = "", build
     else:
         raise Exception(f"Failed to fetch data: {response.status_code}")
 
-@register_tool()
-async def async_fetch_daily_from_x_to_y(start: str, end: str, faculty: str = "", building: str = "", floor: str = ""):
-    """
-    Fetch daily energy and cost data for a specific date range. Returns all data in a dictionary with date as key in 'YYYY-MM-DD' format.
 
-    Args:
-        start (str): The start date in 'YYYY-MM-DD' format.
-        end (str): The end date in 'YYYY-MM-DD'
-        faculty (str, optional): Filter by faculty code (e.g., 'FTI').
-        building (str, optional): Filter by building code (e.g., 'LABTEK IV').
-        floor (str, optional): Filter by floor code (e.g., 'LANTAI 1').
-    Returns:
-        dict: A dictionary with date as key in 'YYYY-MM-DD' format, and value as a dictionary containing:
-            - "chart_data": A list of dictionaries, each containing:
-                - "timestamp": The timestamp for the data point in 'YYYY-MM-DD HH:MM:SS' format.
-                - "R": Energy consumption for phase R. (kWh) 
-                - "S": Energy consumption for phase S. (kWh)
-                - "T": Energy consumption for phase T. (kWh)
-            - "hourly_data": A list of dictionaries, each containing:
-                - "hour": The hour of the day in 'HH:00' format, measured per one hour.
-                - "cost": The cost for the hour. (Rupiah)
-                - "energy": The energy consumption for the hour. (kWh)
-            - "today_data": A dictionary containing:
-                - "total_daya": Total energy consumption for the day. (kWh)
-                - "avg_daya": Average energy consumption per hour. (kWh/hour)
-                - "total_cost": Total cost for the day. (Rupiah)
-                - "avg_cost": Average cost per hour. (Rupiah/hour)
-            - "prev_month_data": A dictionary containing:
-                - "total_daya": Total energy consumption for the month. (kWh)
-                - "day_daya": Average energy consumption per day. (kWh/day)
-                - "total_cost": Total cost for the month. (Rupiah)
-                - "day_cost": Average cost per day. (Rupiah/day)
-    """
-
-    url = f"http://localhost:8080/api/daily/from-to?start_date={start}&end_date={end}&faculty={faculty}&building={building}&floor={floor}"
-    response = requests.get(url, verify=False)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        raise Exception(f"Failed to fetch data: {response.status_code}")
-
-@register_tool()
-async def async_fetch_monthly_from_x_to_y(start: str, end: str, faculty: str = "", building: str = "", floor: str = ""):
-    """
-    Fetch monthly energy and cost data for a specific month range. Returns all data in a dictionary with date as key in 'YYYY-MM' format.
-
-    Args:
-        start (str): The start date in 'YYYY-MM' format.
-        end (str): The end date in 'YYYY-MM'
-        faculty (str, optional): Filter by faculty code (e.g., 'FTI').
-        building (str, optional): Filter by building code (e.g., 'LABTEK IV').
-        floor (str, optional): Filter by floor code (e.g., 'LANTAI 1').
-    Returns:
-        dict: A dictionary with date as key in 'YYYY-MM' format, and value as a dictionary containing:
-            - "chart_data": A list of dictionaries, each containing:
-                - "timestamp": The timestamp for the data point in 'YYYY-MM-DD HH:MM:SS' format.
-                - "R": Energy consumption for phase R. (kWh) 
-                - "S": Energy consumption for phase S. (kWh)
-                - "T": Energy consumption for phase T. (kWh)
-            - "daily_data": A list of dictionaries, each containing:
-                - "timestamp": The timestamp for the data point in 'YYYY-MM-DD HH:MM:SS' format.
-                - "cost": The cost for the day. (Rupiah)
-                - "energy": The energy consumption for the day. (kWh)
-                - "phase 1": Energy consumption for phase 1 (R). (kWh)
-                - "phase 2": Energy consumption for phase 2 (S). (kWh)
-                - "phase 3": Energy consumption for phase 3 (T). (kWh)
-            - "month_data": A dictionary containing:
-                - "total_daya": Total energy consumption for the month. (kWh)
-                - "avg_daya": Average energy consumption per day. (kWh/day)
-                - "total_cost": Total cost for the month. (Rupiah)
-                - "avg_cost": Average cost per day. (Rupiah/day)
-            - "prev_month_data": A dictionary containing:
-                - "total_daya": Total energy consumption for the month. (kWh)
-                - "day_daya": Average energy consumption per day. (kWh/day)
-                - "total_cost": Total cost for the month. (Rupiah)
-                - "day_cost": Average cost per day. (Rupiah/day)
-    
-    """
-    url = f"http://localhost:8080/api/monthly/from-to?start_date={start}&end_date={end}&faculty={faculty}&building={building}&floor={floor}"
-    response = requests.get(url, verify=False)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        raise Exception(f"Failed to fetch data: {response.status_code}")
-
-@register_tool()
 async def async_fetch_heatmap(start: str, end: str, faculty: str = "", building: str = "", floor: str = ""):
     """
     Fetch heatmap data for energy usage over a specified date range.
@@ -331,10 +244,9 @@ async def async_fetch_heatmap(start: str, end: str, faculty: str = "", building:
     else:
         raise Exception(f"Failed to fetch data: {response.status_code}")
 
-@register_tool()
 async def async_fetch_compare(date: str):
     """
-    Fetch energy and cost comparison data for all faculties for a specific month. Can also be used to get summary monthly data (total cost and energy) of each faculty efficiently
+    Fetch energy and cost comparison data for all faculties for a specific month.
 
     Args:
         date (str): The month and year in 'YYYY-MM' format.
@@ -355,10 +267,10 @@ async def async_fetch_compare(date: str):
                     - "energy": The minimum energy consumption in the month. (kWh)
                     - "cost": The minimum cost associated with the energy consumption in the month. (Rupiah)
                 - "total": A dictionary with the total energy consumption and cost across all faculties in the month.
-                    - "total": The total energy consumption in the month. (kWh)
+                    - "energy": The total energy consumption in the month. (kWh)
                     - "cost": The total cost associated with the energy consumption in the month. (Rupiah)
                 - "average": A dictionary he average energy consumption and cost across all faculties in the month.
-                    - "average": The average energy consumption in the month. (kWh)
+                    - "energy": The average energy consumption in the month. (kWh)
                     - "cost": The average cost associated with the energy consumption in the month. (Rupiah)
             - "info": A list of dictionaries, each containing detailed information about a faculty:
                 - "faculty": The faculty name. (FTI, FSRD, etc.)
@@ -376,7 +288,6 @@ async def async_fetch_compare(date: str):
     else:
         raise Exception(f"Failed to fetch data: {response.status_code}")
 
-@register_tool()
 async def async_fetch_fakultas():
     """
     Fetch a list of faculties.
@@ -395,13 +306,12 @@ async def async_fetch_fakultas():
     else:
         raise Exception(f"Failed to fetch data: {response.status_code}")
 
-@register_tool()
 async def async_fetch_gedung(fakultas: str):
     """
     Fetch a list of buildings for a specific faculty.
 
     Args:
-        fakultas (str): The faculty code (e.g., 'FTI'), for getting all building in ITB, use '-'.
+        fakultas (str): The faculty code (e.g., 'FTI').
 
     Returns:
         dict: A dictionary containing the following key:
@@ -416,7 +326,6 @@ async def async_fetch_gedung(fakultas: str):
     else:
         raise Exception(f"Failed to fetch data: {response.status_code}")
 
-@register_tool()
 async def async_fetch_lantai(fakultas: str, gedung: str):
     """
     Fetch a list of floors for a specific building.
@@ -436,45 +345,11 @@ async def async_fetch_lantai(fakultas: str, gedung: str):
     if response.status_code == 200:
         return response.json()
     else:
-        raise Exception(f"Failed to fetch data: {response.status_code}")
-    
+        raise Exception(f"Failed to fetch data: {response.status_code}") 
 
-
-import requests
-from metagpt.tools.tool_registry import register_tool
-import pandas as pd
-from datetime import datetime
-
-@register_tool()
-def save_csv(dataframe: pd.DataFrame, title: str):
-    """
-    Save the given DataFrame to a CSV file. This is important to ensure that the data is saved and can be accessed later.
-
-    Args:
-        data (pd.DataFrame): The DataFrame to save.
-        title (str): The title to use for the saved CSV file.
-
-    Returns:
-        str: The path to the saved CSV file.
-    """
-    record_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    data_dir = f"data/output/csv/analysis_data_{record_time}_{title}.csv"
-    # if index is 0, 1, 2, remove
-
-    if dataframe.index.equals(pd.RangeIndex(start=0, stop=len(dataframe), step=1)) and (len(dataframe) % 24 != 0 or len(dataframe) % 12 != 0):
-        dataframe.to_csv(data_dir, index=False)  
-    else:
-        dataframe.to_csv(data_dir, index=True)  
-
-    print(f"Data saved to {data_dir}")
-    return data_dir
-
-import json 
-
-@register_tool()
 async def async_forecast_energy_hourly(faculty: str = "", building: str = "", floor: str = "", days_to_forecast: int = 7):
     """
-    Forecast hourly energy usage data for a specific faculty, building, and floor for the next specified days. The forecast is based on historical data and uses the Prophet model for time series forecasting. Energy usage in kWh. Only get the history if user wanted it.
+    Fetch hourly energy usage forecast data from a local API endpoint.
 
     Args:
         faculty (str, optional): Filter by faculty code (e.g., 'FTI').
@@ -515,11 +390,9 @@ async def async_forecast_energy_hourly(faculty: str = "", building: str = "", fl
     else:
         raise Exception(f"Failed to fetch data: {response.status_code}")
     
-
-@register_tool()
-async def async_forecast_energy_daily(faculty: str = "", building: str = "", floor: str = "", days_to_forecast: int = 30):
+async def async_forecast_energy_daily(faculty: str = "", building: str = "", floor: str = "", days_to_forecast: int = 7):
     """
-    Forecast daily energy usage data for a specific faculty, building, and floor for the next specified days. The forecast is based on historical data and uses the Prophet model for time series forecasting. Energy usage in kWh. Only get the history if user wanted it.
+        Fetch daily energy usage forecast data from a local API endpoint. Also adressing national days in Indonesia 
 
     Args:
         faculty (str, optional): Filter by faculty code (e.g., 'FTI').
@@ -561,10 +434,11 @@ async def async_forecast_energy_daily(faculty: str = "", building: str = "", flo
 
 # Faculty and Building Available:
 ITB has 3 campus, Bandung (Ganesha), Jatinangor, and Jakarta. Currently we only have Bandung (Ganesha) and some of Jatinangor data. We have these faculty and building data available, the default is in Bandung (Ganesha):
-Data bangunan dan fakultas di luar yang disebutkan pada Faculty and Building du bawah ini, di luar itu fix tidak ada
+Data bangunan dan fakultas di luar yang disebutkan pada Faculty and Building du bawah ini, di luar itu fix tidak ada.
+Some of building has specific data for each floor.
 
 Faculty and Building List:
-1. All Unit:
+1. All Unit (ITB Overall):
 Building List:
 - BSC A
 - BSC B
@@ -615,12 +489,12 @@ Building List:
 - PSDA
 - SBM FREEPORT
 - SBM MBA
-2. FITB:
+2. FITB (Fakultas Ilmu dan Teknologi Kebumian):
 Building List:
 - BSC B
 - LABTEK IV
 - LABTEK IX
-3. FMIPA:
+3. FMIPA (Fakultas Matematika dan Ilmu Pengetahuan Alam)
 Building List:
 - BSC A
 - CAS
@@ -629,7 +503,7 @@ Building List:
 - KIMIA
 - LABTEK I
 - LABTEK VIII
-4. FSRD:
+4. FSRD (Fakultas Seni Rupa dan Desain)
 Building List:
 - CAD
 - CADL
@@ -640,7 +514,7 @@ Building List:
 - CAS
 - LABTEK III
 - LABTEK V
-- LABTEK VI
+- LABTEK VI (with special Floor: Lab)
 - LABTEK X
 6. FTMD:
 Building List:

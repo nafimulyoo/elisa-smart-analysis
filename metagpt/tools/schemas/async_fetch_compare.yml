@@ -1,7 +1,8 @@
 type: async_function
 description: 'Fetch energy and cost comparison data for all faculties for a specific
   month. Can also be used to get summary monthly data (total cost and energy) of each
-  faculty efficiently '
+  faculty efficiently. Use this if you want to get the summary of all faculties in
+  one request. '
 signature: '(date: str)'
 parameters: 'Args: date (str): The month and year in ''YYYY-MM'' format. Returns:
   dict: A dictionary containing the following keys: - "value": A list of dictionaries,

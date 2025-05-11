@@ -1,100 +1,9 @@
-# Source: ChatGPT 4o
+# Kemampuan Elisa
+Sistem ELISA (Energy and Water Information System) mengumpulkan berbagai data terkait penggunaan energi listrik dan air sejak bulan 2023 hingga saat ini 2025. ELISA sudah terintegrasi dengan sistem coding otomatis berbasis python melalui jupyter notebook, sehingga ELISA dapat melakukan analisis data energi secara komprehensif, dimulai dari analisis historis, komparasi, prediksi, forecasting, analisis trend, analisis biaya, dan lain sebagainya. Sumber data Elisa adalah API yang telah termasuk dalam function python yang dapat diakses oleh jupyter notebook, function adalah sebagai berikut:
 
-Sistem ELISA (Energy and Water Information System) mengumpulkan berbagai data terkait penggunaan energi listrik dan air. Berikut adalah rincian mengenai jenis data listrik yang diukur oleh ELISA serta analisis yang dapat dilakukan dari data tersebut:
+# API dan Function akses data yang dapat diakses:
+ElISA memiliki API yang dapat diakses melalui function python. Fungsi ini memungkinkan pengguna untuk mengambil data energi dan biaya dari berbagai fakultas, gedung, dan lantai di ITB. Waktu pengambilan data dapat dilakukan secara real-time, harian, bulanan, kuartal, semester, tahunan, dan lain sebagainya, asal data tersebut diambil sejak tahun 2023 hingga saat ini 2025. Sumber data Elisa adalah API yang telah termasuk dalam function python yang dapat diakses oleh jupyter notebook, function adalah sebagai berikut:
 
-### Data Listrik yang Diukur dan available oleh ELISA
-
-1. **Penggunaan Energi Listrik**
-   - **Total Konsumsi Energi**: Pengukuran total penggunaan energi listrik dalam kWh untuk setiap unit atau gedung.
-   - **Konsumsi Harian**: Data penggunaan listrik per hari, memungkinkan analisis tren harian.
-   - **Konsumsi Bulanan**: Data penggunaan listrik per bulan untuk analisis jangka panjang.
-
-2. **Data Waktu Nyata**
-   - **Pengukuran Beban**: Data beban listrik yang digunakan dalam waktu nyata, termasuk pengukuran per jam.
-   - **Distribusi Beban**: Informasi mengenai distribusi beban pada sistem 3 fasa untuk memastikan keseimbangan beban.
-
-3. **Data Kualitas Energi**
-   - **Tegangan dan Arus**: Pengukuran tegangan dan arus listrik untuk menganalisis kualitas energi.
-   - **Faktor Daya**: Mengukur efisiensi penggunaan energi listrik.
-
-4. **Data Smart Meter**
-   - **Status Komunikasi**: Informasi mengenai status komunikasi smart meter yang digunakan untuk pengukuran.
-   - **Tarif Listrik**: Data tarif listrik yang berlaku untuk analisis biaya.
-
-
-### Example Use Case (Data Available)
-
-["Compare SF and FMIPA usage trends", "Data Available"],
-["Total ITB usage over the past month", "Data Available"],
-["Total ITB usage over the past year", "Data Available"],
-["Top 3 buildings with highest usage last year", "Data Available"],
-["Lowest 3 faculty usage in the last 3 months", "Data Available"],
-["Top 3 faculty usage in the last 3 months", "Data Available"],
-["FTI usage in the last 3 months", "Data Available"],
-["Hourly power consumption for Labtek V yesterday", "Data Available"],
-["Monthly water consumption for SBM", "Data Not Available"],
-["Three-phase balance analysis for Labtek VII", "Data Available"],
-["Energy cost comparison between FTI and FTMD", "Data Available"],
-["Power factor analysis for FMIPA buildings", "Data Available"],
-["Identify peak usage hours for FSRD last week", "Data Available"],
-["Water pressure trends in Jatinangor campus", "Data Available"],
-["Pump operation status for all buildings", "Data Available"],
-["Voltage fluctuations in Labtek III last month", "Data Available"],
-["Energy consumption per student in each faculty", "Data Available"],
-["Usage patterns during holidays vs regular days", "Data Available"],
-["Predict next month's energy consumption", "Data Available"],
-["What is the usage trend of FSRD in the last 3 months", "Data Available"]
-["Compare SF and FMIPA usage trends", "Data Available"]
-["Total ITB usage over the past month", "Data Available"]
-["Total ITB usage over the past year", "Data Available"]
-["FTI usage in the last 3 months", "Data Available"]
-["Plot last hour usage of FSRD", "Data Available"]
-["Lowest 3 faculty usage in the last 3 months", "Data Available"]
-["Top 3 faculty usage in the last 3 months", "Data Available"]
-["Top 3 buildings (not faculty) with highest usage last year", "Data Available"]
-["Plot FKK usage last 3 months" "Data Available"]
-["Compare FSRD and FTMD usage trends", "Data Available"]
-["Forecast CC Barat usage during holidays", "Data Available"]
-["Predict Labtek VI peak hours next week", "Data Available"]
-["Average Engineering Physics Building usage during summer", "Data Available"]
-["Compare STEI usage: weekdays vs weekends", "Data Available"]
-["Forecast ITB usage for next academic year", "Data Available"]
-["Labtek III usage trends last 3 semesters", "Data Available"]
-["Predict FTI usage during next major event", "Data Available"]
-["Forecast Labtek VII usage during winter break", "Data Available"]
-
-### Available Analysis yang Dapat Dilakukan oleh Data Tersedia
-
-1. **Analisis Tren Penggunaan Energi**
-   - Mengidentifikasi pola penggunaan energi dari waktu ke waktu (harian, bulanan, tahunan, semesters)
-   - Menganalisis fluktuasi penggunaan energi berdasarkan waktu (misalnya, jam sibuk vs. jam sepi).
-   - Menganalisis puncak, rata, minimum, dan anomali penggunaan energi.
-
-2. **Analisis Efisiensi Energi**
-   - Menghitung faktor daya untuk menilai efisiensi penggunaan energi.
-   - Menganalisis perbandingan konsumsi energi antara berbagai gedung atau fakultas.
-
-3. **Analisis Kualitas Energi**
-   - Memantau kualitas energi dengan menganalisis data tegangan dan arus untuk mendeteksi masalah potensial.
-   - Mengidentifikasi penyebab gangguan atau fluktuasi dalam sistem kelistrikan.
-
-4. **Peramalan Konsumsi Energi**
-   - 
-   - Menggunakan data historis untuk memprediksi konsumsi energi di masa depan, membantu dalam perencanaan dan penganggaran.
-   - Dapat juga meramal pemakaian pada hari-hari libur nasional di Indonesia
-   
-5. **Analisis Biaya Energi**
-   - Menghitung biaya energi berdasarkan tarif listrik dan konsumsi untuk membantu dalam pengelolaan anggaran.
-   - Menganalisis dampak dari perubahan tarif listrik terhadap biaya operasional.
-
-### Kesimpulan
-
-Dengan mengumpulkan dan menganalisis data listrik yang komprehensif, ELISA dapat memberikan wawasan yang berharga untuk pengelolaan energi yang lebih efisien dan berkelanjutan di institusi. Analisis ini tidak hanya membantu dalam penghematan biaya tetapi juga dalam upaya untuk mengurangi dampak lingkungan dari konsumsi energi.
-
-
-Dengan data-data tersebut, ELISA dapat digunakan untuk melakukan berbagai analisis yang mendukung manajemen energi dan air yang lebih efisien di kampus ITB.
-
-# Accessible API (Python)
 async def async_fetch_now(faculty: str = "", building: str = "", floor: str = ""):
     """
     Fetch real-time energy data for the last hour and today summary.
@@ -387,7 +296,6 @@ async def async_forecast_energy_hourly(faculty: str = "", building: str = "", fl
     else:
         raise Exception(f"Failed to fetch data: {response.status_code}")
     
-
 async def async_forecast_energy_daily(faculty: str = "", building: str = "", floor: str = "", days_to_forecast: int = 7):
     """
         Fetch daily energy usage forecast data from a local API endpoint. Also adressing national days in Indonesia 
@@ -428,7 +336,6 @@ async def async_forecast_energy_daily(faculty: str = "", building: str = "", flo
         return history, forecast
     else:
         raise Exception(f"Failed to fetch data: {response.status_code}")
-
 
 # Faculty and Building Available:
 ITB has 3 campus, Bandung (Ganesha), Jatinangor, and Jakarta. Currently we only have Bandung (Ganesha) and some of Jatinangor data. We have these faculty and building data available, the default is in Bandung (Ganesha):
@@ -572,3 +479,46 @@ Building List:
 - Data bangunan dan fakultas di luar yang disebutkan pada Faculty and Building Available, di luar itu fix tidak ada
 - Data di luar sistem ELISA, seperti cuaca, kalender perkuliahan spesifik, jadwal kuliah spesifik, tidak ada data ini
 - Data cuaca tidak ada
+
+
+# Example Use Case (Data Available)
+
+["Compare SF and FMIPA usage trends", "Data Available"],
+["Total ITB usage over the past month", "Data Available"],
+["Total ITB usage over the past year", "Data Available"],
+["Top 3 buildings with highest usage last year", "Data Available"],
+["Lowest 3 faculty usage in the last 3 months", "Data Available"],
+["Top 3 faculty usage in the last 3 months", "Data Available"],
+["FTI usage in the last 3 months", "Data Available"],
+["Hourly power consumption for Labtek V yesterday", "Data Available"],
+["Monthly water consumption for SBM", "Data Not Available"],
+["Three-phase balance analysis for Labtek VII", "Data Available"],
+["Energy cost comparison between FTI and FTMD", "Data Available"],
+["Power factor analysis for FMIPA buildings", "Data Available"],
+["Identify peak usage hours for FSRD last week", "Data Available"],
+["Water pressure trends in Jatinangor campus", "Data Available"],
+["Pump operation status for all buildings", "Data Available"],
+["Voltage fluctuations in Labtek III last month", "Data Available"],
+["Energy consumption per student in each faculty", "Data Available"],
+["Usage patterns during holidays vs regular days", "Data Available"],
+["Predict next month's energy consumption", "Data Available"],
+["What is the usage trend of FSRD in the last 3 months", "Data Available"]
+["Compare SF and FMIPA usage trends", "Data Available"]
+["Total ITB usage over the past month", "Data Available"]
+["Total ITB usage over the past year", "Data Available"]
+["FTI usage in the last 3 months", "Data Available"]
+["Plot last hour usage of FSRD", "Data Available"]
+["Lowest 3 faculty usage in the last 3 months", "Data Available"]
+["Top 3 faculty usage in the last 3 months", "Data Available"]
+["Top 3 buildings (not faculty) with highest usage last year", "Data Available"]
+["Plot FKK usage last 3 months" "Data Available"]
+["Compare FSRD and FTMD usage trends", "Data Available"]
+["Forecast CC Barat usage during holidays", "Data Available"]
+["Predict Labtek VI peak hours next week", "Data Available"]
+["Average Engineering Physics Building usage during summer", "Data Available"]
+["Compare STEI usage: weekdays vs weekends", "Data Available"]
+["Forecast ITB usage for next academic year", "Data Available"]
+["Labtek III usage trends last 3 semesters", "Data Available"]
+["Predict FTI usage during next major event", "Data Available"]
+["Forecast Labtek VII usage during winter break", "Data Available"]
+
