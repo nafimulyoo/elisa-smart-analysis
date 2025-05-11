@@ -40,16 +40,13 @@ class AskAnalysisPipeline:
         gemma = Config.from_yaml_file(Path("config/gemma3.yaml"))
         gemini_25 = Config.from_yaml_file(Path("config/gemini-2.5.yaml"))
         gemini = Config.from_yaml_file(Path("config/config2.yaml"))
-        config = None
-        config_2 = None
 
         if model == "deepseek":
             config = deepseek
         elif model == "gemma":
             config = gemma
         elif model == "gemini-2.5":
-            config = gemini
-            config_2 = gemini_25
+            config = gemini_25
 
         else:
             config = gemini
