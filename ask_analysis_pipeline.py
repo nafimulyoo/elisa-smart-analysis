@@ -84,10 +84,7 @@ class AskAnalysisPipeline:
         #     tools = fetch_elisa_api_data + ["save_csv", "async_forecast_energy_daily", "async_forecast_energy_hourly"]
     
 
-            if config_2:
-                data_analyst = DataAnalyst(tools=tools, config=config_2)
-            else:
-                data_analyst = DataAnalyst(tools=tools, config=config)
+            data_analyst = DataAnalyst(tools=tools, config=config)
                 
             data_analyst.set_react_mode(react_mode=react_mode)
 
@@ -116,10 +113,7 @@ class AskAnalysisPipeline:
             logger.info(f"↗️ Forwarding to Analysis Interpreter")
             logger.info(f"🟢 Analysis Interpreter: Interpreting analysis: {data_analyst_log}")
 
-            if config_2:
-                interpret_result = InterpretResult(config=config_2)
-            else:
-                interpret_result = InterpretResult(config=config)
+            interpret_result = InterpretResult(config=config)
 
             analysis_interpreter_result = await interpret_result.run(notebook=f"{data_analyst_log}", question=message, source=self.source)
             logger.info(f"🟢 Analysis Interpreter: Interpreting analysis Result: {analysis_interpreter_result}")
