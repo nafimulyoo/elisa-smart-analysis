@@ -147,45 +147,45 @@ async def fetch_with_retry(url: str, max_retries: int = 3, timeout: float = 5.0)
 
 # API functions with optimized caching
 
-@cached("now")
+#@cached("now")
 async def async_fetch_now(faculty: str = "", building: str = "", floor: str = ""):
     """Fetch real-time energy data with 30-second cache"""
     url = f"https://elisa.itb.ac.id/api/now?faculty={faculty}&building={building}&floor={floor}"
     return await fetch_with_retry(url)
 
-@cached("daily")
+#@cached("daily")
 async def async_fetch_daily(date: str, faculty: str = "", building: str = "", floor: str = ""):
     """Fetch daily data with 15-minute cache"""
     url = f"https://elisa.itb.ac.id/api/daily?date={date}&faculty={faculty}&building={building}&floor={floor}"
     print(f"Fetching daily data from {url}")
     return await fetch_with_retry(url)
 
-@cached("monthly")
+#@cached("monthly")
 async def async_fetch_monthly(date: str, faculty: str = "", building: str = "", floor: str = ""):
     """Fetch monthly data with 2-hour cache"""
     url = f"https://elisa.itb.ac.id/api/monthly?date={date}&faculty={faculty}&building={building}&floor={floor}"
     print(f"Fetching monthly data from {url}")
     return await fetch_with_retry(url)
 
-@cached("heatmap")
+#@cached("heatmap")
 async def async_fetch_heatmap(start: str, end: str, faculty: str = "", building: str = "", floor: str = ""):
     """Fetch heatmap data with 15-minute cache"""
     url = f"https://elisa.itb.ac.id/api/heatmap?faculty={faculty}&start={start}&end={end}&building={building}&floor={floor}"
     return await fetch_with_retry(url)
 
-@cached("compare")
+#@cached("compare")
 async def async_fetch_compare(date: str):
     """Fetch comparison data with 2-hour cache"""
     url = f"https://elisa.itb.ac.id/api/compare?date={date}"
     return await fetch_with_retry(url)
 
-@cached("fakultas")
+#@cached("fakultas")
 async def async_fetch_fakultas():
     """Fetch faculties list with unlimited cache"""
     url = "https://elisa.itb.ac.id/api/get-fakultas"
     return await fetch_with_retry(url)
 
-@cached("gedung")
+#@cached("gedung")
 async def async_fetch_gedung(fakultas: str):
     """Fetch buildings list with unlimited cache"""
     url = f"https://elisa.itb.ac.id/api/get-gedung?fakultas={fakultas}"
