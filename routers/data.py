@@ -10,6 +10,7 @@ from mas_llm.actions.analyze_page import now_analysis, heatmap_analysis, compare
 from functools import wraps
 import time
 import pandas as pd
+from datetime import datetime, date, timedelta
 from prophet import Prophet
 
 # def profile_endpoint(async_mode=True):
@@ -310,22 +311,34 @@ async def forecast_monthly_energy(faculty: str = "", building: str = "", floor: 
         - main plot figure
         - components plot figure
     """
-    # 1. Generate all year-month combinations we need to fetch
+   # 1. Generate all year-month combinations we need to fetch
     end_date = datetime.now().date()
-    start_date = end_date - timedelta(days=36*30)  # Approx 24 months
-    
+    start_date = end_date - timedelta(days=24 * 30)  # Approx 24 months
+
     year_months_to_fetch = []
     current_date = start_date
 
     while current_date <= end_date:
-        year_months_to_fetch.append(current_date.strftime('%Y-%m'))
+        year_months_to_fetch.append(current_date.strftime("%Y-%m"))
+        # Move to the first day of the next month
         if current_date.month == 12:
-            current_date = current_date.replace(year=current_date.year+1, month=1)
+            next_month = 1
+            next_year = current_date.year + 1
         else:
-            current_date = current_date.replace(month=current_date.month+1)
-    
+            next_month = current_date.month + 1
+            next_year = current_date.year
+
+        try:
+            current_date = date(next_year, next_month, 1)
+        except ValueError as e:
+            print(f"Error creating date: {e}")
+            break
+
     # Fetch data concurrently
-    all_monthly_data = await fetch_concurrent_monthly_months(year_months_to_fetch, faculty, building, floor)
+    all_monthly_data = await fetch_concurrent_monthly_months(
+        year_months_to_fetch, faculty, building, floor
+    )
+
     # Process responses
     all_daily_data = []
     for ym, monthly_data in zip(year_months_to_fetch, all_monthly_data):
